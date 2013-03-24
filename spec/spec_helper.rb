@@ -1,6 +1,8 @@
+require 'bundler/setup'
+
 require 'rspec'
 
-require_ 'site_prism_vcr/site_prism_vcr'
+require 'site_prism.vcr'
 
 RSpec.configure do |config|
 end
