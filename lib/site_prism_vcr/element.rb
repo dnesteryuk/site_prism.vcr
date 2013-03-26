@@ -8,24 +8,20 @@ module SitePrism
       def initialize(element, options = {})
         super element
 
+        @fixtures_handler = FixturesHandler.new(options[:fixtures])
+
         @options = options
       end
 
-      # TODO: it should allow to join fixtures without overriding the whole list
-      def click_and_apply_fixtures(fixtures = nil)
-        apply_fixtures(fixtures || options[:fixtures])
+      # TODO: find the way not to duplicate arguments here. Because,
+      # the same arguments are specified for +apply+ method of FixturesHandler
+      def click_and_apply_fixtures(custom_fixtures = [], behavior = :union)
+        @fixtures_handler.apply(custom_fixtures, behavior)
 
         origin_synchronize { base.click }
       end
 
       alias :click_and_apply_fixture :click_and_apply_fixtures
-
-      private
-        def apply_fixtures(fixtures)
-          fixtures.map do |fixture|
-            VCR.insert_cassette fixture
-          end
-        end
     end
   end
 end

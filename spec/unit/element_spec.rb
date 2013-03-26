@@ -1,43 +1,57 @@
 require 'spec_helper'
 
 describe SitePrism::Vcr::Element do
+  let(:fixtures_handler) { double(apply: true) }
+
+  before do
+    SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
+  end
+
+  describe '#new' do
+    it 'should initialize the fixtures handler' do
+      SitePrism::Vcr::FixturesHandler.should_receive(:new).with(
+        ['some fixtures']
+      ).and_return(fixtures_handler)
+
+      described_class.new(stub, fixtures: ['some fixtures'])
+    end
+  end
+
   describe '#click_and_apply_fixtures' do
     let(:base) { double(click: true) }
     let(:node) { double(origin_synchronize: true, base: base) }
 
-    subject(:element) { SitePrism::Vcr::Element.new(node, fixtures: ['test1', 'test2']) }
+    subject(:element) { described_class.new(node) }
 
     before do
-      VCR.stub(:insert_cassette)
-
       node.stub(:origin_synchronize).and_yield
     end
 
-    context 'when fixtures are defined through options' do
-      it 'should apply the first fixture' do
-        VCR.should_receive(:insert_cassette).with('test1')
-
-        element.click_and_apply_fixtures
-      end
-
-      it 'should apply the second fixture' do
-        VCR.should_receive(:insert_cassette).with('test2')
+    context 'when custom fixtures are not given' do
+      it 'should apply fixtures' do
+        fixtures_handler.should_receive(:apply).with([], :union)
 
         element.click_and_apply_fixtures
       end
     end
 
-    context 'when custom fixtures are passed into the method' do
-      it 'should apply the first custom fixture' do
-        VCR.should_receive(:insert_cassette).with('custom1')
+    context 'when custom fixtures are given' do
+      it 'should apply custom fixtures' do
+        fixtures_handler.should_receive(:apply).with(
+          ['some custom fixture'], :union
+        )
 
-        element.click_and_apply_fixtures(['custom1', 'custom2'])
+        element.click_and_apply_fixtures(['some custom fixture'])
       end
+    end
 
-      it 'should apply the second custom fixture' do
-        VCR.should_receive(:insert_cassette).with('custom2')
+    context 'when custom fixtures are requested to replace default fixtures' do
+      it 'should apply custom fixtures' do
+        fixtures_handler.should_receive(:apply).with(
+          ['some custom fixture'], :replace
+        )
 
-        element.click_and_apply_fixtures(['custom1', 'custom2'])
+        element.click_and_apply_fixtures(['some custom fixture'], :replace)
       end
     end
 

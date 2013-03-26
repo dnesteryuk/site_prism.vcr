@@ -23,7 +23,7 @@ feature 'Applying VCR fixtures' do
 
   context 'when a custom cassette is applied' do
     before do
-      @test_app_page.link_with_one_request.click_and_apply_fixtures(['octocus'])
+      @test_app_page.link_with_one_request.click_and_apply_fixtures(['octocus'], :replace)
       @test_app_page.wait_for_result_block
     end
 
