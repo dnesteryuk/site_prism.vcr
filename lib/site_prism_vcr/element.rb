@@ -15,13 +15,11 @@ module SitePrism
 
       # TODO: find the way not to duplicate arguments here. Because,
       # the same arguments are specified for +apply+ method of FixturesHandler
-      def click_and_apply_fixtures(custom_fixtures = [], behavior = :union)
+      def click_and_apply_vcr(custom_fixtures = [], behavior = :union)
         @fixtures_handler.apply(custom_fixtures, behavior)
 
         origin_synchronize { base.click }
       end
-
-      alias_method :click_and_apply_fixture, :click_and_apply_fixtures
     end
   end
 end

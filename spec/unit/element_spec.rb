@@ -17,7 +17,7 @@ describe SitePrism::Vcr::Element do
     end
   end
 
-  describe '#click_and_apply_fixtures' do
+  describe '#click_and_apply_vcr' do
     let(:base) { double(click: true) }
     let(:node) { double(origin_synchronize: true, base: base) }
 
@@ -31,7 +31,7 @@ describe SitePrism::Vcr::Element do
       it 'should apply fixtures' do
         fixtures_handler.should_receive(:apply).with([], :union)
 
-        element.click_and_apply_fixtures
+        element.click_and_apply_vcr
       end
     end
 
@@ -41,7 +41,7 @@ describe SitePrism::Vcr::Element do
           ['some custom fixture'], :union
         )
 
-        element.click_and_apply_fixtures(['some custom fixture'])
+        element.click_and_apply_vcr(['some custom fixture'])
       end
     end
 
@@ -51,20 +51,20 @@ describe SitePrism::Vcr::Element do
           ['some custom fixture'], :replace
         )
 
-        element.click_and_apply_fixtures(['some custom fixture'], :replace)
+        element.click_and_apply_vcr(['some custom fixture'], :replace)
       end
     end
 
     it 'should synhronize the click action' do
       node.should_receive(:origin_synchronize)
 
-      element.click_and_apply_fixtures
+      element.click_and_apply_vcr
     end
 
     it 'should do the click action' do
       base.should_receive(:click)
 
-      element.click_and_apply_fixtures
+      element.click_and_apply_vcr
     end
   end
 end

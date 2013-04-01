@@ -8,7 +8,7 @@ feature 'Applying VCR fixtures' do
 
   context 'when an user clicks on the link which does an AJAX request' do
     before do
-      @test_app_page.link_with_one_request.click_and_apply_fixtures
+      @test_app_page.link_with_one_request.click_and_apply_vcr
       @test_app_page.wait_for_result_block
     end
 
@@ -23,7 +23,7 @@ feature 'Applying VCR fixtures' do
 
   context 'when a custom cassette is applied' do
     before do
-      @test_app_page.link_with_one_request.click_and_apply_fixtures(['octocus'], :replace)
+      @test_app_page.link_with_one_request.click_and_apply_vcr(['octocus'], :replace)
       @test_app_page.wait_for_result_block
     end
 
@@ -34,7 +34,7 @@ feature 'Applying VCR fixtures' do
 
   context 'when there is a delay between clicking and doing an AJAX request' do
     before do
-      @test_app_page.link_with_one_request_and_delay.click_and_apply_fixtures
+      @test_app_page.link_with_one_request_and_delay.click_and_apply_vcr
       @test_app_page.wait_for_result_block
     end
 
@@ -45,7 +45,7 @@ feature 'Applying VCR fixtures' do
 
   context 'when an user clicks on the link which does 2 AJAX requests' do
     before do
-      @test_app_page.link_with_2_requests.click_and_apply_fixtures
+      @test_app_page.link_with_2_requests.click_and_apply_vcr
       @test_app_page.wait_for_result_block
     end
 
