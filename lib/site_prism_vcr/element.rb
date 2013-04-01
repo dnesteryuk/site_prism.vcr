@@ -21,7 +21,7 @@ module SitePrism
         origin_synchronize { base.click }
       end
 
-      alias :click_and_apply_fixture :click_and_apply_fixtures
+      alias_method :click_and_apply_fixture, :click_and_apply_fixtures
     end
   end
 end

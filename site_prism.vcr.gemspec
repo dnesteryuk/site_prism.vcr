@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'site_prism', '2.2'
-  spec.add_dependency 'capybara', '2.1.0.beta1'
+  spec.add_dependency 'capybara', '2.0.2'
   spec.add_dependency 'vcr', '2.4.0'
   spec.add_dependency 'webmock'
 
