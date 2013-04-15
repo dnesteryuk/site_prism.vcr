@@ -18,14 +18,9 @@ describe SitePrism::Vcr::Element do
   end
 
   describe '#click_and_apply_vcr' do
-    let(:base) { double(click: true) }
-    let(:node) { double(origin_synchronize: true, base: base) }
+    let(:node) { double(click: true) }
 
     subject(:element) { described_class.new(node) }
-
-    before do
-      node.stub(:origin_synchronize).and_yield
-    end
 
     context 'when custom fixtures are not given' do
       it 'should apply fixtures' do
@@ -55,14 +50,8 @@ describe SitePrism::Vcr::Element do
       end
     end
 
-    it 'should synhronize the click action' do
-      node.should_receive(:origin_synchronize)
-
-      element.click_and_apply_vcr
-    end
-
     it 'should do the click action' do
-      base.should_receive(:click)
+      element.should_receive(:click)
 
       element.click_and_apply_vcr
     end

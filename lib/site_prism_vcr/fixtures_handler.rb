@@ -11,7 +11,9 @@ module SitePrism
       def apply(custom_fixtures = [], behavior = :union)
         custom_fixtures = [*custom_fixtures]
 
-        @fixtures.public_send(behavior, custom_fixtures) if custom_fixtures.size > 0
+        if custom_fixtures.size > 0
+          @fixtures = @fixtures.public_send(behavior, custom_fixtures)
+        end
 
         inject
       end

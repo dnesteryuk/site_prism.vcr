@@ -15,10 +15,11 @@ module SitePrism
 
       # TODO: find the way not to duplicate arguments here. Because,
       # the same arguments are specified for +apply+ method of FixturesHandler
+      # TODO: the previousle added custom fixtures must be removed once new one are added
       def click_and_apply_vcr(custom_fixtures = [], behavior = :union)
         @fixtures_handler.apply(custom_fixtures, behavior)
 
-        origin_synchronize { base.click }
+        self.click
       end
     end
   end

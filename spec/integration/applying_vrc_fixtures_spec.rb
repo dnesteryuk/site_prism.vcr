@@ -6,6 +6,11 @@ feature 'Applying VCR fixtures' do
     @test_app_page.load
   end
 
+  after do
+    while VCR.eject_cassette
+    end
+  end
+
   context 'when an user clicks on the link which does an AJAX request' do
     before do
       @test_app_page.link_with_one_request.click_and_apply_vcr
@@ -14,10 +19,6 @@ feature 'Applying VCR fixtures' do
 
     it 'should apply a fixture' do
       @test_app_page.result_block.should have_content('Octocat')
-    end
-
-    it 'should not have any cassettes in the queue' do
-      VCR.current_cassette.should be_nil
     end
   end
 

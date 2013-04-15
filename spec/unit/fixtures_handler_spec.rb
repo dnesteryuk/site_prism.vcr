@@ -26,12 +26,13 @@ describe SitePrism::Vcr::FixturesHandler do
 
     before do
       SitePrism::Vcr::Fixtures.stub(:new).and_return(fixtures)
+      VCR.stub(:insert_cassette)
     end
 
     context 'when custom fixtures are defined' do
       context 'when a behavior is not specified' do
         it 'should union default fixtures with custom fixtures' do
-          fixtures.should_receive(:union).with(['my custom'])
+          fixtures.should_receive(:union).with(['my custom']).and_return(['some'])
 
           handler.apply(['my custom'])
         end
@@ -39,7 +40,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
       context 'when behavior is specified' do
         it 'should replace default fixtures with custom fixtures' do
-          fixtures.should_receive(:replace).with(['my custom'])
+          fixtures.should_receive(:replace).with(['my custom']).and_return(['some'])
 
           handler.apply(['my custom'], :replace)
         end
@@ -47,7 +48,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
       context 'when a fixture is a defined as a string' do
         it 'should turn it into array' do
-          fixtures.should_receive(:union).with(['my string'])
+          fixtures.should_receive(:union).with(['my string']).and_return(['some'])
 
           handler.apply('my string')
         end
