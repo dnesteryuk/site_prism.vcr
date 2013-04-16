@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SitePrism::Vcr::FixturesHandler do
   describe '.new' do
     context 'when cassettes are passed' do
-      it 'should initialize the fixtures with a given cassettes' do
+      it 'should initialize the fixtures with given cassettes' do
         SitePrism::Vcr::Fixtures.should_receive(:new).with(['some fixture'])
 
         described_class.new(['some fixture'])
@@ -31,24 +31,24 @@ describe SitePrism::Vcr::FixturesHandler do
 
     context 'when custom fixtures are defined' do
       context 'when a behavior is not specified' do
-        it 'should union default fixtures with custom fixtures' do
-          fixtures.should_receive(:union).with(['my custom']).and_return(['some'])
+        it 'should replace default fixtures with custom fixtures' do
+          fixtures.should_receive(:replace).with(['my custom']).and_return(['some'])
 
           handler.apply(['my custom'])
         end
       end
 
       context 'when behavior is specified' do
-        it 'should replace default fixtures with custom fixtures' do
-          fixtures.should_receive(:replace).with(['my custom']).and_return(['some'])
+        it 'should union default fixtures with custom fixtures' do
+          fixtures.should_receive(:union).with(['my custom']).and_return(['some'])
 
-          handler.apply(['my custom'], :replace)
+          handler.apply(['my custom'], :union)
         end
       end
 
       context 'when a fixture is a defined as a string' do
         it 'should turn it into array' do
-          fixtures.should_receive(:union).with(['my string']).and_return(['some'])
+          fixtures.should_receive(:replace).with(['my string']).and_return(['some'])
 
           handler.apply('my string')
         end
@@ -57,7 +57,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
     context 'when no custom fixtures' do
       it 'should not add custom fixtures' do
-        fixtures.should_not_receive(:union)
+        fixtures.should_not_receive(:replace)
 
         handler.apply
       end

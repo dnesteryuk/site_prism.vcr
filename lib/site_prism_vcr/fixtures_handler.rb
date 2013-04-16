@@ -8,7 +8,7 @@ module SitePrism
       end
 
       # TODO: create possibility to exchange fixtures
-      def apply(custom_fixtures = [], behavior = :union)
+      def apply(custom_fixtures = [], behavior = :replace)
         custom_fixtures = [*custom_fixtures]
 
         if custom_fixtures.size > 0
