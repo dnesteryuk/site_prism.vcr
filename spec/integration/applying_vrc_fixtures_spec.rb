@@ -6,9 +6,14 @@ feature 'Applying VCR fixtures' do
     @test_app_page.load
   end
 
-  after do
+  # TODO: do pull request to VCR to avoit this thing here
+  def eject_fixtures
     while VCR.eject_cassette
     end
+  end
+
+  after do
+    eject_fixtures
   end
 
   context 'when an user clicks on the link which does an AJAX request' do
@@ -23,13 +28,30 @@ feature 'Applying VCR fixtures' do
   end
 
   context 'when a custom cassette is applied' do
+    let(:link) { @test_app_page.link_with_one_request }
+
     before do
-      @test_app_page.link_with_one_request.click_and_apply_vcr(['octocus'], :replace)
+      link.click_and_apply_vcr(['octocus'])
+
       @test_app_page.wait_for_result_block
     end
 
     it 'should use a custom cassette instead of a default one for this element' do
       @test_app_page.result_block.should have_content('Octocus')
+    end
+
+    context 'when a click is used again without specifying a custom fixture' do
+      before do
+        eject_fixtures
+      end
+
+      it 'should use a default fixture again' do
+        link.click_and_apply_vcr
+
+        @test_app_page.wait_for_result_block
+
+        @test_app_page.result_block.should have_content('Octocat')
+      end
     end
   end
 

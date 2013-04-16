@@ -1,18 +1,18 @@
 module SitePrism
   module Vcr
     class FixturesHandler
-      attr_reader :fixtures
-
       def initialize(default_fixtures = [])
-        @fixtures = Fixtures.new(default_fixtures)
+        @default_fixtures = Fixtures.new(default_fixtures)
       end
 
       # TODO: create possibility to exchange fixtures
       def apply(custom_fixtures = [], behavior = :replace)
         custom_fixtures = [*custom_fixtures]
 
-        if custom_fixtures.size > 0
-          @fixtures = @fixtures.public_send(behavior, custom_fixtures)
+        @fixtures = if custom_fixtures.size > 0
+          @default_fixtures.public_send(behavior, custom_fixtures)
+        else
+          @default_fixtures
         end
 
         inject
@@ -22,9 +22,9 @@ module SitePrism
         def inject
           raise ArgumentError.new(
             'No fixtures were specified to insert them into VCR'
-          ) if fixtures.size == 0
+          ) if @fixtures.size == 0
 
-          fixtures.map do |fixture|
+          @fixtures.map do |fixture|
             VCR.insert_cassette fixture
           end
         end

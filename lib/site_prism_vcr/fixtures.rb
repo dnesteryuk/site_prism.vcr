@@ -5,6 +5,10 @@ module SitePrism
       def exchange(old_vals, new_vals)
         subtract(old_vals).merge(new_vals)
       end
+
+      def replace(vals)
+        self.class.new(vals)
+      end
     end
   end
 end
