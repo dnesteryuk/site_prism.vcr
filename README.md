@@ -1,5 +1,7 @@
 # SitePrism.vcr
 
+[![Code Climate](https://codeclimate.com/nestd/site_prism.vcr/dm-mapper.png)][codeclimate]
+
 TODO: Write a gem description
 
 ## Installation
