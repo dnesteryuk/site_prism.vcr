@@ -1,6 +1,6 @@
 # SitePrism.vcr
 
-[![Code Climate](https://codeclimate.com/github/nestd/site_prism.vcr.pn)][codeclimate]
+[![Code Climate](https://codeclimate.com/github/nestd/site_prism.vcr.png)][codeclimate]
 
 TODO: Write a gem description
 
