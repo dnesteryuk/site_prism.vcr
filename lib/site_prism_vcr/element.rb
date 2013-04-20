@@ -24,10 +24,6 @@ module SitePrism
           @parent.public_send(@options[:waiter])
         end
       end
-
-      # This method do nothing. It is used as a default waiter
-      # when any is specified
-      def wait_for_nothing; end
     end
   end
 end

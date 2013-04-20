@@ -18,15 +18,6 @@
       :link_with_one_request_and_delay,
       '#link_with_one_request_and_delay',
       fixtures: ['octocat']
-      waiter: :wait_until_loading_indicator_invisible
-    ```
-
-  or
-    ```ruby
-    element_with_vcr \
-      :link_with_one_request_and_delay,
-      '#link_with_one_request_and_delay',
-      fixtures: ['octocat']
       waiter:   { self.wait_until_loading_indicator_invisible and self.wait_for_products }
     ```
 
