@@ -1,11 +1,15 @@
 module SitePrism
   module Vcr
     class FixturesHandler
-      def initialize(default_fixtures = [])
-        @default_fixtures = Fixtures.new(default_fixtures)
+      def initialize(options = {})
+        @options = options
+
+        @default_fixtures = Fixtures.new(options[:fixtures])
       end
 
       # TODO: create possibility to exchange fixtures
+      # TODO: take a look at the tests, there are too many
+      # this method should be refactored somehow
       def apply(custom_fixtures = [], behavior = :replace)
         custom_fixtures = [*custom_fixtures]
 

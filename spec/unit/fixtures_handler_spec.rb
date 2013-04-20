@@ -2,26 +2,17 @@ require 'spec_helper'
 
 describe SitePrism::Vcr::FixturesHandler do
   describe '.new' do
-    context 'when cassettes are passed' do
-      it 'should initialize the fixtures with given cassettes' do
-        SitePrism::Vcr::Fixtures.should_receive(:new).with(['some fixture'])
+    it 'should initialize the fixtures container with given cassettes' do
+      SitePrism::Vcr::Fixtures.should_receive(:new).with(['some fixture'])
 
-        described_class.new(['some fixture'])
-      end
-    end
-
-   context 'when no cassettes are passed' do
-      it 'should initialize the fixtures with an empty array' do
-        SitePrism::Vcr::Fixtures.should_receive(:new).with([])
-
-        described_class.new
-      end
+      described_class.new(
+        fixtures: ['some fixture']
+      )
     end
   end
 
   describe '#apply' do
-    let(:fixtures) { double(map: [], size: 2) }
-
+    let(:fixtures)    { double(map: [], size: 2) }
     subject(:handler) { described_class.new }
 
     before do
@@ -29,7 +20,7 @@ describe SitePrism::Vcr::FixturesHandler do
       VCR.stub(:insert_cassette)
     end
 
-    context 'when custom fixtures are defined' do
+    context 'when custom fixtures are passed' do
       context 'when a behavior is not specified' do
         it 'should replace default fixtures with custom fixtures' do
           fixtures.should_receive(:replace).with(['my custom']).and_return(['some'])
@@ -55,7 +46,7 @@ describe SitePrism::Vcr::FixturesHandler do
       end
     end
 
-    context 'when no custom fixtures' do
+    context 'when no custom fixtures passed' do
       it 'should not add custom fixtures' do
         fixtures.should_not_receive(:replace)
 

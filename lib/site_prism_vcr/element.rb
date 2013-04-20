@@ -3,24 +3,31 @@ require 'delegate'
 module SitePrism
   module Vcr
     class Element < SimpleDelegator
-      attr_reader :options
-
-      def initialize(element, options = {})
+      def initialize(element, parent, options = {})
         super element
 
-        @fixtures_handler = FixturesHandler.new(options[:fixtures])
-
+        @parent  = parent
         @options = options
+
+        @fixtures_handler = FixturesHandler.new(
+          options
+        )
       end
 
-      # TODO: find the way not to duplicate arguments here. Because,
-      # the same arguments are specified for +apply+ method of FixturesHandler
-      # TODO: the previousle added custom fixtures must be removed once new one are added
-      def click_and_apply_vcr(custom_fixtures = [], behavior = :union)
-        @fixtures_handler.apply(custom_fixtures, behavior)
+      def click_and_apply_vcr(*args)
+        @fixtures_handler.apply(*args)
 
         self.click
+
+        # TODO: apply Null object pattern
+        if @options[:waiter]
+          @parent.public_send(@options[:waiter])
+        end
       end
+
+      # This method do nothing. It is used as a default waiter
+      # when any is specified
+      def wait_for_nothing; end
     end
   end
 end

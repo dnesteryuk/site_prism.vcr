@@ -19,7 +19,6 @@ feature 'Applying VCR fixtures' do
   context 'when an user clicks on the link which does an AJAX request' do
     before do
       @test_app_page.link_with_one_request.click_and_apply_vcr
-      @test_app_page.wait_for_result_block
     end
 
     it 'should apply a fixture' do
@@ -32,8 +31,6 @@ feature 'Applying VCR fixtures' do
 
     before do
       link.click_and_apply_vcr(['octocus'])
-
-      @test_app_page.wait_for_result_block
     end
 
     it 'should use a custom cassette instead of a default one for this element' do
@@ -48,8 +45,6 @@ feature 'Applying VCR fixtures' do
       it 'should use a default fixture again' do
         link.click_and_apply_vcr
 
-        @test_app_page.wait_for_result_block
-
         @test_app_page.result_block.should have_content('Octocat')
       end
     end
@@ -58,7 +53,6 @@ feature 'Applying VCR fixtures' do
   context 'when there is a delay between clicking and doing an AJAX request' do
     before do
       @test_app_page.link_with_one_request_and_delay.click_and_apply_vcr
-      @test_app_page.wait_for_result_block
     end
 
     it 'should apply a fixture' do
@@ -69,7 +63,6 @@ feature 'Applying VCR fixtures' do
   context 'when an user clicks on the link which does 2 AJAX requests' do
     before do
       @test_app_page.link_with_2_requests.click_and_apply_vcr
-      @test_app_page.wait_for_result_block
     end
 
     it 'should apply 2 fixtures' do
