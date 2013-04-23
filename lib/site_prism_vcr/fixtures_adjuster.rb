@@ -5,6 +5,7 @@ module SitePrism
 
       def initialize(fixtures_handler)
         @fixtures_handler, @fixtures = fixtures_handler, []
+        @action = :replace
       end
 
       def path(path, fixture_names)
@@ -14,11 +15,15 @@ module SitePrism
       end
 
       def replace
-        @fixtures_handler.apply(fixtures, :replace)
+        @action = :replace
       end
 
       def union
-        @fixtures_handler.apply(fixtures, :union)
+        @action = :union
+      end
+
+      def modify_fixtures
+        @fixtures_handler.apply(fixtures, @action)
       end
     end
   end

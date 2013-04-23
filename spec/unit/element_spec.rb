@@ -51,7 +51,7 @@ describe SitePrism::Vcr::Element do
     end
 
     context 'when a block is defined' do
-      let(:fixtures_adjuster) { double(mymeth: true) }
+      let(:fixtures_adjuster) { double(mymeth: true, modify_fixtures: true) }
 
       before do
         SitePrism::Vcr::FixturesAdjuster.stub(:new).and_return(fixtures_adjuster)
@@ -69,6 +69,11 @@ describe SitePrism::Vcr::Element do
         fixtures_adjuster.should_receive(:mymeth)
 
         element.click_and_apply_vcr { mymeth }
+      end
+
+      it 'should modify fixtures' do
+        fixtures_adjuster.should_receive(:modify_fixtures)
+        element.click_and_apply_vcr { }
       end
     end
   end

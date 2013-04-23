@@ -17,27 +17,35 @@ describe SitePrism::Vcr::FixturesAdjuster do
     end
   end
 
-  describe '#replace' do
+  describe '#modify_fixtures' do
     before do
       subject.stub(:fixtures).and_return 'some fixtures'
     end
 
-    it 'should replace fixtures' do
-      fixtures_handler.should_receive(:apply).with('some fixtures', :replace)
+    context 'when an action is defined' do
+      it 'should union fixtures' do
+        subject.union
 
-      subject.replace
+        fixtures_handler.should_receive(:apply).with('some fixtures', :union)
+
+        subject.modify_fixtures
+      end
+
+      it 'should replace fixtures' do
+        subject.replace
+
+        fixtures_handler.should_receive(:apply).with('some fixtures', :replace)
+
+        subject.modify_fixtures
+      end
     end
-  end
 
-  describe '#union' do
-    before do
-      subject.stub(:fixtures).and_return 'some fixtures'
-    end
+    context 'when an action is not sepcified' do
+      it 'should replace fixtures by default' do
+        fixtures_handler.should_receive(:apply).with('some fixtures', :replace)
 
-    it 'should union fixtures' do
-      fixtures_handler.should_receive(:apply).with('some fixtures', :union)
-
-      subject.union
+        subject.modify_fixtures
+      end
     end
   end
 end

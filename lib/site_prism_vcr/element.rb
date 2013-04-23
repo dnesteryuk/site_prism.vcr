@@ -30,6 +30,7 @@ module SitePrism
         def adjust_fixtures(&block)
           adjuster = FixturesAdjuster.new @fixtures_handler
           adjuster.instance_eval &block
+          adjuster.modify_fixtures
         end
     end
   end

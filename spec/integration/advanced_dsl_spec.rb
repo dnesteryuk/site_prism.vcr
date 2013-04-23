@@ -16,8 +16,6 @@ feature 'Advanced DSL' do
     before do
       link.click_and_apply_vcr do
         path 'custom', ['octocus']
-
-        replace
       end
     end
 
