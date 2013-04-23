@@ -25,31 +25,6 @@ describe SitePrism::Vcr::Element do
     let(:node)        { double(click: true) }
     subject(:element) { described_class.new(node, parent) }
 
-    it 'should apply fixtures' do
-      fixtures_handler.should_receive(:apply).with(
-        ['some custom fixture'], :replace
-      )
-
-      element.click_and_apply_vcr(['some custom fixture'], :replace)
-    end
-
-    it 'should do the click action' do
-      element.should_receive(:click)
-
-      element.click_and_apply_vcr
-    end
-
-    context 'when a waiter is defined' do
-      let(:parent)      { double(wait_for_me: true) }
-      subject(:element) { described_class.new(node, parent, waiter: :wait_for_me) }
-
-      it 'should call waiter to wait untill all AJAX requests are finished' do
-        parent.should_receive(:wait_for_me)
-
-        element.click_and_apply_vcr
-      end
-    end
-
     context 'when a block is defined' do
       let(:fixtures_adjuster) { double(mymeth: true, modify_fixtures: true) }
 
@@ -74,6 +49,45 @@ describe SitePrism::Vcr::Element do
       it 'should modify fixtures' do
         fixtures_adjuster.should_receive(:modify_fixtures)
         element.click_and_apply_vcr { }
+      end
+
+      it 'should not touch the fixtures handler' do
+        fixtures_handler.should_not_receive(:apply)
+
+        element.click_and_apply_vcr { }
+      end
+    end
+
+    context 'when a block is not defined' do
+      it 'should apply fixtures' do
+        fixtures_handler.should_receive(:apply).with(
+          ['some custom fixture'], :replace
+        )
+
+        element.click_and_apply_vcr(['some custom fixture'], :replace)
+      end
+
+      it 'should initialize the fixtures adjuster' do
+        SitePrism::Vcr::FixturesAdjuster..should_not_receive(:new)
+
+        element.click_and_apply_vcr(['some custom fixture'])
+      end
+    end
+
+    it 'should do the click action' do
+      element.should_receive(:click)
+
+      element.click_and_apply_vcr
+    end
+
+    context 'when a waiter is defined' do
+      let(:parent)      { double(wait_for_me: true) }
+      subject(:element) { described_class.new(node, parent, waiter: :wait_for_me) }
+
+      it 'should call waiter to wait untill all AJAX requests are finished' do
+        parent.should_receive(:wait_for_me)
+
+        element.click_and_apply_vcr
       end
     end
   end

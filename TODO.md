@@ -1,6 +1,6 @@
 # TODO
 
-1. If an action is not specified while using advanced DSL, the replace action should be taken.
+1. Add possibility to define a fixture without path while using advanced DSL
 
 2. Create possibility to define a waiter:
 

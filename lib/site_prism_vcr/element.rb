@@ -12,10 +12,10 @@ module SitePrism
       end
 
       def click_and_apply_vcr(*args, &block)
-        @fixtures_handler.apply *args
-
         if block_given?
           adjust_fixtures &block
+        else
+          @fixtures_handler.apply *args
         end
 
         self.click
