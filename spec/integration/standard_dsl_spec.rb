@@ -1,15 +1,9 @@
 require 'spec_integration_helper'
 
-feature 'Applying VCR fixtures' do
+feature 'Standard DSL' do
   before do
     @test_app_page = TestAppPage.new
     @test_app_page.load
-  end
-
-  # TODO: do pull request to VCR to avoit this thing here
-  def eject_fixtures
-    while VCR.eject_cassette
-    end
   end
 
   after do
@@ -30,7 +24,7 @@ feature 'Applying VCR fixtures' do
     let(:link) { @test_app_page.link_with_one_request }
 
     before do
-      link.click_and_apply_vcr(['octocus'])
+      link.click_and_apply_vcr(['custom/octocus'])
     end
 
     it 'should use a custom cassette instead of a default one for this element' do

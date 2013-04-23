@@ -49,5 +49,27 @@ describe SitePrism::Vcr::Element do
         element.click_and_apply_vcr
       end
     end
+
+    context 'when a block is defined' do
+      let(:fixtures_adjuster) { double(mymeth: true) }
+
+      before do
+        SitePrism::Vcr::FixturesAdjuster.stub(:new).and_return(fixtures_adjuster)
+      end
+
+      it 'should initialize the fixtures adjuster' do
+        SitePrism::Vcr::FixturesAdjuster.should_receive(:new).with(
+          fixtures_handler
+        )
+
+        element.click_and_apply_vcr {}
+      end
+
+      it 'should call a given block within fixtures adjuster context' do
+        fixtures_adjuster.should_receive(:mymeth)
+
+        element.click_and_apply_vcr { mymeth }
+      end
+    end
   end
 end

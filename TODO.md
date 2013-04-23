@@ -1,15 +1,6 @@
 # TODO
 
-1. Create DSL which will support following:
-
-    ```ruby
-    self.confirm_btn.click_and_apply_vcr do
-      path 'products', ['tomato', 'fruit/apple']
-      path 'goods', 'cars'
-
-      replace
-    end
-    ```
+1. If an action is not specified while using advanced DSL, the replace action should be taken.
 
 2. Create possibility to define a waiter:
 
@@ -61,3 +52,4 @@
 
 6. Think about removing all fixtures from VCR when fixtures are applied for a click event
 7. Add documentation into Readme file
+8. Add comments to code
