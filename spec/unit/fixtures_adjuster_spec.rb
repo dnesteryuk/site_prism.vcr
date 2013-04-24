@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SitePrism::Vcr::FixturesAdjuster do
   let(:fixtures_handler) { double }
 
-  subject { described_class.new fixtures_handler }
+  subject { described_class.new fixtures_handler, waiter: :default_waiter }
 
   describe '#path' do
     it 'should add fixtures into container' do
@@ -21,6 +21,10 @@ describe SitePrism::Vcr::FixturesAdjuster do
     it 'should define a new waiter' do
       subject.waiter :some_waiter
       subject.waiter.should eq(:some_waiter)
+    end
+
+    it 'should return a default waiter' do
+      subject.waiter.should eq(:default_waiter)
     end
   end
 

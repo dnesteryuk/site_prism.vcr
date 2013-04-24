@@ -1,11 +1,12 @@
+# TODO: rename this class to Adjuster
 module SitePrism
   module Vcr
     class FixturesAdjuster
       attr_reader :fixtures
 
-      def initialize(fixtures_handler)
+      def initialize(fixtures_handler, options = {})
         @fixtures_handler, @fixtures = fixtures_handler, []
-        @action = :replace
+        @action, @waiter = :replace, options[:waiter]
       end
 
       def path(path, fixture_names)

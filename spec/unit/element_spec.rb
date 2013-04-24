@@ -2,48 +2,63 @@ require 'spec_helper'
 
 describe SitePrism::Vcr::Element do
   let(:fixtures_handler) { double(apply: true) }
-  let(:node)   { stub }
-  let(:parent) { double }
+  let(:waiter)           { double(wait: true) }
+  let(:node)             { stub }
+  let(:parent)           { double }
 
   before do
     SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
+    SitePrism::Vcr::Waiter.stub(:new).and_return(waiter)
   end
 
   describe '#new' do
     let(:options) { 'some options' }
+    subject { described_class.new(node, parent, options) }
 
     it 'should initialize the fixtures handler' do
       SitePrism::Vcr::FixturesHandler.should_receive(:new).with(
         options
       ).and_return(fixtures_handler)
 
-      described_class.new(node, parent, options)
+      subject
+    end
+
+    it 'should initialize the waiter' do
+      SitePrism::Vcr::Waiter.should_receive(:new).with(
+        parent,
+        options
+      ).and_return(waiter)
+
+      subject
     end
   end
 
   describe '#click_and_apply_vcr' do
     let(:node)        { double(click: true) }
-    subject(:element) { described_class.new(node, parent) }
+    let(:options)     { 'some options' }
+    subject(:element) { described_class.new(node, parent, options) }
 
     context 'when a block is defined' do
       let(:fixtures_adjuster) do
         double(
           mymeth:          true,
           modify_fixtures: true,
-          waiter:          nil
+          waiter:          :wait_for_items
         )
       end
 
       before do
         SitePrism::Vcr::FixturesAdjuster.stub(:new).and_return(fixtures_adjuster)
+        waiter.stub(:waiter=)
       end
 
       it 'should initialize the fixtures adjuster' do
         SitePrism::Vcr::FixturesAdjuster.should_receive(:new).with(
-          fixtures_handler
+          fixtures_handler,
+          options
         )
 
-        element.click_and_apply_vcr {}
+        element.click_and_apply_vcr { }
       end
 
       it 'should call a given block within fixtures adjuster context' do
@@ -52,16 +67,10 @@ describe SitePrism::Vcr::Element do
         element.click_and_apply_vcr { mymeth }
       end
 
-      context 'when a waiter is redefined' do
-        before do
-          fixtures_adjuster.stub(:waiter).and_return(:wait_for_items)
-        end
+      it 'should define a new waiter method' do
+        waiter.should_receive(:waiter=).with(:wait_for_items)
 
-        it 'should use a newly defined waiter' do
-          parent.should_receive(:wait_for_items)
-
-          element.click_and_apply_vcr {}
-        end
+        element.click_and_apply_vcr { }
       end
 
       it 'should modify fixtures' do
@@ -98,15 +107,10 @@ describe SitePrism::Vcr::Element do
       element.click_and_apply_vcr
     end
 
-    context 'when a waiter is defined' do
-      let(:parent)      { double(wait_for_me: true) }
-      subject(:element) { described_class.new(node, parent, waiter: :wait_for_me) }
+    it 'should wait until AJAX requests finish' do
+      waiter.should_receive(:wait)
 
-      it 'should call waiter to wait untill all AJAX requests are finished' do
-        parent.should_receive(:wait_for_me)
-
-        element.click_and_apply_vcr
-      end
+      element.click_and_apply_vcr
     end
   end
 end

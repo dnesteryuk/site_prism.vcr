@@ -9,23 +9,23 @@ module SitePrism
         @parent, @options = parent, options
 
         @fixtures_handler = FixturesHandler.new options
+        @waiter           = Waiter.new parent, options
       end
 
       def click_and_apply_vcr(*args, &block)
         if block_given?
-          @adjuster = FixturesAdjuster.new @fixtures_handler
+          @adjuster = FixturesAdjuster.new @fixtures_handler, @options
 
           adjust_fixtures &block
+
+          @waiter.waiter = @adjuster.waiter
         else
           @fixtures_handler.apply *args
         end
 
         self.click
 
-        # TODO: apply Null object pattern
-        if @options[:waiter] || (!@adjuster.nil? && @adjuster.waiter)
-          @parent.public_send @options[:waiter] || @adjuster.waiter
-        end
+        @waiter.wait
       end
 
       protected
