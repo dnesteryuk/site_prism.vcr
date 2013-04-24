@@ -17,6 +17,13 @@ describe SitePrism::Vcr::FixturesAdjuster do
     end
   end
 
+  describe '#waiter' do
+    it 'should define a new waiter' do
+      subject.waiter :some_waiter
+      subject.waiter.should eq(:some_waiter)
+    end
+  end
+
   describe '#modify_fixtures' do
     before do
       subject.stub(:fixtures).and_return 'some fixtures'

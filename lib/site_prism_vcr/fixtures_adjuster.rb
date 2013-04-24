@@ -14,6 +14,14 @@ module SitePrism
         end
       end
 
+      def waiter(val = nil)
+        if val.nil?
+          @waiter
+        else
+          @waiter = val
+        end
+      end
+
       def replace
         @action = :replace
       end

@@ -26,7 +26,13 @@ describe SitePrism::Vcr::Element do
     subject(:element) { described_class.new(node, parent) }
 
     context 'when a block is defined' do
-      let(:fixtures_adjuster) { double(mymeth: true, modify_fixtures: true) }
+      let(:fixtures_adjuster) do
+        double(
+          mymeth:          true,
+          modify_fixtures: true,
+          waiter:          nil
+        )
+      end
 
       before do
         SitePrism::Vcr::FixturesAdjuster.stub(:new).and_return(fixtures_adjuster)
@@ -44,6 +50,18 @@ describe SitePrism::Vcr::Element do
         fixtures_adjuster.should_receive(:mymeth)
 
         element.click_and_apply_vcr { mymeth }
+      end
+
+      context 'when a waiter is redefined' do
+        before do
+          fixtures_adjuster.stub(:waiter).and_return(:wait_for_items)
+        end
+
+        it 'should use a newly defined waiter' do
+          parent.should_receive(:wait_for_items)
+
+          element.click_and_apply_vcr {}
+        end
       end
 
       it 'should modify fixtures' do
@@ -68,7 +86,7 @@ describe SitePrism::Vcr::Element do
       end
 
       it 'should initialize the fixtures adjuster' do
-        SitePrism::Vcr::FixturesAdjuster..should_not_receive(:new)
+        SitePrism::Vcr::FixturesAdjuster.should_not_receive(:new)
 
         element.click_and_apply_vcr(['some custom fixture'])
       end

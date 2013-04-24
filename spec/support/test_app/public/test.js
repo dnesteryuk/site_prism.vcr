@@ -3,7 +3,7 @@ $(document).ready(function() {
 
   var addResponse2ResDiv = function(data) {
     $result.text($result.text() + data.resp);
-    $(document.body).append($result);
+    $('#console').append($result);
   };
 
   var fetchOctocat = function(fn) {

@@ -13,6 +13,8 @@ module SitePrism
 
       def click_and_apply_vcr(*args, &block)
         if block_given?
+          @adjuster = FixturesAdjuster.new @fixtures_handler
+
           adjust_fixtures &block
         else
           @fixtures_handler.apply *args
@@ -21,16 +23,15 @@ module SitePrism
         self.click
 
         # TODO: apply Null object pattern
-        if @options[:waiter]
-          @parent.public_send @options[:waiter]
+        if @options[:waiter] || (!@adjuster.nil? && @adjuster.waiter)
+          @parent.public_send @options[:waiter] || @adjuster.waiter
         end
       end
 
       protected
         def adjust_fixtures(&block)
-          adjuster = FixturesAdjuster.new @fixtures_handler
-          adjuster.instance_eval &block
-          adjuster.modify_fixtures
+          @adjuster.instance_eval &block
+          @adjuster.modify_fixtures
         end
     end
   end

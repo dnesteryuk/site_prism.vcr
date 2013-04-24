@@ -23,4 +23,18 @@ feature 'Advanced DSL' do
       @test_app_page.result_block.should have_content('Octocus')
     end
   end
+
+  context 'when a waiter should be redefined' do
+    let(:link) { @test_app_page.link_without_waiter }
+
+    before do
+      link.click_and_apply_vcr do
+        waiter :wait_for_octocat
+      end
+    end
+
+    it 'should use a newly defined waiter' do
+      @test_app_page.result_block.should have_content('OctocatMartian')
+    end
+  end
 end
