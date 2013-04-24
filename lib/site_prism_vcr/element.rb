@@ -14,11 +14,7 @@ module SitePrism
 
       def click_and_apply_vcr(*args, &block)
         if block_given?
-          @adjuster = FixturesAdjuster.new @fixtures_handler, @options
-
           adjust_fixtures &block
-
-          @waiter.waiter = @adjuster.waiter
         else
           @fixtures_handler.apply *args
         end
@@ -30,8 +26,11 @@ module SitePrism
 
       protected
         def adjust_fixtures(&block)
-          @adjuster.instance_eval &block
-          @adjuster.modify_fixtures
+          adjuster = FixturesAdjuster.new @fixtures_handler, @options
+          adjuster.instance_eval &block
+          adjuster.modify_fixtures
+
+          @waiter.waiter = adjuster.waiter
         end
     end
   end
