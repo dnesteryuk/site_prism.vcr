@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Dmitriy Nesteryuk']
   spec.email         = ['nesterukd@gmail.com']
   spec.description   = 'This gem integrates VCR library into SitePrism'
-  spec.summary       = 'VCR and SitePrism are awesome libraries. But, it is a bit difficult to work with them without some bridge between them. This gem combines thуse 2 libraries to provide a better way for stubbing external API request which your application is doing. This gem will be very helpful for developers which have an application working with an external API.'
+  spec.summary       = 'VCR and SitePrism are awesome libraries. But, it is a bit difficult to work with them without some bridge between them. This gem combines these 2 libraries to provide a better way for stubbing external API request which your application is doing. This gem will be very helpful for developers which have an application working with an external API.'
   spec.homepage      = 'https://github.com/nestd/site_prism.vcr'
   spec.license       = 'MIT'
 
