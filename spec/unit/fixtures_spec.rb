@@ -22,18 +22,28 @@ describe SitePrism::Vcr::Fixtures do
   end
 
   describe '#replace' do
-    it 'should not change an original object' do
-      fixtures.replace([4, 5])
+    context 'when cassettes are passed' do
+      it 'should not change an original object' do
+        fixtures.replace([4, 5])
 
-      fixtures.should include(1, 2, 3)
-      fixtures.should_not include(4, 5)
+        fixtures.should include(1, 2, 3)
+        fixtures.should_not include(4, 5)
+      end
+
+      it 'should return a new set with fixtures' do
+        new_fixtures = fixtures.replace([4, 5])
+
+        new_fixtures.should include(4, 5)
+        new_fixtures.should_not include(1, 2, 3)
+      end
     end
 
-    it 'should return a new set with fixtures' do
-      new_fixtures = fixtures.replace([4, 5])
+    context 'when no cassettes are passed' do
+      it 'should return itself' do
+        new_fixtures = fixtures.replace([])
 
-      new_fixtures.should include(4, 5)
-      new_fixtures.should_not include(1, 2, 3)
+        new_fixtures.should eq(fixtures)
+      end
     end
   end
 end

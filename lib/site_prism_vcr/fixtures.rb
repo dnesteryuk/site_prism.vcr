@@ -7,7 +7,11 @@ module SitePrism
       end
 
       def replace(vals)
-        self.class.new(vals)
+        if vals.size > 0
+          self.class.new(vals)
+        else
+          self
+        end
       end
     end
   end

@@ -7,17 +7,12 @@ module SitePrism
         @default_fixtures = Fixtures.new(options[:fixtures])
       end
 
-      # TODO: create possibility to exchange fixtures
-      # TODO: take a look at the tests, there are too many
-      # this method should be refactored somehow
       def apply(custom_fixtures = [], behavior = :replace)
         custom_fixtures = [*custom_fixtures]
 
-        @fixtures = if custom_fixtures.size > 0
-          @default_fixtures.public_send(behavior, custom_fixtures)
-        else
-          @default_fixtures
-        end
+        @fixtures = @default_fixtures.public_send(
+          behavior, custom_fixtures
+        )
 
         inject
       end

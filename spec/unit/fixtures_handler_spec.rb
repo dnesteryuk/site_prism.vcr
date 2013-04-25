@@ -12,7 +12,8 @@ describe SitePrism::Vcr::FixturesHandler do
   end
 
   describe '#apply' do
-    let(:fixtures)    { double(map: [], size: 2) }
+    let(:cassettes)   { ['some'] }
+    let(:fixtures)    { double(map: [], size: 2, replace: cassettes) }
     subject(:handler) { described_class.new }
 
     before do
@@ -23,7 +24,7 @@ describe SitePrism::Vcr::FixturesHandler do
     context 'when custom fixtures are passed' do
       context 'when a behavior is not specified' do
         it 'should replace default fixtures with custom fixtures' do
-          fixtures.should_receive(:replace).with(['my custom']).and_return(['some'])
+          fixtures.should_receive(:replace).with(['my custom']).and_return(cassettes)
 
           handler.apply(['my custom'])
         end
@@ -31,7 +32,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
       context 'when behavior is specified' do
         it 'should union default fixtures with custom fixtures' do
-          fixtures.should_receive(:union).with(['my custom']).and_return(['some'])
+          fixtures.should_receive(:union).with(['my custom']).and_return(cassettes)
 
           handler.apply(['my custom'], :union)
         end
@@ -39,7 +40,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
       context 'when a fixture is a defined as a string' do
         it 'should turn it into array' do
-          fixtures.should_receive(:replace).with(['my string']).and_return(['some'])
+          fixtures.should_receive(:replace).with(['my string']).and_return(cassettes)
 
           handler.apply('my string')
         end
@@ -48,7 +49,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
     context 'when no custom fixtures passed' do
       it 'should not add custom fixtures' do
-        fixtures.should_not_receive(:replace)
+        fixtures.should_receive(:replace).with([]).and_return(cassettes)
 
         handler.apply
       end
@@ -57,7 +58,7 @@ describe SitePrism::Vcr::FixturesHandler do
     context 'when there are fixtures' do
       context 'inseting fixtures to VCR' do
         before do
-          fixtures.stub(:map).and_yield('fixture1').and_yield('fixture2')
+          fixtures.stub(:replace).and_return(['fixture1', 'fixture2'])
           VCR.stub(:insert_cassette)
         end
 
@@ -77,7 +78,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
     context 'when there are not any fixtures' do
       before do
-        fixtures.stub(:size).and_return(0)
+        fixtures.stub(:replace).and_return([])
       end
 
       it 'should raise an error' do
