@@ -48,12 +48,12 @@ describe SitePrism::Vcr::Element do
       end
 
       before do
-        SitePrism::Vcr::FixturesAdjuster.stub(:new).and_return(fixtures_adjuster)
+        SitePrism::Vcr::Adjuster.stub(:new).and_return(fixtures_adjuster)
         waiter.stub(:waiter=)
       end
 
       it 'should initialize the fixtures adjuster' do
-        SitePrism::Vcr::FixturesAdjuster.should_receive(:new).with(
+        SitePrism::Vcr::Adjuster.should_receive(:new).with(
           fixtures_handler,
           options
         )
@@ -95,7 +95,7 @@ describe SitePrism::Vcr::Element do
       end
 
       it 'should initialize the fixtures adjuster' do
-        SitePrism::Vcr::FixturesAdjuster.should_not_receive(:new)
+        SitePrism::Vcr::Adjuster.should_not_receive(:new)
 
         element.click_and_apply_vcr(['some custom fixture'])
       end

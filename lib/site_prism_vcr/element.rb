@@ -26,7 +26,7 @@ module SitePrism
 
       protected
         def adjust_fixtures(&block)
-          adjuster = FixturesAdjuster.new @fixtures_handler, @options
+          adjuster = Adjuster.new @fixtures_handler, @options
           adjuster.instance_eval &block
           adjuster.modify_fixtures
 
