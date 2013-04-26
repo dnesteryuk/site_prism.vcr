@@ -51,5 +51,6 @@
     ```
 
 6. Think about removing all fixtures from VCR when fixtures are applied for a click event
-7. Add documentation into Readme file
-8. Add comments to code
+7. Add possibility to use advanced DSL while declaring an element on the class level 
+8. Add documentation into Readme file
+9. Add comments to code
