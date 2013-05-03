@@ -51,6 +51,25 @@
     ```
 
 6. Think about removing all fixtures from VCR when fixtures are applied for a click event
-7. Add possibility to use advanced DSL while declaring an element on the class level 
+7. Add possibility to use advanced DSL while declaring an element on the class level
 8. Add documentation into Readme file
 9. Add comments to code
+10. Add possibility to define a default path to fixtures.
+
+    ```ruby
+    element_with_vcr \
+      :some_link,
+      '#some_link' do
+        home_path 'products'
+      end
+    ```
+
+    and then
+
+    ```ruby
+    self.confirm_btn.vcr do
+      path '~/sold', ['tomato', 'fruit/apple'] # will use a default path
+      path 'products/new', ['tomato', 'fruit/apple'] # will use the path as it is
+    end
+    ```
+

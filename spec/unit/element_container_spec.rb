@@ -8,7 +8,7 @@ class TestPageWithElement
   end
 
   def el_without_options
-    'original container element without options'
+    'original element without options'
   end
 
   def test_el; end
@@ -20,7 +20,7 @@ class TestSectionWithElement < TestPageWithElement
   def parent; end
 
   def el_with_options
-    'original container element with options'
+    'original element with options'
   end
 
   element_with_vcr :el_with_options, '#selector', fixtures: 'some fixtures'
@@ -45,7 +45,7 @@ describe SitePrism::ElementContainer do
 
         it 'initializes a new instance of a vcr element with empty options' do
           SitePrism::Vcr::Element.should_receive(:new).with(
-            'original container element without options', page, {}
+            'original element without options', page, {}
           ).and_return(vcr_el)
 
           subject.should eq(vcr_el)
@@ -62,7 +62,7 @@ describe SitePrism::ElementContainer do
           section.stub(:parent).and_return(parent)
 
           SitePrism::Vcr::Element.should_receive(:new).with(
-            'original container element with options', parent, fixtures: 'some fixtures'
+            kind_of(String), parent, fixtures: 'some fixtures'
           ).and_return(vcr_el)
 
           subject.should eq(vcr_el)

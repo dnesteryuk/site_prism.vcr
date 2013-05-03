@@ -1,8 +1,8 @@
 require 'spec_integration_helper'
 
-feature 'Standard DSL' do
+feature 'Simple DSL' do
   before do
-    @test_app_page = TestAppPage.new
+    @test_app_page = SimpleDslPage.new
     @test_app_page.load
   end
 
@@ -10,15 +10,7 @@ feature 'Standard DSL' do
     eject_fixtures
   end
 
-  context 'when an user clicks on the link which does an AJAX request' do
-    before do
-      @test_app_page.link_with_one_request.click_and_apply_vcr
-    end
-
-    it 'should apply a fixture' do
-      @test_app_page.result_block.should have_content('Octocat')
-    end
-  end
+  it_behaves_like 'clicks and handles one AJAX request'
 
   context 'when a custom cassette is applied' do
     let(:link) { @test_app_page.link_with_one_request }

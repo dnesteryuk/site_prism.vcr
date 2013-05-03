@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe SitePrism::Vcr::Adjuster do
   let(:fixtures_handler) { double }
+  let(:options)          { double(waiter: :default_waiter) }
 
-  subject { described_class.new fixtures_handler, waiter: :default_waiter }
+  subject { described_class.new fixtures_handler, options}
 
   describe '#path' do
     it 'should add fixtures into container' do

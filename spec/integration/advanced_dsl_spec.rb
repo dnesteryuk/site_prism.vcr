@@ -2,13 +2,15 @@ require 'spec_integration_helper'
 
 feature 'Advanced DSL' do
   before do
-    @test_app_page = TestAppPage.new
+    @test_app_page = AdvancedDslPage.new
     @test_app_page.load
   end
 
   after do
     eject_fixtures
   end
+
+  it_behaves_like 'clicks and handles one AJAX request'
 
   context 'when a custom cassette is applied' do
     let(:link) { @test_app_page.link_with_one_request }

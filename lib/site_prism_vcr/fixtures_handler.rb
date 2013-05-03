@@ -1,10 +1,12 @@
 module SitePrism
   module Vcr
     class FixturesHandler
-      def initialize(options = {})
+      def initialize(options)
         @options = options
 
-        @default_fixtures = Fixtures.new(options[:fixtures])
+        # Assigns default cassettes which will be used if no custom are passed
+        # while applying them.
+        @default_fixtures = Fixtures.new(@options.fixtures)
       end
 
       def apply(custom_fixtures = [], behavior = :replace)

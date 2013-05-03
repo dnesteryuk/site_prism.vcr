@@ -3,8 +3,8 @@ module SitePrism
     class Waiter
       attr_accessor :waiter
 
-      def initialize(node, options = {})
-        @node, @waiter = node, options[:waiter]
+      def initialize(node, options)
+        @node, @waiter = node, options.waiter
       end
 
       def wait

@@ -4,9 +4,9 @@ module SitePrism
     class Adjuster
       attr_reader :fixtures
 
-      def initialize(fixtures_handler, options = {})
+      def initialize(fixtures_handler, options)
         @fixtures_handler, @fixtures = fixtures_handler, []
-        @action, @waiter = :replace, options[:waiter]
+        @action, @waiter = :replace, options.waiter
       end
 
       def path(path, fixture_names)

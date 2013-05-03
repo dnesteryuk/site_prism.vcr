@@ -1,5 +1,5 @@
 module SitePrism::ElementContainer
-  def element_with_vcr(element_name, selector, *args)
+  def element_with_vcr(element_name, selector, *args, &block)
     options = args.delete_at(-1) || {}
 
     element element_name, selector
@@ -17,7 +17,7 @@ module SitePrism::ElementContainer
         self
       end
 
-      SitePrism::Vcr::Element.new(elem, parent, options)
+      SitePrism::Vcr::Element.new(elem, parent, options, &block)
     end
   end
 end

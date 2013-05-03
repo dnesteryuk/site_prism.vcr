@@ -1,21 +1,51 @@
 require 'spec_helper'
 
 describe SitePrism::Vcr::Element do
+  let(:options)          { double }
   let(:fixtures_handler) { double(apply: true) }
   let(:waiter)           { double(wait: true) }
   let(:node)             { stub }
   let(:parent)           { double }
 
   before do
+    SitePrism::Vcr::Options.stub(:new).and_return(options)
     SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
     SitePrism::Vcr::Waiter.stub(:new).and_return(waiter)
   end
 
   describe '#new' do
-    let(:options) { 'some options' }
-    subject { described_class.new(node, parent, options) }
+    let(:raw_options) { 'some options' }
+    subject { described_class.new(node, parent, raw_options) }
 
-    it 'should initialize the fixtures handler' do
+    it 'initializes the options handler' do
+      SitePrism::Vcr::Options.should_receive(:new).with(raw_options)
+
+      subject
+    end
+
+    context 'when a block is passed' do
+      let(:adjuster) { double }
+
+      before do
+        SitePrism::Vcr::InitialAdjuster.stub(:new).and_return(adjuster)
+      end
+
+      it 'initializes the initial adjuster' do
+        SitePrism::Vcr::InitialAdjuster.should_receive(:new).with(
+          options
+        )
+
+        described_class.new(node, parent, raw_options) {}
+      end
+
+      it 'calls a given block within fixtures adjuster context' do
+        adjuster.should_receive(:mymeth)
+
+        described_class.new(node, parent, raw_options) { mymeth }
+      end
+    end
+
+    it 'initializes the fixtures handler' do
       SitePrism::Vcr::FixturesHandler.should_receive(:new).with(
         options
       ).and_return(fixtures_handler)
@@ -23,7 +53,7 @@ describe SitePrism::Vcr::Element do
       subject
     end
 
-    it 'should initialize the waiter' do
+    it 'initializes the waiter' do
       SitePrism::Vcr::Waiter.should_receive(:new).with(
         parent,
         options
@@ -52,7 +82,7 @@ describe SitePrism::Vcr::Element do
         waiter.stub(:waiter=)
       end
 
-      it 'should initialize the fixtures adjuster' do
+      it 'initializes the fixtures adjuster' do
         SitePrism::Vcr::Adjuster.should_receive(:new).with(
           fixtures_handler,
           options
@@ -61,7 +91,7 @@ describe SitePrism::Vcr::Element do
         element.click_and_apply_vcr { }
       end
 
-      it 'should call a given block within fixtures adjuster context' do
+      it 'calls a given block within fixtures adjuster context' do
         fixtures_adjuster.should_receive(:mymeth)
 
         element.click_and_apply_vcr { mymeth }
@@ -94,7 +124,7 @@ describe SitePrism::Vcr::Element do
         element.click_and_apply_vcr(['some custom fixture'], :replace)
       end
 
-      it 'should initialize the fixtures adjuster' do
+      it 'the fixtures adjuster is not initialized' do
         SitePrism::Vcr::Adjuster.should_not_receive(:new)
 
         element.click_and_apply_vcr(['some custom fixture'])

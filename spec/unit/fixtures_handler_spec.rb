@@ -6,15 +6,16 @@ describe SitePrism::Vcr::FixturesHandler do
       SitePrism::Vcr::Fixtures.should_receive(:new).with(['some fixture'])
 
       described_class.new(
-        fixtures: ['some fixture']
+        stub(fixtures: ['some fixture'])
       )
     end
   end
 
   describe '#apply' do
+    let(:options)     { double(fixtures: true) }
     let(:cassettes)   { ['some'] }
     let(:fixtures)    { double(map: [], size: 2, replace: cassettes) }
-    subject(:handler) { described_class.new }
+    subject(:handler) { described_class.new(options) }
 
     before do
       SitePrism::Vcr::Fixtures.stub(:new).and_return(fixtures)
