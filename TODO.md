@@ -51,10 +51,9 @@
     ```
 
 6. Think about removing all fixtures from VCR when fixtures are applied for a click event
-7. Add possibility to use advanced DSL while declaring an element on the class level
-8. Add documentation into Readme file
-9. Add comments to code
-10. Add possibility to define a default path to fixtures.
+7. Add documentation into Readme file
+8. Add comments to code
+9. Add possibility to define a default path to fixtures.
 
     ```ruby
     element_with_vcr \
@@ -72,4 +71,5 @@
       path 'products/new', ['tomato', 'fruit/apple'] # will use the path as it is
     end
     ```
+10. Add possibility to exchange fixtures while using advanced DSL
 
