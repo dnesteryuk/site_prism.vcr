@@ -2,17 +2,11 @@
 module SitePrism
   module Vcr
     class Adjuster
-      attr_reader :fixtures
+      include SitePrism::Vcr::PathCombiner
 
       def initialize(fixtures_handler, options)
-        @fixtures_handler, @fixtures = fixtures_handler, []
-        @action, @waiter = :replace, options.waiter
-      end
-
-      def path(path, fixture_names)
-        fixture_names.map do |name|
-          @fixtures << "#{path}/#{name}"
-        end
+        @fixtures_handler = fixtures_handler
+        @action, @waiter  = :replace, options.waiter
       end
 
       def waiter(val = nil)

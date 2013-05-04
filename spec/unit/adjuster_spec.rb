@@ -6,18 +6,6 @@ describe SitePrism::Vcr::Adjuster do
 
   subject { described_class.new fixtures_handler, options}
 
-  describe '#path' do
-    it 'should add fixtures into container' do
-      subject.path 'some/path', ['test_fixture1', 'test_fixture2']
-      subject.path 'new/path',  ['test_fixture']
-
-      subject.fixtures.should eq([
-        'some/path/test_fixture1', 'some/path/test_fixture2',
-        'new/path/test_fixture'
-      ])
-    end
-  end
-
   describe '#waiter' do
     it 'should define a new waiter' do
       subject.waiter :some_waiter

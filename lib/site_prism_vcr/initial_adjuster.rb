@@ -1,6 +1,8 @@
 module SitePrism
   module Vcr
     class InitialAdjuster
+      include SitePrism::Vcr::PathCombiner
+
       def initialize(options)
         @options = options
       end
