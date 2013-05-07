@@ -11,6 +11,10 @@ module SitePrism
         @options.fixtures = val
       end
 
+      def home_path(val)
+        @options.home_path = val
+      end
+
       # TODO: this method is almost the same with the previous one
       # think about refactoring it
       def waiter(val)

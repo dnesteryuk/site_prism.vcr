@@ -35,8 +35,24 @@ feature 'Advanced DSL' do
       end
     end
 
-    it 'should use a newly defined waiter' do
+    it 'uses a newly defined waiter' do
       @test_app_page.result_block.should have_content('OctocatMartian')
+    end
+  end
+
+  context 'when a home path is defined' do
+    let(:link) { @test_app_page.link_with_home_path }
+
+    context 'when no custom fixture is applied' do
+      it 'applies a fixture considering the defined home path' do
+        link.click_and_apply_vcr
+
+        @test_app_page.result_block.should have_content('Octocus')
+      end
+    end
+
+    context 'when custom fixture is applied' do
+      it 'applies a custom fixture considering the defined home path'
     end
   end
 end

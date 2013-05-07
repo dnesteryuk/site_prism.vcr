@@ -19,7 +19,7 @@ feature 'Simple DSL' do
       link.click_and_apply_vcr(['custom/octocus'])
     end
 
-    it 'should use a custom cassette instead of a default one for this element' do
+    it 'uses a custom cassette instead of a default one for this element' do
       @test_app_page.result_block.should have_content('Octocus')
     end
 
@@ -28,7 +28,7 @@ feature 'Simple DSL' do
         eject_fixtures
       end
 
-      it 'should use a default fixture again' do
+      it 'uses a default fixture again' do
         link.click_and_apply_vcr
 
         @test_app_page.result_block.should have_content('Octocat')
@@ -41,7 +41,7 @@ feature 'Simple DSL' do
       @test_app_page.link_with_one_request_and_delay.click_and_apply_vcr
     end
 
-    it 'should apply a fixture' do
+    it 'applies a fixture' do
       @test_app_page.result_block.should have_content('Octocat')
     end
   end
@@ -51,7 +51,7 @@ feature 'Simple DSL' do
       @test_app_page.link_with_2_requests.click_and_apply_vcr
     end
 
-    it 'should apply 2 fixtures' do
+    it 'applies 2 fixtures' do
       @test_app_page.result_block.should have_content('Octocat')
       @test_app_page.result_block.should have_content('Martian')
     end

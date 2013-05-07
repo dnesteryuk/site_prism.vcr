@@ -15,6 +15,16 @@ describe SitePrism::Vcr::InitialAdjuster do
     end
   end
 
+  describe '#home_path' do
+    let(:raw_home_path) { 'some home path' }
+
+    it 'defines a default home path' do
+      options.should_receive(:home_path=).with(raw_home_path)
+
+      subject.home_path(raw_home_path)
+    end
+  end
+
   describe '#waiter' do
     let(:raw_waiter) { 'some waiter' }
 

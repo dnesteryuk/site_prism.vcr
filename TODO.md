@@ -72,4 +72,11 @@
     end
     ```
 10. Add possibility to exchange fixtures while using advanced DSL
+11. Think about adding more integration tests
+12. Think about this case
 
+    ```ruby
+    self.confirm_btn.click_and_apply_vcr do
+      path 'some/path', ['test', '~/test2']
+    end
+    ```
