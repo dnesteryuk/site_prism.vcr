@@ -1,6 +1,12 @@
 require 'spec_integration_helper'
 
 feature 'Advanced DSL' do
+  shared_examples 'expecting the custom fixtures on the page' do
+    it 'applies a custom fixture considering the defined home path' do
+      @test_app_page.result_block.should have_content('Totoro')
+    end
+  end
+
   before do
     @test_app_page = AdvancedDslPage.new
     @test_app_page.load
@@ -51,8 +57,24 @@ feature 'Advanced DSL' do
       end
     end
 
-    context 'when custom fixture is applied' do
-      it 'applies a custom fixture considering the defined home path'
+    context 'when a custom fixture is applied' do
+      before do
+        link.click_and_apply_vcr do
+          fixtures ['~/totoro']
+        end
+      end
+
+      it_behaves_like 'expecting the custom fixtures on the page'
+    end
+
+    context 'when a home path is used while defining fixtures within some path' do
+      before do
+        link.click_and_apply_vcr do
+          path '~/', ['totoro']
+        end
+      end
+
+      it_behaves_like 'expecting the custom fixtures on the page'
     end
   end
 end

@@ -20,6 +20,7 @@ module SitePrism
       end
 
       def click_and_apply_vcr(*args, &block)
+        # TODO: think about refactoring this code to use adjuster in both cases
         if block_given?
           adjust_fixtures &block
         else
@@ -33,10 +34,15 @@ module SitePrism
 
       protected
         def adjust_fixtures(&block)
-          adjuster = Adjuster.new(@fixtures_handler, @options)
+          adjuster = Adjuster.new(
+            @options.dup_without_fixtures,
+            @fixtures_handler
+          )
+
           adjuster.instance_eval &block
           adjuster.modify_fixtures
 
+          # TODO: it rewrites a default waiter, it means a bug may occur
           @waiter.waiter = adjuster.waiter
         end
     end

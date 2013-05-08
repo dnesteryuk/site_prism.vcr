@@ -8,8 +8,8 @@ describe SitePrism::Vcr::InitialAdjuster do
   describe '#fixtures' do
     let(:raw_fixtures) { 'some fixtures' }
 
-    it 'defines a default fixtures' do
-      options.should_receive(:fixtures=).with(raw_fixtures)
+    it 'adds fixtures' do
+      options.should_receive(:add_fixtures).with(raw_fixtures)
 
       subject.fixtures(raw_fixtures)
     end
@@ -22,6 +22,16 @@ describe SitePrism::Vcr::InitialAdjuster do
       options.should_receive(:home_path=).with(raw_home_path)
 
       subject.home_path(raw_home_path)
+    end
+  end
+
+  describe '#path' do
+    it 'adds fixtures into container' do
+      options.should_receive(:add_fixtures).with([
+        'some/path/test_fixture1', 'some/path/test_fixture2'
+      ])
+
+      subject.path 'some/path', ['test_fixture1', 'test_fixture2']
     end
   end
 

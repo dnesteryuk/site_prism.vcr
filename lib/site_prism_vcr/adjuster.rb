@@ -1,12 +1,10 @@
 # TODO: create possibility to exchange fixtures
 module SitePrism
   module Vcr
-    class Adjuster
-      include SitePrism::Vcr::PathCombiner
-
-      def initialize(fixtures_handler, options)
-        @fixtures_handler = fixtures_handler
-        @action, @waiter  = :replace, options.waiter
+    class Adjuster < InitialAdjuster
+      def initialize(options, fixtures_handler)
+        @options, @fixtures_handler = options, fixtures_handler
+        @action, @waiter = :replace, options.waiter
       end
 
       def waiter(val = nil)
@@ -26,7 +24,7 @@ module SitePrism
       end
 
       def modify_fixtures
-        @fixtures_handler.apply(fixtures, @action)
+        @fixtures_handler.apply(@options.fixtures, @action)
       end
     end
   end

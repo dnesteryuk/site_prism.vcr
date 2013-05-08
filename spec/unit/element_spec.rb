@@ -64,9 +64,10 @@ describe SitePrism::Vcr::Element do
   end
 
   describe '#click_and_apply_vcr' do
-    let(:node)        { double(click: true) }
-    let(:options)     { 'some options' }
-    subject(:element) { described_class.new(node, parent, options) }
+    let(:node)           { double(click: true) }
+    let(:cloned_options) { 'cloned options' }
+    let(:options)        { double(dup_without_fixtures: cloned_options) }
+    subject(:element)    { described_class.new(node, parent, options) }
 
     context 'when a block is defined' do
       let(:fixtures_adjuster) do
@@ -82,10 +83,10 @@ describe SitePrism::Vcr::Element do
         waiter.stub(:waiter=)
       end
 
-      it 'initializes the fixtures adjuster' do
+      it 'initializes the fixtures adjuster with a new instance of options' do
         SitePrism::Vcr::Adjuster.should_receive(:new).with(
-          fixtures_handler,
-          options
+          cloned_options,
+          fixtures_handler
         )
 
         element.click_and_apply_vcr { }
@@ -116,7 +117,7 @@ describe SitePrism::Vcr::Element do
     end
 
     context 'when a block is not defined' do
-      it 'should apply fixtures' do
+      it 'applies fixtures' do
         fixtures_handler.should_receive(:apply).with(
           ['some custom fixture'], :replace
         )

@@ -80,3 +80,5 @@
       path 'some/path', ['test', '~/test2']
     end
     ```
+13. Fix the issue with rewriting defaulg waiters while applying a custom waiter
+14. Make sure there is an integration test to make sure the path and fixtures are used together while describing an element with vcr

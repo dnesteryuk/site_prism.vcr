@@ -86,10 +86,40 @@ describe SitePrism::Vcr::Options do
 
     context 'when the home_path is not defined' do
       it 'raises an argument error about wrong way of defining fixtures' do
+        msg = 'You are trying to use a home path for these: ~/test, ~/custom/test fixtures. ' \
+          'They cannot be used since the home_path is not defined, please refer to the documentation ' \
+          'to make sure you define the home path properly.'
+
         expect { options.fixtures }.to raise_error(
-          ArgumentError, 'You are trying to use a home path for these: ~/test, ~/custom/test fixtures. They cannot be used since the home_path is not defined, please refer to the documentation to make sure you define the home path properly.'
+          ArgumentError, msg
         )
       end
+    end
+  end
+
+  describe '#dup_without_fixtures' do
+    before do
+      options.fixtures = ['some fixtures']
+    end
+
+    it 'returns a new instance of options without fixtures' do
+      cloned_options = options.dup_without_fixtures
+
+      cloned_options.object_id.should_not eq(options.object_id)
+      cloned_options.fixtures.should eq([])
+    end
+  end
+
+  describe '#add_fixtures' do
+    let(:fixtures) { ['some fixtures'] }
+
+    before do
+      options.fixtures = fixtures
+    end
+
+    it 'adds new fixtures' do
+      options.add_fixtures(['new fixture'])
+      fixtures.should eq(['some fixtures', 'new fixture'])
     end
   end
 end
