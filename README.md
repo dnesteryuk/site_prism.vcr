@@ -70,7 +70,7 @@ class ProductsPage < SitePrism::Page
 end    
 ```
 
-The *path* helper can be used a few times in the block to define cassettes. The code above is identical to:
+The `path` helper method can be used a few times in the block to define cassettes. The code above is identical to:
 
 ```ruby
 class ProductsPage < SitePrism::Page
