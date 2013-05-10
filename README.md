@@ -1,6 +1,7 @@
 # SitePrism.Vcr
 
 [![Code Climate](https://codeclimate.com/github/nestd/site_prism.vcr.png)](https://codeclimate.com/github/nestd/site_prism.vcr)
+[![Build Status](https://secure.travis-ci.org/nestd/site_prism.vcr.png?branch=master)](https://travis-ci.org/nestd/site_prism.vcr)
 
 The purpose of this gem is to give an easy way for integrating [SitePrism](https://github.com/natritmeyer/site_prism) (it is Page Object Model DSL for Capybara) and [VCR](https://github.com/vcr/vcr) (it is a powerful tool for recording and stubbing HTTP interactions).
 
