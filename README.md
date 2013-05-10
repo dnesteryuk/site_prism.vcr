@@ -58,7 +58,7 @@ end
 In case you have a lot of cassettes which are stored in some subdirectory, there is a more better way for defining fixtures:
 
 ```ruby
-class ProductsPage < BasePage
+class ProductsPage < SitePrism::Page
   element_with_vcr \
     :car_details_link,
     '#car_details' do
@@ -90,7 +90,7 @@ As you can see by using a block you can define fixtures much more easily and it 
 Also, there is a possibility to define a home path for fixtures which are applied for a particular element:
 
 ```ruby
-class ProductsPage < BasePage
+class ProductsPage < SitePrism::Page
   element_with_vcr \
     :car_details_link,
     '#car_details' do
