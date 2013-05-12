@@ -34,11 +34,16 @@ module SitePrism
         end
 
         adjuster.instance_eval &block
-        adjuster.modify_fixtures
+        adjuster.apply_fixtures
 
         self.click
 
-        @waiter = Waiter.new(@parent, options)
+        @waiter = Waiter.new(
+          @parent,
+          @fixtures_handler,
+          options
+        )
+
         @waiter.wait
       end
     end

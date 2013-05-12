@@ -19,7 +19,7 @@ module SitePrism
         @action = :union
       end
 
-      def modify_fixtures
+      def apply_fixtures
         @fixtures_handler.apply(@options.fixtures, @action)
       end
     end

@@ -12,10 +12,6 @@ feature 'Advanced DSL' do
     @test_app_page.load
   end
 
-  after do
-    eject_fixtures
-  end
-
   it_behaves_like 'clicks and handles one AJAX request'
 
   context 'when a custom cassette is applied' do
@@ -32,7 +28,8 @@ feature 'Advanced DSL' do
     end
   end
 
-  context 'when a waiter should be redefined', waiter: true do
+  # TODO: this group of tests is very slow, investigate why
+  context 'when a waiter should be redefined' do
     let(:link)         { @test_app_page.link_with_2_requests }
     let(:result_block) { @test_app_page.result_block }
 

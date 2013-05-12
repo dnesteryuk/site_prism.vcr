@@ -19,6 +19,13 @@ module SitePrism
         inject
       end
 
+      # TODO: the way to eject only fixtures which were inserted
+      # by a particular handler
+      def eject
+        while VCR.eject_cassette
+        end
+      end
+
       private
         def inject
           raise ArgumentError.new(

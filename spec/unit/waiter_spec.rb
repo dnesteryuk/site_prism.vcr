@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe SitePrism::Vcr::Waiter do
-  let(:node)       { double }
-  let(:options)    { double(waiter: :wait_for_me) }
-  subject(:waiter) { described_class.new(node, options) }
+  let(:node)             { double }
+  let(:options)          { double(waiter: :wait_for_me) }
+  let(:fixtures_handler) { double(eject: true) }
+  subject(:waiter)       { described_class.new(node, fixtures_handler, options) }
 
   describe '#wait' do
     context 'when a waiter is defined' do
@@ -11,6 +12,22 @@ describe SitePrism::Vcr::Waiter do
 
       it 'calls the waiter to wait until all HTTP interactions are finished' do
         node.should_receive(:wait_for_me)
+
+        waiter.wait
+      end
+
+      it 'ejects fixtures' do
+        fixtures_handler.should_receive(:eject)
+
+        waiter.wait
+      end
+    end
+
+    context 'when a waiter is not defined' do
+      let(:options) { double(waiter: nil) }
+
+      it 'the fixtures handler does not eject fixtures' do
+        fixtures_handler.should_not_receive(:eject)
 
         waiter.wait
       end

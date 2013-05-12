@@ -15,14 +15,14 @@ describe SitePrism::Vcr::Adjuster do
     end
   end
 
-  describe '#modify_fixtures' do
+  describe '#apply_fixtures' do
     context 'when an action is defined' do
       it 'unions fixtures' do
         subject.union
 
         fixtures_handler.should_receive(:apply).with(fixtures, :union)
 
-        subject.modify_fixtures
+        subject.apply_fixtures
       end
 
       it 'replaces fixtures' do
@@ -30,7 +30,7 @@ describe SitePrism::Vcr::Adjuster do
 
         fixtures_handler.should_receive(:apply).with(fixtures, :replace)
 
-        subject.modify_fixtures
+        subject.apply_fixtures
       end
     end
 
@@ -38,7 +38,7 @@ describe SitePrism::Vcr::Adjuster do
       it 'replaces fixtures by default' do
         fixtures_handler.should_receive(:apply).with(fixtures, :replace)
 
-        subject.modify_fixtures
+        subject.apply_fixtures
       end
     end
   end

@@ -63,7 +63,7 @@ describe SitePrism::Vcr::Element do
         mymeth:          true,
         replace:         true,
         fixtures:        true,
-        modify_fixtures: true
+        apply_fixtures:  true
       )
     end
 
@@ -112,7 +112,7 @@ describe SitePrism::Vcr::Element do
     end
 
     it 'applies fixtures' do
-      adjuster.should_receive(:modify_fixtures)
+      adjuster.should_receive(:apply_fixtures)
 
       element.click_and_apply_vcr
     end
@@ -120,6 +120,7 @@ describe SitePrism::Vcr::Element do
     it 'initializes the waiter' do
       SitePrism::Vcr::Waiter.should_receive(:new).with(
         parent,
+        fixtures_handler,
         cloned_options
       ).and_return(waiter)
 
@@ -132,7 +133,7 @@ describe SitePrism::Vcr::Element do
       element.click_and_apply_vcr
     end
 
-    it 'should wait until HTTP interaction is finished' do
+    it 'should wait until all HTTP interactions are finished' do
       waiter.should_receive(:wait)
 
       element.click_and_apply_vcr

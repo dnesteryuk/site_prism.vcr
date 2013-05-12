@@ -6,10 +6,6 @@ feature 'Simple DSL' do
     @test_app_page.load
   end
 
-  after do
-    eject_fixtures
-  end
-
   it_behaves_like 'clicks and handles one AJAX request'
 
   context 'when a custom cassette is applied' do
@@ -24,10 +20,6 @@ feature 'Simple DSL' do
     end
 
     context 'when a click is used again without specifying a custom fixture' do
-      before do
-        eject_fixtures
-      end
-
       it 'uses a default fixture again' do
         link.click_and_apply_vcr
 
