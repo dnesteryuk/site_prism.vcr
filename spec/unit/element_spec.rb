@@ -3,7 +3,6 @@ require 'spec_helper'
 describe SitePrism::Vcr::Element do
   let(:options)          { double }
   let(:fixtures_handler) { double(apply: true) }
-  let(:waiter)           { double(wait: true) }
   let(:node)             { stub }
   let(:parent)           { double }
 
@@ -58,6 +57,7 @@ describe SitePrism::Vcr::Element do
     let(:node)           { double(click: true) }
     let(:cloned_options) { 'cloned options' }
     let(:options)        { double(dup_without_fixtures: cloned_options) }
+    let(:waiter)         { double(wait: true) }
 
     let(:adjuster) do
       double(
@@ -72,6 +72,7 @@ describe SitePrism::Vcr::Element do
 
     before do
       SitePrism::Vcr::Adjuster.stub(:new).and_return(adjuster)
+      SitePrism::Vcr::Waiter.stub(:new).with(waiter)
     end
 
     it 'initializes the fixtures adjuster with a new instance of options' do
@@ -132,7 +133,7 @@ describe SitePrism::Vcr::Element do
       element.click_and_apply_vcr
     end
 
-    it 'should wait until AJAX requests finish' do
+    it 'should wait until HTTP interaction is finished' do
       waiter.should_receive(:wait)
 
       element.click_and_apply_vcr
