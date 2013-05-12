@@ -1,8 +1,6 @@
 # TODO
 
-1. Add possibility to define a fixture without path while using advanced DSL
-
-2. Create possibility to define a waiter:
+1. Create possibility to define a waiter with a block:
 
     ```ruby
     element_with_vcr \
@@ -12,7 +10,7 @@
       waiter:   { self.wait_until_loading_indicator_invisible and self.wait_for_products }
     ```
 
-3. Create possibility to redefine waiter when a click action is done:
+2. Create possibility to redefine waiter with a block when a click action is done:
 
     ```ruby
     self.confirm_btn.click_and_apply_vcr do
@@ -20,7 +18,7 @@
     end
     ```
 
-4. Create possibility to define fixtures without the click action:
+3. Create possibility to define fixtures without the click action:
 
     ```ruby
     self.confirm_btn.vcr do
@@ -39,7 +37,7 @@
 
   will use previusly defined fixtures
 
-5. There should be possibility to change default fixtures:
+4. There should be possibility to change default fixtures:
 
     ```ruby
     self.confirm_btn.vcr do
@@ -50,35 +48,17 @@
     end
     ```
 
-6. Think about removing all fixtures from VCR when fixtures are applied for a click event
-7. Add documentation into Readme file
-8. Add comments to code
-9. Add possibility to define a default path to fixtures.
-
-    ```ruby
-    element_with_vcr \
-      :some_link,
-      '#some_link' do
-        home_path 'products'
-      end
-    ```
-
-    and then
-
-    ```ruby
-    self.confirm_btn.vcr do
-      path '~/sold', ['tomato', 'fruit/apple'] # will use a default path
-      path 'products/new', ['tomato', 'fruit/apple'] # will use the path as it is
-    end
-    ```
-10. Add possibility to exchange fixtures while using advanced DSL
-11. Think about adding more integration tests
-12. Think about this case
+5. Think about removing all fixtures from VCR when fixtures are applied for a click event
+6. Add documentation into Readme file about waiters
+7. Add comments to code
+9. Add possibility to exchange fixtures while using advanced DSL
+10. Think about adding more integration tests
+11. Think about this case
 
     ```ruby
     self.confirm_btn.click_and_apply_vcr do
       path 'some/path', ['test', '~/test2']
     end
     ```
-13. Fix the issue with rewriting defaulg waiters while applying a custom waiter
-14. Make sure there is an integration test to make sure the path and fixtures are used together while describing an element with vcr
+12. Fix the issue with rewriting default waiters while applying a custom waiter
+13. Make sure there is an integration test to make sure the path and fixtures are used together while describing an element with vcr
