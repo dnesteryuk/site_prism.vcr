@@ -60,5 +60,12 @@
       path 'some/path', ['test', '~/test2']
     end
     ```
-12. Fix the issue with rewriting default waiters while applying a custom waiter
-13. Make sure there is an integration test to make sure the path and fixtures are used together while describing an element with vcr
+12. Make sure there is an integration test to make sure the path and fixtures are used together while describing an element with vcr
+13. Think about this case:
+
+    ```ruby
+    self.confirm_btn.click_and_apply_vcr(['custom/fixtures']) do
+      path 'some/path', ['test', '~/test2']
+    end
+    ```
+14. Make this gem working on JRuby and Ruby 2.0.0

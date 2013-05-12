@@ -4,15 +4,11 @@ module SitePrism
     class Adjuster < InitialAdjuster
       def initialize(options, fixtures_handler)
         @options, @fixtures_handler = options, fixtures_handler
-        @action, @waiter = :replace, options.waiter
+        @action, @waiter_method = :replace, options.waiter
       end
 
-      def waiter(val = nil)
-        if val.nil?
-          @waiter
-        else
-          @waiter = val
-        end
+      def waiter(waiter_method)
+        @options.waiter = waiter_method
       end
 
       def replace

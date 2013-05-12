@@ -16,35 +16,31 @@ module SitePrism
         end
 
         @fixtures_handler = FixturesHandler.new(@options)
-        @waiter           = Waiter.new(parent, @options)
       end
 
-      def click_and_apply_vcr(*args, &block)
-        # TODO: think about refactoring this code to use adjuster in both cases
-        if block_given?
-          adjust_fixtures &block
-        else
-          @fixtures_handler.apply *args
+      def click_and_apply_vcr(custom_fixtures = [], action = :replace, &block)
+        options = @options.dup_without_fixtures
+
+        adjuster = Adjuster.new(
+          options,
+          @fixtures_handler
+        )
+
+        unless block_given?
+          block = lambda do |*|
+            fixtures custom_fixtures
+            public_send(action)
+          end
         end
+
+        adjuster.instance_eval &block
+        adjuster.modify_fixtures
 
         self.click
 
+        @waiter = Waiter.new(@parent, options)
         @waiter.wait
       end
-
-      protected
-        def adjust_fixtures(&block)
-          adjuster = Adjuster.new(
-            @options.dup_without_fixtures,
-            @fixtures_handler
-          )
-
-          adjuster.instance_eval &block
-          adjuster.modify_fixtures
-
-          # TODO: it rewrites a default waiter, it means a bug may occur
-          @waiter.waiter = adjuster.waiter
-        end
     end
   end
 end

@@ -32,17 +32,28 @@ feature 'Advanced DSL' do
     end
   end
 
-  context 'when a waiter should be redefined' do
-    let(:link) { @test_app_page.link_without_waiter }
+  context 'when a waiter should be redefined', waiter: true do
+    let(:link)         { @test_app_page.link_with_2_requests }
+    let(:result_block) { @test_app_page.result_block }
 
     before do
       link.click_and_apply_vcr do
-        waiter :wait_for_octocat
+        fixtures ['octocat', 'martian']
+
+        waiter :wait_for_octocat_and_martian
       end
     end
 
     it 'uses a newly defined waiter' do
-      @test_app_page.result_block.should have_content('OctocatMartian')
+      result_block.should have_content('Octocat')
+      result_block.should have_content('Martian')
+    end
+
+    it 'uses a default waiter after using the custom waiter' do
+      link.click_and_apply_vcr
+
+      result_block.should have_content('Tom')
+      result_block.should have_content('Zeus ')
     end
   end
 

@@ -52,84 +52,78 @@ describe SitePrism::Vcr::Element do
 
       subject
     end
-
-    it 'initializes the waiter' do
-      SitePrism::Vcr::Waiter.should_receive(:new).with(
-        parent,
-        options
-      ).and_return(waiter)
-
-      subject
-    end
   end
 
   describe '#click_and_apply_vcr' do
     let(:node)           { double(click: true) }
     let(:cloned_options) { 'cloned options' }
     let(:options)        { double(dup_without_fixtures: cloned_options) }
-    subject(:element)    { described_class.new(node, parent, options) }
+
+    let(:adjuster) do
+      double(
+        mymeth:          true,
+        replace:         true,
+        fixtures:        true,
+        modify_fixtures: true
+      )
+    end
+
+    subject(:element) { described_class.new(node, parent, options) }
+
+    before do
+      SitePrism::Vcr::Adjuster.stub(:new).and_return(adjuster)
+    end
+
+    it 'initializes the fixtures adjuster with a new instance of options' do
+      SitePrism::Vcr::Adjuster.should_receive(:new).with(
+        cloned_options,
+        fixtures_handler
+      )
+
+      element.click_and_apply_vcr
+    end
 
     context 'when a block is defined' do
-      let(:fixtures_adjuster) do
-        double(
-          mymeth:          true,
-          modify_fixtures: true,
-          waiter:          :wait_for_items
-        )
-      end
-
-      before do
-        SitePrism::Vcr::Adjuster.stub(:new).and_return(fixtures_adjuster)
-        waiter.stub(:waiter=)
-      end
-
-      it 'initializes the fixtures adjuster with a new instance of options' do
-        SitePrism::Vcr::Adjuster.should_receive(:new).with(
-          cloned_options,
-          fixtures_handler
-        )
-
-        element.click_and_apply_vcr { }
-      end
-
-      it 'calls a given block within fixtures adjuster context' do
-        fixtures_adjuster.should_receive(:mymeth)
+      it 'calls a given block within the context of the adjuster' do
+        adjuster.should_receive(:mymeth)
 
         element.click_and_apply_vcr { mymeth }
-      end
-
-      it 'should define a new waiter method' do
-        waiter.should_receive(:waiter=).with(:wait_for_items)
-
-        element.click_and_apply_vcr { }
-      end
-
-      it 'should modify fixtures' do
-        fixtures_adjuster.should_receive(:modify_fixtures)
-        element.click_and_apply_vcr { }
-      end
-
-      it 'should not touch the fixtures handler' do
-        fixtures_handler.should_not_receive(:apply)
-
-        element.click_and_apply_vcr { }
       end
     end
 
     context 'when a block is not defined' do
-      it 'applies fixtures' do
-        fixtures_handler.should_receive(:apply).with(
-          ['some custom fixture'], :replace
-        )
-
+      def apply_custom_fixtures
         element.click_and_apply_vcr(['some custom fixture'], :replace)
       end
 
-      it 'the fixtures adjuster is not initialized' do
-        SitePrism::Vcr::Adjuster.should_not_receive(:new)
+      it 'defines custom fixtures for the adjuster' do
+        adjuster.should_receive(:fixtures).with(
+          ['some custom fixture']
+        )
 
-        element.click_and_apply_vcr(['some custom fixture'])
+        apply_custom_fixtures
       end
+
+      it 'defines the action for the adjuster' do
+        adjuster.should_receive(:replace)
+
+        apply_custom_fixtures
+      end
+    end
+
+    it 'applies fixtures' do
+      adjuster.should_receive(:modify_fixtures)
+
+      element.click_and_apply_vcr
+    end
+
+    it 'initializes the waiter' do
+      SitePrism::Vcr::Waiter.should_receive(:new).with(
+        parent,
+        cloned_options
+      ).and_return(waiter)
+
+      element.click_and_apply_vcr
     end
 
     it 'should do the click action' do

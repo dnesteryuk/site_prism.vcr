@@ -1,3 +1,4 @@
+# TODO: should be this class immutable?
 module SitePrism
   module Vcr
     class Options

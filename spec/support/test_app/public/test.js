@@ -2,7 +2,7 @@ $(document).ready(function() {
   $result = $('<div id="result"></div>');
 
   var addResponse2ResDiv = function(data) {
-    $result.text($result.text() + data.resp);
+    $result.append('<div class="' + data.resp.toLowerCase() + '">' + data.resp + '</div>');
     $('#console').append($result);
   };
 

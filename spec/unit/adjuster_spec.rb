@@ -3,18 +3,15 @@ require 'spec_helper'
 describe SitePrism::Vcr::Adjuster do
   let(:fixtures_handler) { double }
   let(:fixtures)         { 'some fixtures' }
-  let(:options)          { double(waiter: :default_waiter, fixtures: fixtures) }
+  let(:options)          { double(fixtures: fixtures, waiter: :wait_for_me) }
 
   subject { described_class.new(options, fixtures_handler) }
 
   describe '#waiter' do
     it 'defines a new waiter' do
-      subject.waiter :some_waiter
-      subject.waiter.should eq(:some_waiter)
-    end
+      options.should_receive(:waiter=).with(:some_waiter)
 
-    it 'returns a default waiter' do
-      subject.waiter.should eq(:default_waiter)
+      subject.waiter :some_waiter
     end
   end
 
