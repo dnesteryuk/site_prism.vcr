@@ -9,7 +9,6 @@ describe SitePrism::Vcr::Element do
   before do
     SitePrism::Vcr::Options.stub(:new).and_return(options)
     SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
-    SitePrism::Vcr::Waiter.stub(:new).and_return(waiter)
   end
 
   describe '#new' do
@@ -37,7 +36,7 @@ describe SitePrism::Vcr::Element do
         described_class.new(node, parent, raw_options) {}
       end
 
-      it 'calls a given block within fixtures adjuster context' do
+      it 'calls a given block within the context of the adjuster' do
         adjuster.should_receive(:mymeth)
 
         described_class.new(node, parent, raw_options) { mymeth }
@@ -72,7 +71,7 @@ describe SitePrism::Vcr::Element do
 
     before do
       SitePrism::Vcr::Adjuster.stub(:new).and_return(adjuster)
-      SitePrism::Vcr::Waiter.stub(:new).with(waiter)
+      SitePrism::Vcr::Waiter.stub(:new).and_return(waiter)
     end
 
     it 'initializes the fixtures adjuster with a new instance of options' do
