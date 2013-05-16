@@ -10,14 +10,15 @@ module SitePrism
 
         @parent, @options = parent, Options.new(raw_options)
 
+        adjuster = InitialAdjuster.new(@options)
+
         if block_given?
-          adjuster = InitialAdjuster.new(@options)
           adjuster.instance_eval &block
         end
 
-        @fixtures = Fixtures.new(@options.fixtures)
+        @fixtures = adjuster.prepared_fixtures
 
-        @fixtures_handler = FixturesHandler.new(@options)
+        @fixtures_manager = FixturesManager.new(@options)
       end
 
       def click_and_apply_vcr(custom_fixtures = [], action = :replace, &block)
@@ -37,13 +38,13 @@ module SitePrism
 
         adjuster.instance_eval &block
 
-        @fixtures_handler.inject(adjuster.prepared_fixtures)
+        @fixtures_manager.inject(adjuster.prepared_fixtures)
 
         self.click
 
         @waiter = Waiter.new(
           @parent,
-          @fixtures_handler,
+          @fixtures_manager,
           options
         )
 

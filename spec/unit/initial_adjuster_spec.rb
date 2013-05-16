@@ -1,15 +1,28 @@
 require 'spec_helper'
 
 describe SitePrism::Vcr::InitialAdjuster do
-  let(:options) { double }
+  let(:options)          { double }
+  let(:fixtures_handler) { double }
 
   subject { described_class.new(options) }
+
+  before do
+    SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
+  end
+
+  describe '.new' do
+    it 'initializes the fixtures handler' do
+      SitePrism::Vcr::FixturesHandler.should_receive(:new).with(options)
+
+      subject
+    end
+  end
 
   describe '#fixtures' do
     let(:raw_fixtures) { 'some fixtures' }
 
     it 'adds fixtures' do
-      options.should_receive(:add_fixtures).with(raw_fixtures)
+      fixtures_handler.should_receive(:add_fixtures).with(raw_fixtures)
 
       subject.fixtures(raw_fixtures)
     end
@@ -27,7 +40,7 @@ describe SitePrism::Vcr::InitialAdjuster do
 
   describe '#path' do
     it 'adds fixtures into container' do
-      options.should_receive(:add_fixtures).with([
+      fixtures_handler.should_receive(:add_fixtures).with([
         'some/path/test_fixture1', 'some/path/test_fixture2'
       ])
 
@@ -42,6 +55,23 @@ describe SitePrism::Vcr::InitialAdjuster do
       options.should_receive(:waiter=).with(raw_waiter)
 
       subject.waiter(raw_waiter)
+    end
+  end
+
+  describe '#prepared_fixtures' do
+    let(:fixtures)     { double }
+    let(:raw_fixtures) { 'some raw fixtures' }
+
+    before do
+      SitePrism::Vcr::Fixtures.stub(:new).and_return(fixtures)
+
+      fixtures_handler.stub(:fixtures).and_return(raw_fixtures)
+    end
+
+    it 'initializes the fixtures handler' do
+      SitePrism::Vcr::Fixtures.should_receive(:new).with(raw_fixtures).and_return(fixtures)
+
+      subject.prepared_fixtures.should eq(fixtures)
     end
   end
 end

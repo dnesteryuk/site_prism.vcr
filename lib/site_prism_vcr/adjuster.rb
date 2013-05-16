@@ -3,6 +3,8 @@ module SitePrism
   module Vcr
     class Adjuster < InitialAdjuster
       def initialize(options, fixtures)
+        super options
+
         @options, @fixtures = options, fixtures
       end
 
@@ -31,8 +33,8 @@ module SitePrism
 
       private
         def change_fixtures(action)
-          @fixtures = @fixtures.public_send(action, @options.fixtures)
-          @options.clean_fixtures
+          @fixtures = @fixtures.public_send(action, @fixtures_handler.fixtures)
+          @fixtures_handler.clean_fixtures
           @is_action_done = true
         end
     end

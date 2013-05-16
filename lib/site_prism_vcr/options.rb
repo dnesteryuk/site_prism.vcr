@@ -7,8 +7,6 @@ module SitePrism
       def initialize(options = {})
         check_options options
 
-        @fixtures = []
-
         options.each do |key, val|
           public_send("#{key}=", val)
         end
@@ -21,43 +19,13 @@ module SitePrism
       end
 
       def fixtures
-        wrong_fixtures = []
-
-        prepared_fixtures = @fixtures.map do |fixture|
-          if fixture[0..1] == '~/'
-            if home_path
-              fixture = fixture.gsub(/\A\~\//, home_path)
-            else
-              wrong_fixtures << fixture
-            end
-          end
-
-          fixture
-        end
-
-        if wrong_fixtures.size > 0
-          raise ArgumentError.new(
-            "You are trying to use a home path for these: #{wrong_fixtures.join(', ')} fixtures. " \
-            "They cannot be used since the home_path is not defined, please refer to the documentation " \
-            "to make sure you define the home path properly."
-          )
-        else
-          prepared_fixtures
-        end
-      end
-
-      def clean_fixtures
-        @fixtures = []
+        @fixtures || []
       end
 
       def dup_without_fixtures
         new_options = dup
         new_options.fixtures = []
         new_options
-      end
-
-      def add_fixtures(new_fixtures)
-        @fixtures.concat(new_fixtures)
       end
 
       protected

@@ -66,33 +66,18 @@ describe SitePrism::Vcr::Options do
   end
 
   describe '#fixtures' do
-    before do
-      options.fixtures = ['~/test', '~/custom/test', 'custom/test']
-    end
-
-    context 'when the home_path is defined' do
-      before do
-        options.home_path = 'fixtures/path'
-      end
-
-      it 'returns fixtures with a right path' do
-        options.fixtures.should eq([
-          'fixtures/path/test',
-          'fixtures/path/custom/test',
-          'custom/test'
-        ])
+    context 'when no fixtures' do
+      it 'returns an empty array' do
+        options.fixtures.should eq([])
       end
     end
 
-    context 'when the home_path is not defined' do
-      it 'raises an argument error about wrong way of defining fixtures' do
-        msg = 'You are trying to use a home path for these: ~/test, ~/custom/test fixtures. ' \
-          'They cannot be used since the home_path is not defined, please refer to the documentation ' \
-          'to make sure you define the home path properly.'
+    context 'when fixtures are here' do
+      it 'returns them' do
+        fixtures = ['test']
 
-        expect { options.fixtures }.to raise_error(
-          ArgumentError, msg
-        )
+        options = described_class.new(fixtures: fixtures)
+        options.fixtures.should eq(fixtures)
       end
     end
   end
@@ -107,19 +92,6 @@ describe SitePrism::Vcr::Options do
 
       cloned_options.object_id.should_not eq(options.object_id)
       cloned_options.fixtures.should eq([])
-    end
-  end
-
-  describe '#add_fixtures' do
-    let(:fixtures) { ['some fixtures'] }
-
-    before do
-      options.fixtures = fixtures
-    end
-
-    it 'adds new fixtures' do
-      options.add_fixtures(['new fixture'])
-      fixtures.should eq(['some fixtures', 'new fixture'])
     end
   end
 end

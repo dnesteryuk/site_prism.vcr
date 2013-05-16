@@ -3,10 +3,11 @@ module SitePrism
     class InitialAdjuster
       def initialize(options)
         @options = options
+        @fixtures_handler = FixturesHandler.new(@options)
       end
 
       def fixtures(val)
-        @options.add_fixtures(val)
+        @fixtures_handler.add_fixtures(val)
       end
 
       def home_path(val)
@@ -20,13 +21,17 @@ module SitePrism
           fixtures << "#{path}/#{name}"
         end
 
-        @options.add_fixtures(fixtures)
+        @fixtures_handler.add_fixtures(fixtures)
       end
 
       # TODO: this method is almost the same with the previous one
       # think about refactoring it
       def waiter(val)
         @options.waiter = val
+      end
+
+      def prepared_fixtures
+        Fixtures.new(@fixtures_handler.fixtures)
       end
     end
   end

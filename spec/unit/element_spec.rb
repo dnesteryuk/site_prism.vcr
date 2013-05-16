@@ -2,15 +2,21 @@ require 'spec_helper'
 
 describe SitePrism::Vcr::Element do
   let(:options)          { double(fixtures: 'some prepared fixtures') }
-  let(:fixtures_handler) { double(inject: true) }
+  let(:fixtures_manager) { double(inject: true) }
   let(:fixtures)         { double }
   let(:node)             { stub   }
   let(:parent)           { double }
+  let(:initial_adjuster) { double(prepared_fixtures: fixtures) }
 
   before do
     SitePrism::Vcr::Options.stub(:new).and_return(options)
-    SitePrism::Vcr::Fixtures.stub(:new).and_return(fixtures)
-    SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
+    SitePrism::Vcr::InitialAdjuster.stub(:new).and_return(initial_adjuster)
+
+    SitePrism::Vcr::FixturesManager.stub(:new).and_return(fixtures_manager)
+  end
+
+  before do
+    SitePrism::Vcr::InitialAdjuster.stub(:new).and_return(initial_adjuster)
   end
 
   describe '.new' do
@@ -23,38 +29,32 @@ describe SitePrism::Vcr::Element do
       subject
     end
 
-    it 'initializes the fixtures container' do
-      SitePrism::Vcr::Fixtures.should_receive(:new).with('some prepared fixtures')
+    it 'initializes the initial adjuster' do
+      SitePrism::Vcr::InitialAdjuster.should_receive(:new).with(
+        options
+      )
 
-      subject
+      described_class.new(node, parent, raw_options)
     end
 
-    context 'when a block is passed' do
-      let(:adjuster) { double }
-
-      before do
-        SitePrism::Vcr::InitialAdjuster.stub(:new).and_return(adjuster)
-      end
-
-      it 'initializes the initial adjuster' do
-        SitePrism::Vcr::InitialAdjuster.should_receive(:new).with(
-          options
-        )
-
-        described_class.new(node, parent, raw_options) {}
-      end
-
+    context 'when a block is given' do
       it 'calls a given block within the context of the adjuster' do
-        adjuster.should_receive(:mymeth)
+        initial_adjuster.should_receive(:mymeth)
 
         described_class.new(node, parent, raw_options) { mymeth }
       end
     end
 
-    it 'initializes the fixtures handler' do
-      SitePrism::Vcr::FixturesHandler.should_receive(:new).with(
+    it 'receives the fixtures container' do
+      initial_adjuster.should_receive(:prepared_fixtures)
+
+      subject
+    end
+
+    it 'initializes the fixtures manager' do
+      SitePrism::Vcr::FixturesManager.should_receive(:new).with(
         options
-      ).and_return(fixtures_handler)
+      ).and_return(fixtures_manager)
 
       subject
     end
@@ -121,7 +121,7 @@ describe SitePrism::Vcr::Element do
     end
 
     it 'applies fixtures' do
-      fixtures_handler.should_receive(:inject).with(prepared_fixtures)
+      fixtures_manager.should_receive(:inject).with(prepared_fixtures)
 
       element.click_and_apply_vcr
     end
@@ -129,7 +129,7 @@ describe SitePrism::Vcr::Element do
     it 'initializes the waiter' do
       SitePrism::Vcr::Waiter.should_receive(:new).with(
         parent,
-        fixtures_handler,
+        fixtures_manager,
         cloned_options
       ).and_return(waiter)
 

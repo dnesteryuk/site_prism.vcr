@@ -1,14 +1,13 @@
 require 'spec_helper'
 
 describe SitePrism::Vcr::Adjuster do
-  let(:raw_fixtures)  { 'some fixtures' }
-  let(:fixtures)      { double }
-  let(:options)       do
-    double(
-      fixtures:       raw_fixtures,
-      waiter:         :wait_for_me,
-      clean_fixtures: true
-    )
+  let(:raw_fixtures)     { 'some fixtures' }
+  let(:fixtures)         { double }
+  let(:fixtures_handler) { double(fixtures: raw_fixtures, clean_fixtures: true) }
+  let(:options)          { double(waiter: :wait_for_me) }
+
+  before do
+    SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
   end
 
   subject { described_class.new(options, fixtures) }
@@ -34,8 +33,8 @@ describe SitePrism::Vcr::Adjuster do
       subject.replace
     end
 
-    it 'should clean fixtures in options' do
-      options.should_receive(:clean_fixtures)
+    it 'cleans fixtures being kept in the fixtures handler' do
+      fixtures_handler.should_receive(:clean_fixtures)
 
       subject.replace
     end
@@ -60,8 +59,8 @@ describe SitePrism::Vcr::Adjuster do
       subject.union
     end
 
-    it 'should clean fixtures in options' do
-      options.should_receive(:clean_fixtures)
+    it 'cleans fixtures being kept in the fixtures handler' do
+      fixtures_handler.should_receive(:clean_fixtures)
 
       subject.union
     end

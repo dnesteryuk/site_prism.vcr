@@ -1,3 +1,5 @@
+# This class is a container for keeping all prepared fixtures for inserting
+# into VCR.
 # TODO: it should allow to do only actions like: union, replace
 module SitePrism
   module Vcr
