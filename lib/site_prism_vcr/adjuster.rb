@@ -2,9 +2,8 @@
 module SitePrism
   module Vcr
     class Adjuster < InitialAdjuster
-      def initialize(options, fixtures_handler)
-        @options, @fixtures_handler = options, fixtures_handler
-        @action, @waiter_method = :replace, options.waiter
+      def initialize(options, fixtures)
+        @options, @fixtures = options, fixtures
       end
 
       def waiter(waiter_method)
@@ -12,16 +11,30 @@ module SitePrism
       end
 
       def replace
-        @action = :replace
+        change_fixtures :replace
       end
 
       def union
-        @action = :union
+        change_fixtures :union
       end
 
-      def apply_fixtures
-        @fixtures_handler.apply(@options.fixtures, @action)
+      def exchange(old_fixtures, new_fixtures)
       end
+
+      def prepared_fixtures
+        # If no action has been performed,
+        # it should be performed manually, before allowing
+        # to get prepared fixtures.
+        replace unless @is_action_done
+        @fixtures
+      end
+
+      private
+        def change_fixtures(action)
+          @fixtures = @fixtures.public_send(action, @options.fixtures)
+          @options.clean_fixtures
+          @is_action_done = true
+        end
     end
   end
 end

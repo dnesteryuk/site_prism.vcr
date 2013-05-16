@@ -1,11 +1,17 @@
 require 'spec_helper'
 
 describe SitePrism::Vcr::Adjuster do
-  let(:fixtures_handler) { double }
-  let(:fixtures)         { 'some fixtures' }
-  let(:options)          { double(fixtures: fixtures, waiter: :wait_for_me) }
+  let(:raw_fixtures)  { 'some fixtures' }
+  let(:fixtures)      { double }
+  let(:options)       do
+    double(
+      fixtures:       raw_fixtures,
+      waiter:         :wait_for_me,
+      clean_fixtures: true
+    )
+  end
 
-  subject { described_class.new(options, fixtures_handler) }
+  subject { described_class.new(options, fixtures) }
 
   describe '#waiter' do
     it 'defines a new waiter' do
@@ -15,31 +21,55 @@ describe SitePrism::Vcr::Adjuster do
     end
   end
 
-  describe '#apply_fixtures' do
-    context 'when an action is defined' do
-      it 'unions fixtures' do
-        subject.union
+  describe '#replace' do
+    let(:replaced_fixtures) { 'replaced fixtures' }
 
-        fixtures_handler.should_receive(:apply).with(fixtures, :union)
-
-        subject.apply_fixtures
-      end
-
-      it 'replaces fixtures' do
-        subject.replace
-
-        fixtures_handler.should_receive(:apply).with(fixtures, :replace)
-
-        subject.apply_fixtures
-      end
+    before do
+      fixtures.stub(:replace).and_return(replaced_fixtures)
     end
 
-    context 'when an action is not specified' do
-      it 'replaces fixtures by default' do
-        fixtures_handler.should_receive(:apply).with(fixtures, :replace)
+    it 'replaces fixtures' do
+      fixtures.should_receive(:replace).with(raw_fixtures)
 
-        subject.apply_fixtures
-      end
+      subject.replace
+    end
+
+    it 'should clean fixtures in options' do
+      options.should_receive(:clean_fixtures)
+
+      subject.replace
+    end
+
+    it 'returns a new container with fixtures' do
+      subject.replace
+
+      subject.prepared_fixtures.should eq(replaced_fixtures)
+    end
+  end
+
+  describe '#union' do
+    let(:new_fixtures) { 'new fixtures' }
+
+    before do
+      fixtures.stub(:union).and_return(new_fixtures)
+    end
+
+    it 'replaces fixtures' do
+      fixtures.should_receive(:union).with(raw_fixtures)
+
+      subject.union
+    end
+
+    it 'should clean fixtures in options' do
+      options.should_receive(:clean_fixtures)
+
+      subject.union
+    end
+
+    it 'returns a new container with fixtures' do
+      subject.union
+
+      subject.prepared_fixtures.should eq(new_fixtures)
     end
   end
 end

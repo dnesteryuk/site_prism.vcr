@@ -46,6 +46,10 @@ module SitePrism
         end
       end
 
+      def clean_fixtures
+        @fixtures = []
+      end
+
       def dup_without_fixtures
         new_options = dup
         new_options.fixtures = []

@@ -15,6 +15,8 @@ module SitePrism
           adjuster.instance_eval &block
         end
 
+        @fixtures = Fixtures.new(@options.fixtures)
+
         @fixtures_handler = FixturesHandler.new(@options)
       end
 
@@ -23,7 +25,7 @@ module SitePrism
 
         adjuster = Adjuster.new(
           options,
-          @fixtures_handler
+          @fixtures
         )
 
         unless block_given?
@@ -34,7 +36,8 @@ module SitePrism
         end
 
         adjuster.instance_eval &block
-        adjuster.apply_fixtures
+
+        @fixtures_handler.inject(adjuster.prepared_fixtures)
 
         self.click
 

@@ -1,22 +1,30 @@
 require 'spec_helper'
 
 describe SitePrism::Vcr::Element do
-  let(:options)          { double }
-  let(:fixtures_handler) { double(apply: true) }
-  let(:node)             { stub }
+  let(:options)          { double(fixtures: 'some prepared fixtures') }
+  let(:fixtures_handler) { double(inject: true) }
+  let(:fixtures)         { double }
+  let(:node)             { stub   }
   let(:parent)           { double }
 
   before do
     SitePrism::Vcr::Options.stub(:new).and_return(options)
+    SitePrism::Vcr::Fixtures.stub(:new).and_return(fixtures)
     SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
   end
 
-  describe '#new' do
+  describe '.new' do
     let(:raw_options) { 'some options' }
     subject { described_class.new(node, parent, raw_options) }
 
     it 'initializes the options handler' do
       SitePrism::Vcr::Options.should_receive(:new).with(raw_options)
+
+      subject
+    end
+
+    it 'initializes the fixtures container' do
+      SitePrism::Vcr::Fixtures.should_receive(:new).with('some prepared fixtures')
 
       subject
     end
@@ -53,17 +61,18 @@ describe SitePrism::Vcr::Element do
   end
 
   describe '#click_and_apply_vcr' do
-    let(:node)           { double(click: true) }
-    let(:cloned_options) { 'cloned options' }
-    let(:options)        { double(dup_without_fixtures: cloned_options) }
-    let(:waiter)         { double(wait: true) }
+    let(:node)              { double(click: true) }
+    let(:cloned_options)    { 'cloned options' }
+    let(:options)           { double(dup_without_fixtures: cloned_options, fixtures: false) }
+    let(:waiter)            { double(wait: true) }
+    let(:prepared_fixtures) { 'prepared_fixtures by adjuster' }
 
     let(:adjuster) do
       double(
-        mymeth:          true,
-        replace:         true,
-        fixtures:        true,
-        apply_fixtures:  true
+        mymeth:            true,
+        fixtures:          true,
+        replace:           true,
+        prepared_fixtures: prepared_fixtures
       )
     end
 
@@ -77,7 +86,7 @@ describe SitePrism::Vcr::Element do
     it 'initializes the fixtures adjuster with a new instance of options' do
       SitePrism::Vcr::Adjuster.should_receive(:new).with(
         cloned_options,
-        fixtures_handler
+        fixtures
       )
 
       element.click_and_apply_vcr
@@ -104,7 +113,7 @@ describe SitePrism::Vcr::Element do
         apply_custom_fixtures
       end
 
-      it 'defines the action for the adjuster' do
+      it 'replaces default fixtures with given fixtures' do
         adjuster.should_receive(:replace)
 
         apply_custom_fixtures
@@ -112,7 +121,7 @@ describe SitePrism::Vcr::Element do
     end
 
     it 'applies fixtures' do
-      adjuster.should_receive(:apply_fixtures)
+      fixtures_handler.should_receive(:inject).with(prepared_fixtures)
 
       element.click_and_apply_vcr
     end

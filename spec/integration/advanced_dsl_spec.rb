@@ -7,6 +7,8 @@ feature 'Advanced DSL' do
     end
   end
 
+  let(:result_block) { @test_app_page.result_block }
+
   before do
     @test_app_page = AdvancedDslPage.new
     @test_app_page.load
@@ -23,15 +25,14 @@ feature 'Advanced DSL' do
       end
     end
 
-    it 'should use a custom cassette instead of a default one for this element' do
-      @test_app_page.result_block.should have_content('Octocus')
+    it 'uses a custom cassette instead of a default one for this element' do
+      result_block.should have_content('Octocus')
     end
   end
 
   # TODO: this group of tests is very slow, investigate why
   context 'when a waiter should be redefined' do
-    let(:link)         { @test_app_page.link_with_2_requests }
-    let(:result_block) { @test_app_page.result_block }
+    let(:link) { @test_app_page.link_with_2_requests }
 
     before do
       link.click_and_apply_vcr do
@@ -50,7 +51,7 @@ feature 'Advanced DSL' do
       link.click_and_apply_vcr
 
       result_block.should have_content('Tom')
-      result_block.should have_content('Zeus ')
+      result_block.should have_content('Zeus')
     end
   end
 
@@ -61,7 +62,7 @@ feature 'Advanced DSL' do
       it 'applies a fixture considering the defined home path' do
         link.click_and_apply_vcr
 
-        @test_app_page.result_block.should have_content('Octocus')
+        result_block.should have_content('Octocus')
       end
     end
 
@@ -83,6 +84,23 @@ feature 'Advanced DSL' do
       end
 
       it_behaves_like 'expecting the custom fixtures on the page'
+    end
+  end
+
+  context 'when a default fixture should be exchanged' do
+    let(:link) { @test_app_page.link_with_2_requests }
+
+    before do
+      link.click_and_apply_vcr do
+        exchange 'tom', 'octocat'
+      end
+    end
+
+    it 'uses the exchanged fixture' do
+      pending
+
+      result_block.should have_content('Octocat')
+      result_block.should have_content('Zeus')
     end
   end
 end
