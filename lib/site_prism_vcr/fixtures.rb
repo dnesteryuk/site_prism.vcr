@@ -5,7 +5,8 @@ module SitePrism
   module Vcr
     class Fixtures < Set
       def exchange(old_vals, new_vals)
-        subtract(old_vals).merge(new_vals)
+        new_fixtures = union(new_vals)
+        new_fixtures.subtract(old_vals)
       end
 
       def replace(vals)

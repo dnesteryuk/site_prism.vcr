@@ -6,7 +6,10 @@ describe SitePrism::Vcr::FixturesHandler do
 
   describe '#fixtures' do
     let(:options) do
-      double(home_path: 'fixtures/path/', fixtures: ['~/test', '~/custom/test', 'custom/test'])
+      double(
+        home_path: 'fixtures/path/',
+        fixtures:  ['~/test', '~/custom/test', 'custom/test']
+      )
     end
 
     context 'when the home_path is defined' do
@@ -32,6 +35,14 @@ describe SitePrism::Vcr::FixturesHandler do
         expect { fixtures_handler.fixtures }.to raise_error(
           ArgumentError, msg
         )
+      end
+    end
+
+    context 'when raw fixtures are passed' do
+      it 'returns prepared fixtures' do
+        raw_fixtures = ['some raw']
+
+        fixtures_handler.fixtures(raw_fixtures).should eq(raw_fixtures)
       end
     end
   end

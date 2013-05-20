@@ -7,10 +7,12 @@ module SitePrism
         @fixtures, @options = options.fixtures, options
       end
 
-      def fixtures
+      def fixtures(raw_fixtures = nil)
         wrong_fixtures = []
 
-        prepared_fixtures = @fixtures.map do |fixture|
+        raw_fixtures ||= @fixtures
+
+        prepared_fixtures = raw_fixtures.map do |fixture|
           if fixture[0..1] == '~/'
             if @options.home_path
               fixture = fixture.gsub(/\A\~\//, @options.home_path)

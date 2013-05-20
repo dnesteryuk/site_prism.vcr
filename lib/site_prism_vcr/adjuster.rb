@@ -21,6 +21,10 @@ module SitePrism
       end
 
       def exchange(old_fixtures, new_fixtures)
+        @fixtures = @fixtures.exchange(
+          @fixtures_handler.fixtures(old_fixtures),
+          @fixtures_handler.fixtures(new_fixtures)
+        )
       end
 
       def prepared_fixtures

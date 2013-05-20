@@ -71,4 +71,47 @@ describe SitePrism::Vcr::Adjuster do
       subject.prepared_fixtures.should eq(new_fixtures)
     end
   end
+
+  describe '#exchange' do
+    def exchange
+      subject.exchange(
+        old_fixtures,
+        new_fixtures
+      )
+    end
+
+    let(:fixtures)     { double(exchange: true) }
+    let(:old_fixtures) { 'old fixtures' }
+    let(:new_fixtures) { 'new fixtures' }
+
+    let(:prepared_old_fixtures) { 'prepared old fixtures' }
+    let(:prepared_new_fixtures) { 'prepared new fixtures' }
+
+    before do
+      fixtures_handler.stub(:fixtures).and_return(
+        prepared_old_fixtures,
+        prepared_new_fixtures
+      )
+    end
+
+    it 'prepares old fixtures' do
+      fixtures_handler.should_receive(:fixtures).with(old_fixtures)
+
+      exchange
+    end
+
+    it 'prepares new fixtures' do
+      fixtures_handler.should_receive(:fixtures).with(new_fixtures)
+
+      exchange
+    end
+
+    it 'exchanges fixtures' do
+      fixtures.should_receive(:exchange).with(
+        prepared_old_fixtures, prepared_new_fixtures
+      )
+
+      exchange
+    end
+  end
 end

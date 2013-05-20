@@ -92,15 +92,15 @@ feature 'Advanced DSL' do
 
     before do
       link.click_and_apply_vcr do
-        exchange 'tom', 'octocat'
+        exchange ['tom'], ['octocat']
       end
     end
 
     it 'uses the exchanged fixture' do
-      pending
-
       result_block.should have_content('Octocat')
       result_block.should have_content('Zeus')
     end
+
+    it 'uses the exchanged fixture which are stored in the sub directory'
   end
 end
