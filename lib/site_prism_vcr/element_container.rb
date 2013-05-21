@@ -11,13 +11,7 @@ module SitePrism::ElementContainer
     define_method element_name.to_s do
       elem = public_send(origin_element_name)
 
-      parent = if respond_to?(:parent)
-        self.parent
-      else
-        self
-      end
-
-      SitePrism::Vcr::Element.new(elem, parent, options, &block)
+      SitePrism::Vcr::Element.new(elem, self, options, &block)
     end
   end
 end
