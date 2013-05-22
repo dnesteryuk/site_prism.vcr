@@ -7,21 +7,11 @@ class TestPageWithElement
     def element(*); end
   end
 
-  def el_without_options
-    'original element without options'
-  end
-
-  def test_el; end
-
-  element_with_vcr :el_without_options, '#selector'
-end
-
-class TestSectionWithElement < TestPageWithElement
-  def parent; end
-
   def el_with_options
     'original element with options'
   end
+
+  def test_el; end
 
   element_with_vcr :el_with_options, '#selector', fixtures: 'some fixtures'
 end
@@ -37,36 +27,17 @@ describe SitePrism::ElementContainer do
     end
 
     context 'when a method for getting element is called' do
+      let(:page)   { TestPageWithElement.new }
       let(:vcr_el) { 'vcr element' }
 
-      context 'when it is a page' do
-        let(:page) { TestPageWithElement.new }
-        subject    { page.el_without_options }
+      subject { page.el_with_options }
 
-        it 'initializes a new instance of a vcr element with empty options' do
-          SitePrism::Vcr::Element.should_receive(:new).with(
-            'original element without options', page, {}
-          ).and_return(vcr_el)
+      it 'initializes a new instance of a vcr element with empty options' do
+        SitePrism::Vcr::Element.should_receive(:new).with(
+          'original element with options', page, fixtures: 'some fixtures'
+        ).and_return(vcr_el)
 
-          subject.should eq(vcr_el)
-        end
-      end
-
-      context 'when it is a section' do
-        let(:parent)  { 'parent' }
-        let(:section) { TestSectionWithElement.new }
-
-        subject { section.el_with_options }
-
-        it 'initializes a new instance of a vcr element with additional options' do
-          section.stub(:parent).and_return(parent)
-
-          SitePrism::Vcr::Element.should_receive(:new).with(
-            kind_of(String), parent, fixtures: 'some fixtures'
-          ).and_return(vcr_el)
-
-          subject.should eq(vcr_el)
-        end
+        subject.should eq(vcr_el)
       end
     end
   end
