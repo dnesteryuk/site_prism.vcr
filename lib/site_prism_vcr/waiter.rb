@@ -10,7 +10,12 @@ module SitePrism
 
       def wait
         if waiter_method
-          @node.public_send waiter_method
+          if waiter_method.respond_to?(:call)
+            waiter_method.call
+          else
+            @node.public_send waiter_method
+          end
+
           @fixtures_handler.eject
         end
       end

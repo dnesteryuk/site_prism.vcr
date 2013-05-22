@@ -8,8 +8,13 @@ module SitePrism
         @options, @fixtures = options, fixtures
       end
 
-      def waiter(waiter_method)
-        @options.waiter = waiter_method
+      # TODO: think how to manage the situation when both are passed
+      def waiter(waiter_method = nil, &block)
+        @options.waiter = if block_given?
+          block
+        else
+          waiter_method
+        end
       end
 
       def replace

@@ -10,10 +10,22 @@ describe SitePrism::Vcr::Waiter do
     context 'when a waiter is defined' do
       let(:node) { double(wait_for_me: true) }
 
-      it 'calls the waiter to wait until all HTTP interactions are finished' do
-        node.should_receive(:wait_for_me)
+      context 'when a waiter method is a symbol' do
+        it 'calls the waiter to wait until all HTTP interactions are finished' do
+          node.should_receive(:wait_for_me)
 
-        waiter.wait
+          waiter.wait
+        end
+      end
+
+      context 'when a waiter method is a proc object' do
+        let(:options) { double(waiter: lambda{ node.wait_content_in_block }) }
+
+        it 'calls the waiter to wait until all HTTP interactions are finished' do
+          node.should_receive(:wait_content_in_block)
+
+          waiter.wait
+        end
       end
 
       it 'ejects fixtures' do
