@@ -1,3 +1,5 @@
+# TODO: this class should be splitted onto 2 since it takes care about
+# 2 responsibilities
 module SitePrism
   module Vcr
     class FixturesHandler
