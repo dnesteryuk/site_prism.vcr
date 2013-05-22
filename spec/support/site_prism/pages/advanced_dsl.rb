@@ -25,17 +25,11 @@ class AdvancedDslPage < BasePage
     fixtures: ['tom', 'zeus'],
     waiter:   :wait_for_tom_and_zeus
 
-  # TODO: Write patch for SitePrism to raise an error if an being waited element
-  # is not on a page.
-  def wait_for_octocat_and_martian
-    if !console_block.wait_for_octocat && !console_block.wait_for_martian
-      raise 'The page does not have expected elements on the page'
-    end
+  def wait_for_tom_and_zeus
+    console_block.tom && console_block.zeus
   end
 
-  def wait_for_tom_and_zeus
-    if !console_block.wait_for_tom && !console_block.wait_for_zeus
-      raise 'The page does not have expected elements on the page'
-    end
+  def wait_for_octocat_and_zeus
+    console_block.octocat && console_block.zeus
   end
 end

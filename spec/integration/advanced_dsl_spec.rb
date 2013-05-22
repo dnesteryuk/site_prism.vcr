@@ -30,7 +30,6 @@ feature 'Advanced DSL' do
     end
   end
 
-  # TODO: this group of tests is very slow, investigate why
   context 'custom waiters' do
     let(:link) { test_app_page.link_with_2_requests }
 
@@ -106,11 +105,13 @@ feature 'Advanced DSL' do
     end
   end
 
-  context 'when a default fixture is exchanged' do
+  context 'when a default fixture is exchanged', mytest: true do
     let(:link) { test_app_page.link_with_2_requests }
 
     before do
       link.click_and_apply_vcr do
+        waiter :wait_for_octocat_and_zeus
+
         exchange ['tom'], ['octocat']
       end
     end

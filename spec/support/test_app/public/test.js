@@ -29,9 +29,9 @@ $(document).ready(function() {
   });
 
   $('#link_with_2_requests').click(function() {
-    fetchOctocat(function(data) {
-      $result.text(data.resp);
-    });
+    $result.html('');
+
+    fetchOctocat();
 
     setTimeout(function() {
       fetchMartian();

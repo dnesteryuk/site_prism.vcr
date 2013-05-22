@@ -19,5 +19,5 @@ class SimpleDslPage < BasePage
     :link_with_2_requests,
     '#link_with_2_requests',
     fixtures: ['octocat', 'martian'],
-    waiter:   :wait_for_result_block
+    waiter:   :wait_for_octocat_and_martian
 end

@@ -24,8 +24,6 @@ module SitePrism
         @fixtures_handler.add_fixtures(fixtures)
       end
 
-      # TODO: this method is almost the same with the previous one
-      # think about refactoring it
       def waiter(val)
         @options.waiter = val
       end
