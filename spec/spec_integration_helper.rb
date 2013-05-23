@@ -11,6 +11,7 @@ Dir["./spec/support/site_prism/pages/*.rb"].sort.each {|f| require f }
 
 Capybara.app = TestApp
 Capybara.default_driver = :selenium
+HTTPI.log = false
 
 Selenium::WebDriver::Firefox::Profile.firebug_version = '1.11.0'
 

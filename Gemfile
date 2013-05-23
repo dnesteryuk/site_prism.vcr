@@ -5,7 +5,7 @@ gemspec
 
 group :development do
   gem 'sinatra'
-  gem 'curb'
+  gem 'httpi'
   gem 'capybara-firebug'
 end
 

@@ -1,4 +1,4 @@
-require 'curb'
+require 'httpi'
 require 'sinatra/base'
 
 class TestApp < Sinatra::Base
@@ -15,15 +15,17 @@ class TestApp < Sinatra::Base
   get '/octocat.json' do
     content_type :json
 
-    http = Curl.get('https://api.github.com/users/octocat/orgs')
-    http.body_str
+    HTTPI.get(
+      'https://api.github.com/users/octocat/orgs'
+    ).body
   end
 
   get '/martian.json' do
     content_type :json
 
-    http = Curl.get('https://api.github.com/users/martian/orgs')
-    http.body_str
+    HTTPI.get(
+      'https://api.github.com/users/martian/orgs'
+    ).body
   end
 
   get '/' do
