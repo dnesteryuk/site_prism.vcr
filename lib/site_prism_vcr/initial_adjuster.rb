@@ -24,8 +24,13 @@ module SitePrism
         @fixtures_handler.add_fixtures(fixtures)
       end
 
-      def waiter(val)
-        @options.waiter = val
+      # TODO: think how to manage the situation when both are passed
+      def waiter(waiter_method = nil, &block)
+        @options.waiter = if block_given?
+          block
+        else
+          waiter_method
+        end
       end
 
       def prepared_fixtures

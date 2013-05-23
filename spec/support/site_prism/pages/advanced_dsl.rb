@@ -25,6 +25,12 @@ class AdvancedDslPage < BasePage
     fixtures: ['tom', 'zeus'],
     waiter:   :wait_for_tom_and_zeus
 
+  element_with_vcr \
+    :link_tom_and_zeus_with_block_waiter,
+    '#link_with_2_requests',
+    fixtures: ['tom', 'zeus'],
+    waiter:   proc{ self.wait_for_tom_and_zeus }
+
   def wait_for_tom_and_zeus
     console_block.tom && console_block.zeus
   end

@@ -49,12 +49,20 @@ describe SitePrism::Vcr::InitialAdjuster do
   end
 
   describe '#waiter' do
-    let(:raw_waiter) { 'some waiter' }
+    context 'when a method name is passed' do
+      it 'defines a new waiter' do
+        options.should_receive(:waiter=).with(:some_waiter)
 
-    it 'defines a default waiter' do
-      options.should_receive(:waiter=).with(raw_waiter)
+        subject.waiter :some_waiter
+      end
+    end
 
-      subject.waiter(raw_waiter)
+    context 'when a block is passed' do
+      it 'defines a new waiter' do
+        options.should_receive(:waiter=).with(kind_of(Proc))
+
+        subject.waiter { 'some waiter here' }
+      end
     end
   end
 

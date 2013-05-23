@@ -19,7 +19,7 @@ describe SitePrism::Vcr::Waiter do
       end
 
       context 'when a waiter method is a proc object' do
-        let(:options) { double(waiter: lambda{ node.wait_content_in_block }) }
+        let(:options) { double(waiter: proc{ self.wait_content_in_block }) }
 
         it 'calls the waiter to wait until all HTTP interactions are finished' do
           node.should_receive(:wait_content_in_block)

@@ -73,6 +73,19 @@ feature 'Advanced DSL' do
     end
   end
 
+  context 'when a default waiter is defined within a block' do
+    let(:link) { test_app_page.link_tom_and_zeus_with_block_waiter }
+
+    before do
+      link.click_and_apply_vcr
+    end
+
+    it 'uses a default waiter' do
+      result_block.should have_content('Tom')
+      result_block.should have_content('Zeus')
+    end
+  end
+
   context 'when a home path is defined' do
     let(:link) { test_app_page.link_with_home_path }
 

@@ -12,24 +12,6 @@ describe SitePrism::Vcr::Adjuster do
 
   subject { described_class.new(options, fixtures) }
 
-  describe '#waiter' do
-    context 'when a method name is passed' do
-      it 'defines a new waiter' do
-        options.should_receive(:waiter=).with(:some_waiter)
-
-        subject.waiter :some_waiter
-      end
-    end
-
-    context 'when a block is passed' do
-      it 'defines a new waiter' do
-        options.should_receive(:waiter=).with(kind_of(Proc))
-
-        subject.waiter { 'some waiter here' }
-      end
-    end
-  end
-
   describe '#replace' do
     let(:replaced_fixtures) { 'replaced fixtures' }
 
