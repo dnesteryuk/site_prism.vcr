@@ -118,7 +118,7 @@ feature 'Advanced DSL' do
     end
   end
 
-  context 'when a default fixture is exchanged', mytest: true do
+  context 'when a default fixture is exchanged' do
     let(:link) { test_app_page.link_with_2_requests }
 
     before do

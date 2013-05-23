@@ -21,7 +21,7 @@ VCR.configure do |c|
   c.preserve_exact_body_bytes { false }
 
   c.default_cassette_options = {
-    serialize_with:         :syck,
+    serialize_with:         :psych,
     allow_playback_repeats: true
   }
 end
