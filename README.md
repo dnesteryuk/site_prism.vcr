@@ -34,7 +34,7 @@ Or install it yourself as:
 
 ### Linking VCR cassettes with SitePrism elements
 
-To link VCR cassettes with SitePrism elements, you have use `element_with_vcr` instead of `element` method of SitePrism for specifying elements.
+To link VCR cassettes with SitePrism elements, you have to use `element_with_vcr` instead of `element` method of SitePrism for specifying elements.
 
 The simplest way is:
 
@@ -44,7 +44,7 @@ class ProductsPage < SitePrism::Page
     :car_details_link,
     '#car_details',
     fixtures: ['car', 'car/features']
-end    
+end
 ```
 
 Also, you can use a block which gives you some additional options:
@@ -56,7 +56,7 @@ class ProductsPage < SitePrism::Page
     '#car_details' do
       fixtures ['ford', 'cars/ford_features']
     end
-end    
+end
 ```
 
 In case you have a lot of cassettes which are stored in some subdirectory, there is a more better way for defining fixtures:
@@ -69,7 +69,7 @@ class ProductsPage < SitePrism::Page
       path 'cars/small', ['ford', 'ford_features', 'prices']
       path 'offerings',  ['used_cars', 'new_cars']
     end
-end    
+end
 ```
 
 The `path` helper method can be used a few times in the block to define cassettes. The code above is identical to:
@@ -80,13 +80,13 @@ class ProductsPage < SitePrism::Page
     :car_details_link,
     '#car_details',
     fixtures: [
-      'cars/small/ford', 
-      'cars/small/ford_features', 
+      'cars/small/ford',
+      'cars/small/ford_features',
       'cars/small/prices',
       'offerings/used_cars',
       'offerings/new_cars'
     ]
-end    
+end
 ```
 
 As you can see by using a block you can define fixtures much more easily and it is a preferable way in some cases.
@@ -102,7 +102,7 @@ class ProductsPage < SitePrism::Page
 
       fixtures ['~/ford', '~/ford_features', '~/prices']
     end
-end    
+end
 ```
 
 If some fixture name begins with `~/`, it means that a defined home path will be applied to such fixture. It is a very useful while redefining cassettes (It is described below).
@@ -164,6 +164,70 @@ Also, if you have specified a home path while describing a SitePrism element, yo
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
   fixtures ['~/volvo', '~/volvo_features', '~/prices']
+end
+```
+
+### Waiters
+
+Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP requests we have to wait for them, before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on the button to show details of some product, you may wait until loading indicator which you may show on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
+
+There is reason why you should use them when you use SitePrism.Vcr. If you specify a waiter while describing SitePrism elements or applying VCR cassettes, SitePrism.Vcr will know when the inserted cassettes should be ejected from Vcr to avoid a situation when some unexpected cassette is applied.
+
+There are 2 ways for defining a waiter. When you describe SitePrism elements:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details',
+    fixtures: ['car', 'car/features'],
+    waiter:   :wait_until_loading_indicator_invisible
+end
+```
+
+or if you use a block:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details' do
+      fixtures ['ford', 'cars/ford_features']
+      waiter :wait_until_loading_indicator_invisible
+    end
+end
+```
+
+The second way is to set it while applying Vcr cassettes:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  fixtures ['cars/volvo']
+  waiter :wait_until_loading_indicator_invisible
+end
+```
+
+*Note:* Using the second way, you can override a default waiter which was specified while describing SitePrism elements.
+
+In this case once we meet an expectation defined in a waiter, Vcr cassettes will be ejected and you will avoid issues with mixing unexpected cassettes. If you don't specify a waiter, you have to eject them manually:
+
+```ruby
+after do
+  VCR.eject_all_cassettes
+end
+```
+
+or directly in the test:
+
+```ruby
+it 'displays details of a product' do
+  products_page.products.first.show_details_btn.click_and_apply_vcr
+  products_page.details.should have_content('Volvo')
+
+  VCR.eject_all_cassettes
+
+  products_page.products.second.show_details_btn.click_and_apply_vcr
+  products_page.details.should have_content('Ford')
 end
 ```
 
