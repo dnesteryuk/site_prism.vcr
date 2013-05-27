@@ -1,4 +1,3 @@
-# TODO: create possibility to exchange fixtures
 module SitePrism
   module Vcr
     class Adjuster < InitialAdjuster

@@ -31,4 +31,8 @@ class TestApp < Sinatra::Base
   get '/' do
     erb :index
   end
+
+  get '/page_with_load' do
+    erb :page_with_load
+  end
 end
