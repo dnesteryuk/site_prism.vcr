@@ -12,5 +12,13 @@
     <a href="/" id="link_with_2_requests">I will do 2 AJAX requests</a><br/>
 
     <div id="console"></div>
+
+    <script>
+      $(document).ready(function() {
+        <% if click_on %>
+          $('#<%= click_on %>').click();
+        <% end %>
+      });
+    </script>
   </body>
 </html>

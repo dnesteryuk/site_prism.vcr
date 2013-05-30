@@ -29,10 +29,10 @@ class TestApp < Sinatra::Base
   end
 
   get '/' do
-    erb :index
+    erb :index, locals: {click_on: nil}
   end
 
-  get '/page_with_load' do
-    erb :page_with_load
+  get '/immediate-http-interactions/one-request' do
+    erb :index, locals: {click_on: 'link_with_one_request'}
   end
 end

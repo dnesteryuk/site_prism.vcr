@@ -1,6 +1,6 @@
 require 'spec_integration_helper'
 
-feature 'Simple DSL' do
+feature 'Http interactions on click > Simple DSL' do
   let(:test_app_page) { SimpleDslPage.new }
   let(:result_block)  { test_app_page.result_block }
 

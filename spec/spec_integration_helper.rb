@@ -7,7 +7,7 @@ require 'support/test_app/test_app'
 
 require 'support/shared/integration/click_with_one_simple_request'
 
-Dir["./spec/support/site_prism/pages/*.rb"].sort.each {|f| require f }
+Dir["./spec/support/site_prism/pages/**/*.rb"].sort.each {|f| require f }
 
 Capybara.app = TestApp
 Capybara.default_driver = :selenium
