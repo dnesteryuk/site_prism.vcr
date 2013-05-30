@@ -48,5 +48,4 @@
       path 'some/path', ['test', '~/test2']
     end
     ```
-9. Make this gem working on JRuby and Ruby 2.0.0
-10. Add possibility to apply fixtures while loading a page
+9. Make this gem working on JRuby
