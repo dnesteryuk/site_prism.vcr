@@ -49,3 +49,4 @@
     end
     ```
 9. Make this gem working on JRuby
+10. Add possibility to pass VCR options to cassettes while applying them
