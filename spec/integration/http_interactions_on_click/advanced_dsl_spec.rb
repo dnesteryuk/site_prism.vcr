@@ -1,12 +1,6 @@
 require 'spec_integration_helper'
 
 feature 'Http interactions on click > Advanced DSL' do
-  shared_examples 'expecting the custom fixtures on the page' do
-    it 'applies a custom fixture considering the defined home path' do
-      test_app_page.result_block.should have_content('Totoro')
-    end
-  end
-
   let(:result_block)  { test_app_page.result_block }
   let(:test_app_page) { AdvancedDslPage.new }
 
@@ -30,59 +24,61 @@ feature 'Http interactions on click > Advanced DSL' do
     end
   end
 
-  context 'custom waiters' do
-    let(:link) { test_app_page.link_with_2_requests }
+  context 'waiters' do
+    context 'custom waiters' do
+      let(:link) { test_app_page.link_with_2_requests }
 
-    context 'when a waiter is redefined' do
-      before do
-        link.click_and_apply_vcr do
-          fixtures ['octocat', 'martian']
+      context 'when a waiter is redefined' do
+        before do
+          link.click_and_apply_vcr do
+            fixtures ['octocat', 'martian']
 
-          waiter :wait_for_octocat_and_martian
+            waiter :wait_for_octocat_and_martian
+          end
+        end
+
+        it 'uses a custom waiter' do
+          result_block.should have_content('Octocat')
+          result_block.should have_content('Martian')
+        end
+
+        it 'uses a default waiter after using the custom waiter' do
+          link.click_and_apply_vcr
+
+          result_block.should have_content('Tom')
+          result_block.should have_content('Zeus')
         end
       end
 
-      it 'uses a newly defined waiter' do
-        result_block.should have_content('Octocat')
-        result_block.should have_content('Martian')
+      context 'when a block is used to define a custom waiter' do
+        before do
+          my_page = test_app_page
+
+          link.click_and_apply_vcr do
+            fixtures ['octocat', 'martian']
+
+            waiter { my_page.wait_for_octocat_and_martian}
+          end
+        end
+
+        it 'uses a newly defined waiter' do
+          result_block.should have_content('Octocat')
+          result_block.should have_content('Martian')
+        end
+      end
+    end
+
+    context 'when a default waiter is defined within a block' do
+      let(:link) { test_app_page.link_tom_and_zeus_with_block_waiter }
+
+      before do
+        link.click_and_apply_vcr
       end
 
-      it 'uses a default waiter after using the custom waiter' do
-        link.click_and_apply_vcr
-
+      it 'uses a default waiter' do
         result_block.should have_content('Tom')
         result_block.should have_content('Zeus')
       end
-    end
-
-    context 'when a block is used to define a custom waiter' do
-      before do
-        my_page = test_app_page
-
-        link.click_and_apply_vcr do
-          fixtures ['octocat', 'martian']
-
-          waiter { my_page.wait_for_octocat_and_martian}
-        end
-      end
-
-      it 'uses a newly defined waiter' do
-        result_block.should have_content('Octocat')
-        result_block.should have_content('Martian')
-      end
-    end
-  end
-
-  context 'when a default waiter is defined within a block' do
-    let(:link) { test_app_page.link_tom_and_zeus_with_block_waiter }
-
-    before do
-      link.click_and_apply_vcr
-    end
-
-    it 'uses a default waiter' do
-      result_block.should have_content('Tom')
-      result_block.should have_content('Zeus')
     end
   end
 
@@ -90,9 +86,11 @@ feature 'Http interactions on click > Advanced DSL' do
     let(:link) { test_app_page.link_with_home_path }
 
     context 'when no custom fixture is applied' do
-      it 'applies a fixture considering the defined home path' do
+      before do
         link.click_and_apply_vcr
+      end
 
+      it 'applies a fixture considering the defined home path' do
         result_block.should have_content('Octocus')
       end
     end

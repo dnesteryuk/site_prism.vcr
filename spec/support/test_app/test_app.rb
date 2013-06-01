@@ -35,4 +35,12 @@ class TestApp < Sinatra::Base
   get '/immediate-http-interactions/one-request' do
     erb :index, locals: {click_on: 'link_with_one_request'}
   end
+
+  get '/immediate-http-interactions/two-requests' do
+    erb :index, locals: {click_on: 'link_with_2_requests'}
+  end
+
+  get '/immediate-http-interactions/home-path' do
+    erb :index, locals: {click_on: 'link_with_home_path'}
+  end
 end
