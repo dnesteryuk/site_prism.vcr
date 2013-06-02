@@ -50,3 +50,4 @@
     ```
 9. Make this gem working on JRuby
 10. Add possibility to pass VCR options to cassettes while applying them
+11. Pages and elements should inherit fixtures defined for their parents

@@ -30,8 +30,4 @@ class AdvancedDslPage < BasePage
     '#link_with_2_requests',
     fixtures: ['tom', 'zeus'],
     waiter:   proc{ self.wait_for_tom_and_zeus }
-
-  def wait_for_octocat_and_zeus
-    console_block.octocat && console_block.zeus
-  end
 end
