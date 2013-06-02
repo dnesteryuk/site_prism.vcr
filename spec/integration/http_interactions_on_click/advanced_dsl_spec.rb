@@ -26,10 +26,12 @@ feature 'Http interactions on click > Advanced DSL' do
   end
 
   it_behaves_like 'when a home path is define' do
-    let(:actor) { test_app_page.link_with_home_path }
+    let(:actor_with_home_path)    { test_app_page.link_with_home_path }
+    let(:actor_without_home_path) { test_app_page.link_with_one_request }
   end
 
   it_behaves_like 'when a default fixture is exchanged' do
-    let(:actor) { test_app_page.link_with_2_requests }
+    let(:actor_without_home_path) { test_app_page.link_with_2_requests }
+    let(:actor_with_home_path)    { test_app_page.link_with_home_path }
   end
 end

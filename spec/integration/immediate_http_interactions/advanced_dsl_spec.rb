@@ -27,10 +27,12 @@ feature 'Immediate http interactions > Advanced DSL' do
   end
 
   it_behaves_like 'when a home path is define' do
-    let(:actor) { ImmediateHttpInteractions::HomePathPage.new }
+    let(:actor_with_home_path)    { ImmediateHttpInteractions::HomePathPage.new }
+    let(:actor_without_home_path) { ImmediateHttpInteractions::OneRequestPage.new }
   end
 
   it_behaves_like 'when a default fixture is exchanged' do
-    let(:actor) { ImmediateHttpInteractions::TwoRequestsPage.new }
+    let(:actor_without_home_path) { ImmediateHttpInteractions::TwoRequestsPage.new }
+    let(:actor_with_home_path)    { ImmediateHttpInteractions::HomePathPage.new }
   end
 end
