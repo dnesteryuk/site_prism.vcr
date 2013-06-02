@@ -231,6 +231,53 @@ it 'displays details of a product' do
 end
 ```
 
+Waiter could be defined within own block:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details',
+    fixtures: ['car', 'car/features'],
+    waiter:   proc { self.wait_until_loading_indicator_invisible }
+end
+```
+
+*Note:* In the block you have access to an instance of class where you define elements.
+
+Almost the same usage if you use a block for defining fixtures:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details' do
+      fixtures ['ford', 'cars/ford_features']
+      waiter { self.wait_until_loading_indicator_invisible }
+    end
+end
+```
+
+If you need to override some waiter, you do it with a block as well:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  fixtures ['cars/volvo']
+  waiter   { self.wait_until_loading_indicator_invisible }
+end
+```
+
+*Note:* In some cases it is useful when you need to wait for an element of some SitePrism object
+
+```ruby
+cars_list = @products_page.cars_list
+
+@products_page.car_details_link.click_and_apply_vcr do
+  fixtures ['cars/volvo']
+  waiter   { cars_list.wait_until_loading_indicator_invisible }
+end
+```
+
 ## Contributing
 
 1. Fork it
