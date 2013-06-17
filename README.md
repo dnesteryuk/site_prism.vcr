@@ -10,8 +10,10 @@ Such integration allows you to write acceptance tests more easily since you rece
 
 ## Features
 
-  * Links VCR cassettes with SitePrism elements while describing SitePrism elements.
+  * Links VCR cassettes with SitePrism elements.
+  * Links VCR cassettes with SitePrism pages.
   * Applies VCR cassettes while clicking on an element.
+  * Applies VCR cassettes while loading a page.
   * Defines a waiter which will be used for waiting until an expected element is on a page or until an expected element has disappeared from a page (It is very helpful when a few external API requests are being executed after clicking on an element).
   * Allows to redefines default VCR cassettes (cassettes which were specified while describing a SitePrism element) while clicking on an element.
   * Allows to redefine a default waiter (a waiter which was specified while describing a SitePrism element) while clicking on an element.
@@ -107,7 +109,7 @@ end
 
 If some fixture name begins with `~/`, it means that a defined home path will be applied to such fixture. It is a very useful while redefining cassettes (It is described below).
 
-### Applying VCR cassettes
+### Applying VCR cassettes on click
 
 Now only after clicking on an element cassettes can be applied:
 
@@ -207,7 +209,7 @@ The second way is to set it while applying Vcr cassettes:
 end
 ```
 
-*Note:* Using the second way, you can override a default waiter which was specified while describing SitePrism elements.
+*Note:* Using the second way, you can override a default waiter which was specified while describing SitePrism element.
 
 In this case once we meet an expectation defined in a waiter, Vcr cassettes will be ejected and you will avoid issues with mixing unexpected cassettes. If you don't specify a waiter, you have to eject them manually:
 
@@ -267,7 +269,7 @@ If you need to override some waiter, you do it with a block as well:
 end
 ```
 
-*Note:* In some cases it is useful when you need to wait for an element of some SitePrism object
+*Note:* In some cases it is useful when you need to wait for an element which is out of a scope of a current element:
 
 ```ruby
 cars_list = @products_page.cars_list
@@ -275,6 +277,58 @@ cars_list = @products_page.cars_list
 @products_page.car_details_link.click_and_apply_vcr do
   fixtures ['cars/volvo']
   waiter   { cars_list.wait_until_loading_indicator_invisible }
+end
+```
+
+### Linking and applying VCR cassettes with SitePrism pages
+
+External HTTP interaction may be done on page loading. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  vcr_options_for_load do
+    fixtures ['octocat']
+  end
+end
+```
+
+Everything described above about defining cassettes for SitePrism elements is true for defining cassettes for pages. You can use a block as we saw in the previous example or a hash:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  vcr_options_for_load fixtures: ['octocat']
+end
+```
+
+You can define a waiter:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  vcr_options_for_load do
+    fixtures ['octocat']
+    waiter   :wait_for_list
+  end
+end
+```
+
+you can define a waiter as a block:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  vcr_options_for_load do
+    fixtures ['octocat']
+    waiter   { self.wait_for_list }
+  end
+end
+```
+
+Applying cassettes is almost the same as we saw for a click event:
+
+```ruby
+page.load_and_apply_vcr do
+  fixtures ['octocat', 'martian']
+
+  waiter :wait_for_octocat_and_martian
 end
 ```
 

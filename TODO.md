@@ -52,3 +52,5 @@
 10. Add possibility to pass VCR options to cassettes while applying them
 11. Pages and elements should inherit fixtures defined for their parents
 12. Think about making more clean fixtures
+13. Add ``eject_all_cassettes`` method to Vcr
+14. Add integration tests to prove that hash can be used for a defining cassettes for pages.
