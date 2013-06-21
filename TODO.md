@@ -54,3 +54,4 @@
 12. Think about making more clean fixtures
 13. Add ``eject_all_cassettes`` method to Vcr
 14. Add integration tests to prove that hash can be used for a defining cassettes for pages.
+15. Add possibility to add fixtures for existing elements, it will be helpful in case they are inherited.
