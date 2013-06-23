@@ -56,3 +56,11 @@
 14. Add integration tests to prove that hash can be used for a defining cassettes for pages.
 15. Add possibility to add fixtures for existing elements, it will be helpful in case they are inherited.
 16. Think about applying fixtures for any kind of events, for example, for change event of select boxes
+17. Add support of this thing:
+
+    ```ruby
+    @cars.load_and_apply_vcr do
+      exchange 'new', 'used'
+    end
+    ```
+
