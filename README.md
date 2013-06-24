@@ -332,7 +332,7 @@ page.load_and_apply_vcr do
 end
 ```
 
-`Note:` But, there you can use a block only, you cannot use something like:
+*Note:* But, there you can use a block only, you *cannot* use something like:
 
 ```ruby
 page.load_and_apply_vcr ['octocat', 'martian']
