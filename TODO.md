@@ -64,5 +64,4 @@
     end
     ```
 
-18. Create possibility to apply fixtures for page loading without visiting a page. It will be very helpful when we don't visit a page directly, but we use a link for it
-19. The `load` method of SitePrism acceptes arguments when we use `load_and_apply_vcr` this possibility is lost.
+18. Create possibility to apply fixtures for page loading without visiting a page. It will be very helpful when we don't visit a page directly, but we use a link for it.
