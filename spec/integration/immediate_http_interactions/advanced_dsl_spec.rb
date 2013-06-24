@@ -35,4 +35,10 @@ feature 'Immediate http interactions > Advanced DSL' do
     let(:actor_without_home_path) { ImmediateHttpInteractions::TwoRequestsPage.new }
     let(:actor_with_home_path)    { ImmediateHttpInteractions::HomePathPage.new }
   end
+
+  it 'applies additional query to url' do
+    test_app_page.load_and_apply_vcr(car: 'ford')
+
+    page.current_url.should match(/\?car=ford/)
+  end
 end

@@ -5,9 +5,6 @@ describe SitePrism::Page do
     let(:applier)  { double(apply: true) }
     let(:options)  { 'some options' }
 
-    let(:custom_fixtures) { 'custom fixtures' }
-    let(:action)          { 'some action' }
-
     subject { SitePrism::Page.new }
 
     before do
@@ -29,23 +26,20 @@ describe SitePrism::Page do
 
     it 'applies fixtures' do
       applier.should_receive(:apply).with(
-        custom_fixtures,
-        action,
+        [],
+        nil,
         kind_of(Proc)
       )
 
-      subject.load_and_apply_vcr(
-        custom_fixtures,
-        action
-      ) { }
+      subject.load_and_apply_vcr() { }
     end
 
     it 'loads the page' do
       applier.stub(:apply).and_yield
 
-      subject.should_receive(:load)
+      subject.should_receive(:load).with('arg1', 'arg2')
 
-      subject.load_and_apply_vcr { load }
+      subject.load_and_apply_vcr('arg1', 'arg2') { }
     end
   end
 end

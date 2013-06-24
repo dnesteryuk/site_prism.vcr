@@ -6,7 +6,7 @@
 
 The purpose of this gem is to give an easy way for integrating [SitePrism](https://github.com/natritmeyer/site_prism) (it is Page Object Model DSL for Capybara) and [VCR](https://github.com/vcr/vcr) (it is a powerful tool for recording and stubbing HTTP interactions).
 
-Such integration allows you to write acceptance tests more easily since you receive handy tool for managing VCR cassettes. Those cassettes can be easily linked with SitePrism elements (in fact, Capybara elements since SitePrism doesn't have own elements). Afterwards those linked cassettes can be used for stubbing external API responses while clicking on a element that cassettes are defined for.
+Such integration allows you to write acceptance tests more easily since you receive handy tool for managing VCR cassettes. Those cassettes can be easily linked with SitePrism elements (in fact, Capybara elements since SitePrism doesn't have own elements). Afterwards those linked cassettes can be used for stubbing external API responses while clicking on an element that cassettes are defined for.
 
 ## Features
 
@@ -15,8 +15,8 @@ Such integration allows you to write acceptance tests more easily since you rece
   * Applies VCR cassettes while clicking on an element.
   * Applies VCR cassettes while loading a page.
   * Defines a waiter which will be used for waiting until an expected element is on a page or until an expected element has disappeared from a page (It is very helpful when a few external API requests are being executed after clicking on an element).
-  * Allows to redefines default VCR cassettes (cassettes which were specified while describing a SitePrism element) while clicking on an element.
-  * Allows to redefine a default waiter (a waiter which was specified while describing a SitePrism element) while clicking on an element.
+  * Allows to redefine default VCR cassettes (cassettes which were specified while describing a SitePrism element or a SitePrism page).
+  * Allows to redefine a default waiter (a waiter which was specified while describing a SitePrism element or a SitePrism page).
 
 ## Installation
 
@@ -26,7 +26,7 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -282,7 +282,7 @@ end
 
 ### Linking and applying VCR cassettes with SitePrism pages
 
-External HTTP interaction may be done on page loading. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
+External HTTP interactions may be done on page loading. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -330,6 +330,28 @@ page.load_and_apply_vcr do
 
   waiter :wait_for_octocat_and_martian
 end
+```
+
+`Note:` But, there you can use a block only, you cannot use something like:
+
+```ruby
+page.load_and_apply_vcr ['octocat', 'martian']
+```
+
+It will not work, because all arguments passed to `load_and_apply_vcr` will be passed to `load` method of SitePrism. It allows you to change an url of the being loaded page.
+
+```ruby
+page.load_and_apply_vcr(cat: 'tom') do
+  fixtures ['octocat', 'martian']
+
+  waiter :wait_for_octocat_and_martian
+end
+```
+
+In this case, SitePrism will alter an url and it may look like:
+
+```ruby
+http://localhost/cats/tom
 ```
 
 ## Contributing
