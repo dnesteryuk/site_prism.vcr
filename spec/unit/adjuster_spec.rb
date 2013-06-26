@@ -72,9 +72,23 @@ describe SitePrism::Vcr::Adjuster do
       )
     end
 
+    shared_examples 'when passed arguments are prepared' do
+      it 'prepares old fixtures' do
+        fixtures_handler.should_receive(:fixtures).with([*old_fixtures])
+
+        exchange
+      end
+
+      it 'prepares new fixtures' do
+        fixtures_handler.should_receive(:fixtures).with([*new_fixtures])
+
+        exchange
+      end
+    end
+
     let(:fixtures)     { double(exchange: true) }
-    let(:old_fixtures) { 'old fixtures' }
-    let(:new_fixtures) { 'new fixtures' }
+    let(:old_fixtures) { ['old fixtures'] }
+    let(:new_fixtures) { ['new fixtures'] }
 
     let(:prepared_old_fixtures) { 'prepared old fixtures' }
     let(:prepared_new_fixtures) { 'prepared new fixtures' }
@@ -86,16 +100,15 @@ describe SitePrism::Vcr::Adjuster do
       )
     end
 
-    it 'prepares old fixtures' do
-      fixtures_handler.should_receive(:fixtures).with(old_fixtures)
+    context 'when strings are passed as arguments' do
+      let(:old_fixtures) { 'old fixtures' }
+      let(:new_fixtures) { 'new fixtures' }
 
-      exchange
+      it_behaves_like 'when passed arguments are prepared'
     end
 
-    it 'prepares new fixtures' do
-      fixtures_handler.should_receive(:fixtures).with(new_fixtures)
-
-      exchange
+    context 'when arrays are passed as arguments' do
+      it_behaves_like 'when passed arguments are prepared'
     end
 
     it 'exchanges fixtures' do

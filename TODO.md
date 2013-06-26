@@ -2,22 +2,15 @@
 
 ## Release 0.0.1
 
-1. Add support of this thing:
-
-    ```ruby
-    @cars.load_and_apply_vcr do
-      exchange 'new', 'used'
-    end
-    ```
-2. Think about this case
+1. Think about this case
 
     ```ruby
     self.confirm_btn.click_and_apply_vcr do
       path 'some/path', ['test', '~/test2']
     end
     ```
-3. Make sure there is an integration test of using the `path` and the `fixtures` methods while describing an element with vcr
-4. Think about this case:
+2. Make sure there is an integration test of using the `path` and the `fixtures` methods while describing an element with vcr
+3. Think about this case:
 
     ```ruby
     self.confirm_btn.click_and_apply_vcr(['custom/fixtures']) do
@@ -25,6 +18,7 @@
     end
 
     ```
+4. Add documentation about `exchange` method
 5. Add comments to code
 6. Check documentation about this gem
 7. Make this gem working on JRuby
