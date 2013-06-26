@@ -41,12 +41,8 @@ describe SitePrism::Vcr::FixturesManager do
   describe '#eject' do
     subject { described_class.new(options).eject }
 
-    before do
-      VCR.stub(:eject_cassette).and_return(1, 2, 3, false)
-    end
-
     it 'ejects all fixtures from VCR' do
-      VCR.should_receive(:eject_cassette).exactly(4).times
+      SitePrism::Vcr::Helpers.should_receive(:eject_all_cassettes)
 
       subject
     end

@@ -18,8 +18,7 @@ module SitePrism
       # TODO: the way to eject only fixtures which were inserted
       # by a particular handler
       def eject
-        while VCR.eject_cassette
-        end
+        SitePrism::Vcr::Helpers.eject_all_cassettes
       end
     end
   end

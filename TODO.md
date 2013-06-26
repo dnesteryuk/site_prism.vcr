@@ -2,23 +2,22 @@
 
 ## Release 0.0.1
 
-1. Add ``eject_all_cassettes`` method to Vcr
-2. Add support of this thing:
+1. Add support of this thing:
 
     ```ruby
     @cars.load_and_apply_vcr do
       exchange 'new', 'used'
     end
     ```
-3. Think about this case
+2. Think about this case
 
     ```ruby
     self.confirm_btn.click_and_apply_vcr do
       path 'some/path', ['test', '~/test2']
     end
     ```
-4. Make sure there is an integration test of using the `path` and the `fixtures` methods while describing an element with vcr
-5. Think about this case:
+3. Make sure there is an integration test of using the `path` and the `fixtures` methods while describing an element with vcr
+4. Think about this case:
 
     ```ruby
     self.confirm_btn.click_and_apply_vcr(['custom/fixtures']) do
@@ -26,11 +25,11 @@
     end
 
     ```
-6. Add comments to code
-7. Check documentation about this gem
-8. Make this gem working on JRuby
-9. Think about making more clean fixtures
-10. Think about adding more integration tests
+5. Add comments to code
+6. Check documentation about this gem
+7. Make this gem working on JRuby
+8. Think about making more clean fixtures
+9. Think about adding more integration tests
 
 ## Release 0.0.2
 
