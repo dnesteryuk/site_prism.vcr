@@ -5,10 +5,22 @@ feature 'Immediate http interactions > Advanced DSL' do
   let(:test_app_page) { ImmediateHttpInteractions::OneRequestPage.new }
   let(:action_method) { :load_and_apply_vcr }
 
-  it 'opens the page and applies default fixtures' do
-    test_app_page.load_and_apply_vcr
+  shared_examples 'when do one simple HTTP request' do
+    it 'opens the page and applies default fixtures' do
+      test_app_page.load_and_apply_vcr
 
-    result_block.should have_content('Octocat')
+      result_block.should have_content('Octocat')
+    end
+  end
+
+  context 'when fixtures are defined in a block' do
+    it_behaves_like 'when do one simple HTTP request'
+  end
+
+  context 'when fixtures are defined in a hash' do
+    let(:test_app_page) { ImmediateHttpInteractions::OptionsInHashPage.new }
+
+    it_behaves_like 'when do one simple HTTP request'
   end
 
   it_behaves_like 'when a custom cassette is applied' do

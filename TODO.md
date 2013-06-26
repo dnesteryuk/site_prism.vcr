@@ -53,10 +53,9 @@
 11. Pages and elements should inherit fixtures defined for their parents
 12. Think about making more clean fixtures
 13. Add ``eject_all_cassettes`` method to Vcr
-14. Add integration tests to prove that hash can be used for a defining cassettes for pages.
-15. Add possibility to add fixtures for existing elements, it will be helpful in case they are inherited.
-16. Think about applying fixtures for any kind of events, for example, for change event of select boxes
-17. Add support of this thing:
+14. Add possibility to add fixtures for existing elements, it will be helpful in case they are inherited.
+15. Think about applying fixtures for any kind of events, for example, for change event of select boxes
+16. Add support of this thing:
 
     ```ruby
     @cars.load_and_apply_vcr do
@@ -64,4 +63,4 @@
     end
     ```
 
-18. Create possibility to apply fixtures for page loading without visiting a page. It will be very helpful when we don't visit a page directly, but we use a link for it.
+17. Create possibility to apply fixtures for page loading without visiting a page. It will be very helpful when we don't visit a page directly, but we use a link for it.
