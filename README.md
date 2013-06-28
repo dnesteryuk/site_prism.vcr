@@ -109,6 +109,20 @@ end
 
 If some fixture name begins with `~/`, it means that a defined home path will be applied to such fixture. It is a very useful while redefining cassettes (It is described below).
 
+Also, you can use a defined home path with the `path` method:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details' do
+      home_path 'cars/small'
+
+      path '~/' ['ford', 'ford_features', 'prices']
+    end
+end
+```
+
 ### Applying VCR cassettes on click
 
 Now only after clicking on an element cassettes can be applied:
