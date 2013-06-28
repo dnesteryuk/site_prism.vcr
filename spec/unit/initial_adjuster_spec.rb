@@ -46,6 +46,19 @@ describe SitePrism::Vcr::InitialAdjuster do
 
       subject.path 'some/path', ['test_fixture1', 'test_fixture2']
     end
+
+    context 'when a home path is used in cassettes list' do
+      it 'raises an error about wrong using of "path" method' do
+        msg = "You cannot use the home path while listing fixtures in the 'path' method. " <<
+          "Please, use 'fixtures' method for 'test_fixture2, test_fixture3' fixtures or " <<
+          "you can additionally use the 'path' method where you will specify a home path as a path name." <<
+          "Example: path('~/', ['test_fixture2', 'test_fixture3'])"
+
+        expect {
+          subject.path 'some/path', ['test_fixture1', '~/test_fixture2', '~/test_fixture3']
+        }.to raise_error(ArgumentError, msg)
+      end
+    end
   end
 
   describe '#waiter' do
