@@ -5,9 +5,7 @@ require 'capybara/firebug'
 
 require 'support/test_app/test_app'
 
-require 'support/shared/integration/click_with_one_simple_request'
-require 'support/shared/integration/advanced_dsl'
-
+Dir["./spec/support/shared/integration/**/*.rb"].sort.each {|f| require f }
 Dir["./spec/support/site_prism/pages/**/*.rb"].sort.each {|f| require f }
 
 Capybara.app = TestApp
