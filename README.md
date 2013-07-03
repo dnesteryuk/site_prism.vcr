@@ -49,7 +49,9 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-Also, you can use a block which gives you some additional options:
+In `fixtures` option you define VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info configuration options.
+
+Instead of using hash, you can use a block which gives you some additional options:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -61,7 +63,9 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-In case you have a lot of cassettes which are stored in some subdirectory, there is a more better way for defining fixtures:
+#### Path helper method
+
+In case you have a lot of cassettes which are stored in some subdirectory, there is more better way for defining cassettes:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -93,7 +97,9 @@ end
 
 As you can see by using a block you can define fixtures much more easily and it is a preferable way in some cases.
 
-Also, there is a possibility to define a home path for cassettes which are applied for a particular element:
+#### Home path helper method
+
+There is a possibility to define a home path to cassettes which are applied for a particular element:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -107,9 +113,25 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-If some fixture name begins with `~/`, it means that a defined home path will be applied to such fixture. It is a very useful while redefining cassettes (It is described below).
+If some fixture name begins with `~/`, it means that a defined home path will be applied to find such fixture. The previous example is identical to this one:
 
-Also, you can use a defined home path with the `path` method:
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details' do
+      fixtures [
+        'cars/small/ford',
+        'cars/small/ford_features',
+        'cars/small/prices'
+      ]
+    end
+end
+```
+
+Home path is a very useful while redefining default cassettes (It is described below).
+
+Also, you can use a defined home path with the `path` helper method:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -125,7 +147,7 @@ end
 
 ### Applying VCR cassettes on click
 
-Now only after clicking on an element cassettes can be applied:
+Now cassettes can be applied only on a click event:
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr
@@ -140,7 +162,7 @@ This code applies VCR cassettes which were specified while describing a SitePris
 This code completely overrides default cassettes, but only for this click action. If you want to apply default cassettes again after this code, just use code without specifying custom cassettes:
 
 ```ruby
-@products_page.car_details_link.click_and_apply_vcr(['cars/volvo']) # overrides default cassettes
+@products_page.car_details_link.click_and_apply_vcr(['cars/volvo']) # overrides all default cassettes
 @products_page.car_details_link.click_and_apply_vcr # uses default cassettes again
 ```
 
@@ -150,7 +172,7 @@ Also, there is possibility to add new cassettes instead of overriding default on
 @products_page.car_details_link.click_and_apply_vcr(['cars/volvo'], :union)
 ```
 
-Similar to describing SitePrism elements with VCR cassettes, you can use a block:
+Similar to describing SitePrism elements with VCR cassettes, you can use a block while applying fixtures:
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
