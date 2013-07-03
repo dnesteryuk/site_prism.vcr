@@ -2,8 +2,7 @@
 
 ## Release 0.0.1
 
-1. Make sure there is an integration test of using the `path` and the `fixtures` methods while describing an element with vcr
-2. Think about this case:
+1. Think about this case:
 
     ```ruby
     self.confirm_btn.click_and_apply_vcr(['custom/fixtures']) do
@@ -11,12 +10,11 @@
     end
 
     ```
-3. Add documentation about `exchange` method
-4. Add comments to code
-5. Check documentation about this gem
-6. Make this gem working on JRuby
-7. Think about making more clean fixtures
-8. Think about adding more integration tests
+2. Add comments to code
+3. Check documentation about this gem
+4. Make this gem working on JRuby
+5. Think about making more clean fixtures
+6. Think about adding more integration tests
 
 ## Release 0.0.2
 

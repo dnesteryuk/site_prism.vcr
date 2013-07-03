@@ -183,6 +183,32 @@ Also, if you have specified a home path while describing a SitePrism element, yo
 end
 ```
 
+#### Exchange default fixtures
+
+There may be a situation when you need to exchange some default cassette for one specific test. It is a very easy to do:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  exchange 'volvo', 'ford'
+end
+```
+
+When you use a home path:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  exchange '~/volvo', '~/ford'
+end
+```
+
+Also, multiple cassettes can be exchanged:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  exchange ['~/volvo', '~/ford'], ['~/mazda', '~/toyota']
+end
+```
+
 ### Waiters
 
 Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP requests we have to wait for them, before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on the button to show details of some product, you may wait until loading indicator which you may show on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
