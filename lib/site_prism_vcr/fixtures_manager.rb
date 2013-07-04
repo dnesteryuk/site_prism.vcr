@@ -1,10 +1,19 @@
 module SitePrism
   module Vcr
+    # Takes cares about inserting and ejecting fixtures
+    # from Vcr.
     class FixturesManager
       def initialize(options)
         @options = options
       end
 
+      # Injects given fixtures for Vcr.
+      #
+      # @param fixtures [Array] List of fixtures.
+      #
+      # @return [void]
+      #
+      # @raise [ArgumentError] If a list with fixtures is empty.
       def inject(fixtures)
         raise ArgumentError.new(
           'No fixtures were specified to insert them into VCR'
@@ -15,8 +24,12 @@ module SitePrism
         end
       end
 
-      # TODO: the way to eject only fixtures which were inserted
-      # by a particular handler
+      # Ejects all fixtures from Vcr.
+      # Now it doesn't care which fixtures were inserted by
+      # an instance of this class. After calling this method
+      # Vcr will have no inserted fixtures at all.
+      #
+      # @return [void]
       def eject
         SitePrism::Vcr::Helpers.eject_all_cassettes
       end

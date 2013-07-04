@@ -4,7 +4,6 @@ module SitePrism
       # TODO: it should raise an error if a hash is passed and
       # a block as well
       def initialize(node, raw_options = {}, &block)
-
         @node, @options = node, Options.new(raw_options)
         adjuster = InitialAdjuster.new(@options)
 

@@ -24,6 +24,7 @@
 4. Think about applying fixtures for any kind of events, for example, for a change event of select boxes
 5. Create possibility to apply fixtures for page loading without visiting a page. It will be very helpful when we don't visit a page directly, but we use a link to do that
 6. Think how to manage the situation when a method name and a block is passed to the `waiter` helper method
+7. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SitePrism::Vcr#eject)
 
 ## Should be implemented?
 

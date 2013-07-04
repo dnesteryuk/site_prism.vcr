@@ -9,6 +9,7 @@ module SitePrism
       # this method should be used to avoid data mixing which can lead you to wrong
       # behavior in your acceptance tests.
       #
+      # @return [void]
       # @api public
       def self.eject_all_cassettes
         while VCR.eject_cassette
