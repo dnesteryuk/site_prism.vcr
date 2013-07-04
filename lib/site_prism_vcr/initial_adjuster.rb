@@ -1,19 +1,48 @@
 module SitePrism
   module Vcr
+    # This class provides DSL which is used while defining fixtures
+    # and applying them.
     class InitialAdjuster
       def initialize(options)
         @options = options
         @fixtures_handler = FixturesHandler.new(@options)
       end
 
-      def fixtures(val)
-        @fixtures_handler.add_fixtures(val)
+      # Defines fixtures which will be inserted into VCR.
+      #
+      # @param list [Array<String>] List of fixtures.
+      #
+      # @return [void]
+      #
+      # @api public
+      def fixtures(list)
+        @fixtures_handler.add_fixtures(list)
       end
 
-      def home_path(val)
-        @options.home_path = val
+      # Defines path to fixtures. Later this path
+      # can be used for defining fixtures. It is especially
+      # useful when you use deep subdirectories structure for storing fixtures.
+      #
+      # @param path [String] Path to fixtures.
+      #
+      # @return [void]
+      #
+      # @api public
+      def home_path(path)
+        @options.home_path = path
       end
 
+      # Applies a given path to list of fixtures and defines
+      # those fixtures to be inserted into VCR.
+      #
+      # @param path [String] Path to fixtures.
+      # @param fixture_names [Array<String>] List of fixtures,
+      #
+      # @return [void]
+      #
+      # @raise [ArgumentError] If any of fixture names has path to a home directory.
+      #
+      # @api public
       def path(path, fixture_names)
         fixtures, wrong_fixtures = [], []
 
@@ -39,7 +68,18 @@ module SitePrism
         @fixtures_handler.add_fixtures(fixtures)
       end
 
-      # TODO: think how to manage the situation when both are passed
+      # Defines a waiter which will be used for waiting until all HTTP
+      # interactions have finished.
+      #
+      # @param waiter_method [String, Symbol] Name of a waiter method,
+      #   this method should be defined directly in a section
+      #   or a page where fixtures are defined for an element.
+      #
+      # @yield Block to be used as a waiter.
+      #
+      # @return [void]
+      #
+      # @api public
       def waiter(waiter_method = nil, &block)
         @options.waiter = if block_given?
           block
@@ -51,6 +91,6 @@ module SitePrism
       def prepared_fixtures
         Fixtures.new(@fixtures_handler.fixtures)
       end
-    end
-  end
-end
+    end # class InitialAdjuster
+  end # module Vcr
+end # module SitePrism
