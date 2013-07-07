@@ -174,7 +174,7 @@ end
 Also, there is possibility to add new cassettes instead of overriding default one:
 
 ```ruby
-@products_page.car_details_link.click_and_apply_vcr do # overrides all default cassettes
+@products_page.car_details_link.click_and_apply_vcr do
   fixtures ['cars/volvo']
   union
 end
