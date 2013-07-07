@@ -5,7 +5,7 @@ shared_examples 'when a home path is define' do
     end
 
     it 'applies a fixture considering the defined home path' do
-      result_block.should have_content('Octocus')
+      result_block.should have_content('Moris')
     end
   end
 

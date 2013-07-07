@@ -6,23 +6,23 @@ $(document).ready(function() {
     $('#console').append($result);
   };
 
-  var fetchOctocat = function(fn) {
-    $.getJSON('/octocat.json', fn || addResponse2ResDiv);
+  var fetchMax = function(fn) {
+    $.getJSON('/max.json', fn || addResponse2ResDiv);
   };
 
-  var fetchMartian = function() {
-    $.getJSON('/martian.json', addResponse2ResDiv);
+  var fetchFelix = function() {
+    $.getJSON('/felix.json', addResponse2ResDiv);
   };
 
   $('#link_with_one_request').click(function() {
-    fetchOctocat();
+    fetchMax();
 
     return false;
   });
 
   $('#link_with_one_request_and_delay').click(function() {
     setTimeout(function() {
-      fetchOctocat();
+      fetchMax();
     }, 200);
 
     return false;
@@ -31,10 +31,10 @@ $(document).ready(function() {
   $('#link_with_2_requests').click(function() {
     $result.html('');
 
-    fetchOctocat();
+    fetchMax();
 
     setTimeout(function() {
-      fetchMartian();
+      fetchFelix();
     }, 50);
 
     return false;

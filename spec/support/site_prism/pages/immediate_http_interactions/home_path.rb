@@ -7,7 +7,7 @@ module ImmediateHttpInteractions
     vcr_options_for_load do
       home_path 'custom'
 
-      fixtures ['~/octocus']
+      fixtures ['~/moris']
       waiter   :wait_for_result_block
     end
   end

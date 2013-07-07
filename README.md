@@ -348,7 +348,7 @@ External HTTP interactions may be done on page loading. This gem supports capabi
 ```ruby
 class ProductsPage < SitePrism::Page
   vcr_options_for_load do
-    fixtures ['octocat']
+    fixtures ['max']
   end
 end
 ```
@@ -357,7 +357,7 @@ Everything described above about defining cassettes for SitePrism elements is tr
 
 ```ruby
 class ProductsPage < SitePrism::Page
-  vcr_options_for_load fixtures: ['octocat']
+  vcr_options_for_load fixtures: ['max']
 end
 ```
 
@@ -366,7 +366,7 @@ You can define a waiter:
 ```ruby
 class ProductsPage < SitePrism::Page
   vcr_options_for_load do
-    fixtures ['octocat']
+    fixtures ['max']
     waiter   :wait_for_list
   end
 end
@@ -377,7 +377,7 @@ you can define a waiter as a block:
 ```ruby
 class ProductsPage < SitePrism::Page
   vcr_options_for_load do
-    fixtures ['octocat']
+    fixtures ['max']
     waiter   { self.wait_for_list }
   end
 end
@@ -387,25 +387,25 @@ Applying cassettes is almost the same as we saw for a click event:
 
 ```ruby
 page.load_and_apply_vcr do
-  fixtures ['octocat', 'martian']
+  fixtures ['max', 'felix']
 
-  waiter :wait_for_octocat_and_martian
+  waiter :wait_for_max_and_felix
 end
 ```
 
 *Note:* But, there you can use a block only, you *cannot* use something like:
 
 ```ruby
-page.load_and_apply_vcr ['octocat', 'martian']
+page.load_and_apply_vcr ['max', 'felix']
 ```
 
 It will not work, because all arguments passed to `load_and_apply_vcr` will be passed to `load` method of SitePrism. It allows you to change an url of the being loaded page.
 
 ```ruby
 page.load_and_apply_vcr(cat: 'tom') do
-  fixtures ['octocat', 'martian']
+  fixtures ['max', 'felix']
 
-  waiter :wait_for_octocat_and_martian
+  waiter :wait_for_max_and_felix
 end
 ```
 

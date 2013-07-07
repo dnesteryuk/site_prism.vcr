@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/users/octocat/orgs
+    uri: https://api.github.com/users/max/orgs
     body:
       encoding: US-ASCII
       string: ''
@@ -23,9 +23,9 @@ http_interactions:
       Status:
       - 200 OK
       X-Ratelimit-Limit:
-      - "60"
+      - '60'
       X-Ratelimit-Remaining:
-      - "54"
+      - '54'
       X-Github-Media-Type:
       - github.beta
       X-Content-Type-Options:
@@ -38,7 +38,7 @@ http_interactions:
       - max-age=0, private, must-revalidate
     body:
       encoding: ASCII-8BIT
-      string: '{"resp":"Octocus"}'
+      string: '{"resp":"Max"}'
     http_version:
-  recorded_at: Mon, 18 Mar 2013 21:29:05 GMT
-recorded_with: VCR 2.4.0
+  recorded_at: Thu, 23 May 2013 19:43:53 GMT
+recorded_with: VCR 2.5.0

@@ -15,19 +15,19 @@ feature 'Http interactions on click > Simple DSL' do
 
     before do
       link.click_and_apply_vcr do
-        fixtures ['custom/octocus']
+        fixtures ['custom/moris']
       end
     end
 
     it 'uses a custom cassette instead of a default one for this element' do
-      result_block.should have_content('Octocus')
+      result_block.should have_content('Moris')
     end
 
     context 'when a click is used again without specifying a custom fixture' do
       it 'uses a default fixture again' do
         link.click_and_apply_vcr
 
-        result_block.should have_content('Octocat')
+        result_block.should have_content('Max')
       end
     end
   end
@@ -38,7 +38,7 @@ feature 'Http interactions on click > Simple DSL' do
     end
 
     it 'applies a fixture' do
-      result_block.should have_content('Octocat')
+      result_block.should have_content('Max')
     end
   end
 
@@ -48,8 +48,8 @@ feature 'Http interactions on click > Simple DSL' do
     end
 
     it 'applies 2 fixtures' do
-      result_block.should have_content('Octocat')
-      result_block.should have_content('Martian')
+      result_block.should have_content('Max')
+      result_block.should have_content('Felix')
     end
   end
 end

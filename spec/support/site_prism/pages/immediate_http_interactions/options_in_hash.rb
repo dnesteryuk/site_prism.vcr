@@ -5,7 +5,7 @@ module ImmediateHttpInteractions
     set_url '/immediate-http-interactions/one-request'
 
     vcr_options_for_load \
-      fixtures: ['octocat'],
+      fixtures: ['max'],
       waiter:   :wait_for_result_block
   end
 end

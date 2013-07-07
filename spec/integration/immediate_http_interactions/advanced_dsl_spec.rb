@@ -9,7 +9,7 @@ feature 'Immediate http interactions > Advanced DSL' do
     it 'opens the page and applies default fixtures' do
       test_app_page.load_and_apply_vcr
 
-      result_block.should have_content('Octocat')
+      result_block.should have_content('Max')
     end
   end
 

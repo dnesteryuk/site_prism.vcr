@@ -7,11 +7,11 @@ end
 shared_examples 'when a custom cassette is applied' do
   before do
     actor.public_send(action_method) do
-      path 'custom', ['octocus']
+      path 'custom', ['moris']
     end
   end
 
   it 'uses a custom cassette instead of a default one for this element' do
-    result_block.should have_content('Octocus')
+    result_block.should have_content('Moris')
   end
 end

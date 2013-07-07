@@ -2,14 +2,14 @@ shared_examples 'when a default fixture is exchanged' do
   context 'without a home path' do
     before do
       actor_without_home_path.public_send(action_method) do
-        waiter :wait_for_octocat_and_zeus
+        waiter :wait_for_max_and_zeus
 
-        exchange ['tom'], ['octocat']
+        exchange ['tom'], ['max']
       end
     end
 
     it 'uses the exchanged fixture' do
-      result_block.should have_content('Octocat')
+      result_block.should have_content('Max')
       result_block.should have_content('Zeus')
     end
   end
@@ -17,7 +17,7 @@ shared_examples 'when a default fixture is exchanged' do
   context 'with a home path' do
     before do
       actor_with_home_path.public_send(action_method) do
-        exchange ['~/octocus'], ['~/totoro']
+        exchange ['~/moris'], ['~/totoro']
       end
     end
 

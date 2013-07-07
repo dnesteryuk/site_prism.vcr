@@ -2,15 +2,15 @@ shared_examples 'custom waiters' do
   context 'when a waiter is redefined' do
     before do
       actor.public_send(action_method) do
-        fixtures ['octocat', 'martian']
+        fixtures ['max', 'felix']
 
-        waiter :wait_for_octocat_and_martian
+        waiter :wait_for_max_and_felix
       end
     end
 
     it 'uses a custom waiter' do
-      result_block.should have_content('Octocat')
-      result_block.should have_content('Martian')
+      result_block.should have_content('Max')
+      result_block.should have_content('Felix')
     end
 
     it 'uses a default waiter after using the custom waiter' do
@@ -26,15 +26,15 @@ shared_examples 'custom waiters' do
       my_page = test_app_page
 
       actor.public_send(action_method) do
-        fixtures ['octocat', 'martian']
+        fixtures ['max', 'felix']
 
-        waiter { my_page.wait_for_octocat_and_martian }
+        waiter { my_page.wait_for_max_and_felix }
       end
     end
 
     it 'uses a newly defined waiter' do
-      result_block.should have_content('Octocat')
-      result_block.should have_content('Martian')
+      result_block.should have_content('Max')
+      result_block.should have_content('Felix')
     end
   end
 end

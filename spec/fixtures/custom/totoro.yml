@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/users/octocat/orgs
+    uri: https://api.github.com/users/max/orgs
     body:
       encoding: US-ASCII
       string: ''

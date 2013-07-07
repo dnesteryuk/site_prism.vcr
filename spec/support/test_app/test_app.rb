@@ -12,19 +12,19 @@ class TestApp < Sinatra::Base
     File.read("#{root}/public/test.js")
   end
 
-  get '/octocat.json' do
+  get '/max.json' do
     content_type :json
 
     HTTPI.get(
-      'https://api.github.com/users/octocat/orgs'
+      'https://api.github.com/users/max/orgs'
     ).body
   end
 
-  get '/martian.json' do
+  get '/felix.json' do
     content_type :json
 
     HTTPI.get(
-      'https://api.github.com/users/martian/orgs'
+      'https://api.github.com/users/felix/orgs'
     ).body
   end
 

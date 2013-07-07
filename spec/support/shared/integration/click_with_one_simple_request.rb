@@ -4,6 +4,6 @@ shared_examples 'clicks and handles one AJAX request' do
   end
 
   it 'should apply a fixture' do
-    test_app_page.result_block.should have_content('Octocat')
+    test_app_page.result_block.should have_content('Max')
   end
 end

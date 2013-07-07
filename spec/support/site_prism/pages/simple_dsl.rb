@@ -6,18 +6,18 @@ class SimpleDslPage < BasePage
   element_with_vcr \
     :link_with_one_request,
     '#link_with_one_request',
-    fixtures: ['octocat'],
+    fixtures: ['max'],
     waiter:   :wait_for_result_block
 
   element_with_vcr \
     :link_with_one_request_and_delay,
     '#link_with_one_request_and_delay',
-    fixtures: ['octocat'],
+    fixtures: ['max'],
     waiter:   :wait_for_result_block
 
   element_with_vcr \
     :link_with_2_requests,
     '#link_with_2_requests',
-    fixtures: ['octocat', 'martian'],
-    waiter:   :wait_for_octocat_and_martian
+    fixtures: ['max', 'felix'],
+    waiter:   :wait_for_max_and_felix
 end

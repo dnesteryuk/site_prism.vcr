@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/users/martian/orgs
+    uri: https://api.github.com/users/felix/orgs
     body:
       encoding: US-ASCII
       string: ''

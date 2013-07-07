@@ -2,19 +2,11 @@
 
 ## Release 0.0.1
 
-1. Think about this case:
-
-    ```ruby
-    self.confirm_btn.click_and_apply_vcr(['custom/fixtures']) do
-      path 'some/path', ['test', '~/test2']
-    end
-
-    ```
-2. Add comments to code
-3. Check documentation about this gem
-4. Make this gem working on JRuby
-5. Think about making more clean fixtures
-6. Think about adding more integration tests
+1. Add comments to code
+2. Check documentation about this gem
+3. Make this gem working on JRuby
+4. Think about making more clean fixtures
+5. Think about adding more integration tests
 
 ## Release 0.0.2
 
