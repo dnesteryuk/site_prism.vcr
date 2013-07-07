@@ -14,7 +14,9 @@ feature 'Http interactions on click > Simple DSL' do
     let(:link) { test_app_page.link_with_one_request }
 
     before do
-      link.click_and_apply_vcr(['custom/octocus'])
+      link.click_and_apply_vcr do
+        fixtures ['custom/octocus']
+      end
     end
 
     it 'uses a custom cassette instead of a default one for this element' do

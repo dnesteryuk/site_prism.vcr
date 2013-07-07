@@ -90,56 +90,10 @@ describe SitePrism::Vcr::Applier do
       applier.apply { }
     end
 
-    context 'when an adjusting block is given' do
-      it 'calls a given block within the context of the adjuster' do
-        adjuster.should_receive(:mymeth)
+    it 'calls a given block within the context of the adjuster' do
+      adjuster.should_receive(:mymeth)
 
-        applier.apply(nil, nil, proc{ mymeth }) {}
-      end
-    end
-
-    context 'when a block is not defined' do
-      context 'when custom fixtures and an action are defined' do
-        def apply_custom_fixtures
-          applier.apply(['some custom fixture'], :union) { }
-        end
-
-        before do
-          adjuster.stub(:union)
-        end
-
-        it 'defines custom fixtures for the adjuster' do
-          adjuster.should_receive(:fixtures).with(
-            ['some custom fixture']
-          )
-
-          apply_custom_fixtures
-        end
-
-        it 'replaces default fixtures with given fixtures' do
-          adjuster.should_receive(:union)
-
-          apply_custom_fixtures
-        end
-      end
-
-      context 'when custom fixtures is nil' do
-        it 'uses an empty array instead' do
-          adjuster.should_receive(:fixtures).with(
-            []
-          )
-
-          applier.apply(nil) { }
-        end
-      end
-
-      context 'when an action is nil' do
-        it 'uses a replace action as a default' do
-          adjuster.should_receive(:replace)
-
-          applier.apply([], nil) { }
-        end
-      end
+      applier.apply(proc{ mymeth }) {}
     end
 
     it 'applies fixtures' do

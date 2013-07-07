@@ -156,44 +156,35 @@ Now cassettes can be applied only on a click event:
 This code applies VCR cassettes which were specified while describing a SitePrism element. But, there is also possibility to override them:
 
 ```ruby
-@products_page.car_details_link.click_and_apply_vcr(['cars/volvo'])
+@products_page.car_details_link.click_and_apply_vcr do
+  fixtures ['cars/volvo']
+end
 ```
 
-This code completely overrides default cassettes, but only for this click action. If you want to apply default cassettes again after this code, just use code without specifying custom cassettes:
+This code completely overrides default cassettes, but only for this one particular click action. If you want to apply default cassettes again after this code, just use code without specifying custom cassettes:
 
 ```ruby
-@products_page.car_details_link.click_and_apply_vcr(['cars/volvo']) # overrides all default cassettes
+@products_page.car_details_link.click_and_apply_vcr do # overrides all default cassettes
+  fixtures ['cars/volvo']
+end
+
 @products_page.car_details_link.click_and_apply_vcr # uses default cassettes again
 ```
 
 Also, there is possibility to add new cassettes instead of overriding default one:
 
 ```ruby
-@products_page.car_details_link.click_and_apply_vcr(['cars/volvo'], :union)
-```
-
-Similar to describing SitePrism elements with VCR cassettes, you can use a block while applying fixtures:
-
-```ruby
-@products_page.car_details_link.click_and_apply_vcr do
+@products_page.car_details_link.click_and_apply_vcr do # overrides all default cassettes
   fixtures ['cars/volvo']
-end
-```
-
-or with `path` helper:
-
-```ruby
-@products_page.car_details_link.click_and_apply_vcr do
-  path 'cars/small', ['volvo', 'volvo_features', 'prices']
-end
-```
-
-also you can make the library apply additional cassettes instead of overriding default one:
-
-```ruby
-@products_page.car_details_link.click_and_apply_vcr do
-  path 'cars/small', ['volvo', 'volvo_features', 'prices']
   union
+end
+```
+
+Similar to describing SitePrism elements with VCR cassettes, you can use `path` helper while applying fixtures:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  path 'cars/small', ['volvo', 'volvo_features', 'prices']
 end
 ```
 
@@ -202,6 +193,14 @@ Also, if you have specified a home path while describing a SitePrism element, yo
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
   fixtures ['~/volvo', '~/volvo_features', '~/prices']
+end
+```
+
+or
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  path '~/' ['volvo', 'volvo_features', 'prices']
 end
 ```
 

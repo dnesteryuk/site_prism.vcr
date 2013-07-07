@@ -26,8 +26,6 @@ describe SitePrism::Page do
 
     it 'applies fixtures' do
       applier.should_receive(:apply).with(
-        [],
-        nil,
         kind_of(Proc)
       )
 

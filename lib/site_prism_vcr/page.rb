@@ -21,8 +21,6 @@ module SitePrism
       )
 
       applier.apply(
-        [],
-        nil,
         adjusting_block
       ) do
         load *args

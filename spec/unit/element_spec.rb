@@ -32,15 +32,10 @@ describe SitePrism::Vcr::Element do
 
     it 'applies custom fixtures' do
       applier.should_receive(:apply).with(
-        'custom fixtures',
-        'some action',
         kind_of(Proc)
       )
 
-      subject.click_and_apply_vcr(
-        'custom fixtures',
-        'some action'
-      ) {}
+      subject.click_and_apply_vcr() {}
     end
 
     it 'clicks on an element' do

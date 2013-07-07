@@ -16,10 +16,14 @@ module SitePrism
         @fixtures_manager = FixturesManager.new(@options)
       end
 
-      def apply(custom_fixtures = nil, action = nil, adjusting_block = nil)
-        custom_fixtures ||= []
-        action ||= :replace
-
+      # Applies fixtures to be used for stubbing HTTP interactions
+      # caused by an event (click on an element or page loading).
+      #
+      # @param adjusting_block [nil, Proc] If an adjusting block is given,
+      #  it allows to change fixtures through DSL (@see SitePrism::Vcr::Adjuster)
+      #
+      # @return [void]
+      def apply(adjusting_block = nil)
         options = @options.dup_without_fixtures
 
         adjuster = Adjuster.new(
@@ -27,14 +31,9 @@ module SitePrism
           @fixtures
         )
 
-        if adjusting_block.nil?
-          adjusting_block = lambda do |*|
-            fixtures custom_fixtures
-            public_send(action)
-          end
+        if adjusting_block
+          adjuster.instance_eval &adjusting_block
         end
-
-        adjuster.instance_eval &adjusting_block
 
         @fixtures_manager.inject(adjuster.prepared_fixtures)
 
