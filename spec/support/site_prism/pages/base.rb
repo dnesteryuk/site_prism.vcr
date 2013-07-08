@@ -1,18 +1,18 @@
 require_relative '../sections/console_block'
 
 class BasePage < SitePrism::Page
-  element :result_block,  '#result'
+  element :cat_owner, '#result'
   section :console_block, ConsoleBlockSection, '#console'
 
-  def wait_for_max_and_felix
-    console_block.max && console_block.felix
+  def wait_for_arya_stark_and_jon_snow
+    console_block.arya_stark && console_block.jon_snow
   end
 
-  def wait_for_tom_and_zeus
-    console_block.tom && console_block.zeus
+  def wait_for_ned_stark_and_robb_stark
+    console_block.ned_stark && console_block.robb_stark
   end
 
-  def wait_for_max_and_zeus
-    console_block.max && console_block.zeus
+  def wait_for_arya_stark_and_robb_stark
+    console_block.arya_stark && console_block.robb_stark
   end
 end

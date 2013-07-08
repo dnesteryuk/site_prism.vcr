@@ -5,8 +5,8 @@ module ImmediateHttpInteractions
     set_url '/immediate-http-interactions/one-request?car={car}'
 
     vcr_options_for_load do
-      fixtures ['max']
-      waiter   :wait_for_result_block
+      fixtures ['ned_stark']
+      waiter   :wait_for_cat_owner
     end
   end
 end

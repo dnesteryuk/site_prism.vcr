@@ -1,7 +1,7 @@
 require 'spec_integration_helper'
 
 feature 'Http interactions on click > Advanced DSL' do
-  let(:result_block)  { test_app_page.result_block }
+  let(:cat_owner)     { test_app_page.cat_owner }
   let(:test_app_page) { AdvancedDslPage.new }
   let(:action_method) { :click_and_apply_vcr }
 
@@ -21,7 +21,7 @@ feature 'Http interactions on click > Advanced DSL' do
     end
 
     it_behaves_like 'when a default waiter is defined within a block' do
-      let(:actor) { test_app_page.link_tom_and_zeus_with_block_waiter }
+      let(:actor) { test_app_page.link_robb_stark_and_ned_stark_with_block_waiter }
     end
   end
 

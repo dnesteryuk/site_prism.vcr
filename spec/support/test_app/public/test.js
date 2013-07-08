@@ -2,27 +2,29 @@ $(document).ready(function() {
   $result = $('<div id="result"></div>');
 
   var addResponse2ResDiv = function(data) {
-    $result.append('<div class="' + data.resp.toLowerCase() + '">' + data.resp + '</div>');
+    $result.append('<div class="' + data.cat_name.toLowerCase() + ' '
+      + data.cat_owner.toLowerCase().replace(/\s/, '_') + '">' + data.cat_owner + '</div>');
+
     $('#console').append($result);
   };
 
-  var fetchMax = function(fn) {
+  var fetchMaxsOwner = function(fn) {
     $.getJSON('/max.json', fn || addResponse2ResDiv);
   };
 
-  var fetchFelix = function() {
+  var fetchFelixsOwner = function() {
     $.getJSON('/felix.json', addResponse2ResDiv);
   };
 
   $('#link_with_one_request').click(function() {
-    fetchMax();
+    fetchMaxsOwner();
 
     return false;
   });
 
   $('#link_with_one_request_and_delay').click(function() {
     setTimeout(function() {
-      fetchMax();
+      fetchMaxsOwner();
     }, 200);
 
     return false;
@@ -31,10 +33,10 @@ $(document).ready(function() {
   $('#link_with_2_requests').click(function() {
     $result.html('');
 
-    fetchMax();
+    fetchMaxsOwner();
 
     setTimeout(function() {
-      fetchFelix();
+      fetchFelixsOwner();
     }, 50);
 
     return false;

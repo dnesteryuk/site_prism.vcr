@@ -5,14 +5,14 @@ shared_examples 'when a home path is define' do
     end
 
     it 'applies a fixture considering the defined home path' do
-      result_block.should have_content('Moris')
+      cat_owner.should have_content('Daenerys Targaryen')
     end
   end
 
   context 'when a custom fixture is applied' do
     before do
       actor_with_home_path.public_send(action_method) do
-        fixtures ['~/totoro']
+        fixtures ['~/bran_stark']
       end
     end
 
@@ -22,7 +22,7 @@ shared_examples 'when a home path is define' do
   context 'when a home path is used while defining fixtures within some path' do
     before do
       actor_with_home_path.public_send(action_method) do
-        path '~/', ['totoro']
+        path '~/', ['bran_stark']
       end
     end
 
@@ -34,12 +34,12 @@ shared_examples 'when a home path is define' do
       actor_without_home_path.public_send(action_method) do
         home_path 'custom'
 
-        path '~/', ['totoro']
+        path '~/', ['bran_stark']
       end
     end
 
     it 'uses a home path for defining a custom fixture' do
-      result_block.should have_content('Totoro')
+      cat_owner.should have_content('Bran Stark')
     end
   end
 end

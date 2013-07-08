@@ -2,22 +2,22 @@ shared_examples 'custom waiters' do
   context 'when a waiter is redefined' do
     before do
       actor.public_send(action_method) do
-        fixtures ['max', 'felix']
+        fixtures ['arya_stark', 'jon_snow']
 
-        waiter :wait_for_max_and_felix
+        waiter :wait_for_arya_stark_and_jon_snow
       end
     end
 
     it 'uses a custom waiter' do
-      result_block.should have_content('Max')
-      result_block.should have_content('Felix')
+      cat_owner.should have_content('Arya Stark')
+      cat_owner.should have_content('Jon Snow')
     end
 
     it 'uses a default waiter after using the custom waiter' do
       actor.public_send(action_method)
 
-      result_block.should have_content('Tom')
-      result_block.should have_content('Zeus')
+      cat_owner.should have_content('Ned Stark')
+      cat_owner.should have_content('Robb Stark')
     end
   end
 
@@ -26,15 +26,15 @@ shared_examples 'custom waiters' do
       my_page = test_app_page
 
       actor.public_send(action_method) do
-        fixtures ['max', 'felix']
+        fixtures ['arya_stark', 'jon_snow']
 
-        waiter { my_page.wait_for_max_and_felix }
+        waiter { my_page.wait_for_arya_stark_and_jon_snow }
       end
     end
 
     it 'uses a newly defined waiter' do
-      result_block.should have_content('Max')
-      result_block.should have_content('Felix')
+      cat_owner.should have_content('Arya Stark')
+      cat_owner.should have_content('Jon Snow')
     end
   end
 end
@@ -45,7 +45,7 @@ shared_examples 'when a default waiter is defined within a block' do
   end
 
   it 'uses a default waiter' do
-    result_block.should have_content('Tom')
-    result_block.should have_content('Zeus')
+    cat_owner.should have_content('Ned Stark')
+    cat_owner.should have_content('Robb Stark')
   end
 end

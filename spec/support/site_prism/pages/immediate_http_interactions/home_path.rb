@@ -7,8 +7,8 @@ module ImmediateHttpInteractions
     vcr_options_for_load do
       home_path 'custom'
 
-      fixtures ['~/moris']
-      waiter   :wait_for_result_block
+      fixtures ['~/daenerys_targaryen']
+      waiter   :wait_for_cat_owner
     end
   end
 end

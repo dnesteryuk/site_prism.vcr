@@ -1,7 +1,7 @@
 require 'spec_integration_helper'
 
 feature 'Immediate http interactions > Advanced DSL' do
-  let(:result_block)  { test_app_page.result_block }
+  let(:cat_owner)  { test_app_page.cat_owner }
   let(:test_app_page) { ImmediateHttpInteractions::OneRequestPage.new }
   let(:action_method) { :load_and_apply_vcr }
 
@@ -9,7 +9,7 @@ feature 'Immediate http interactions > Advanced DSL' do
     it 'opens the page and applies default fixtures' do
       test_app_page.load_and_apply_vcr
 
-      result_block.should have_content('Max')
+      cat_owner.should have_content('Ned Stark')
     end
   end
 

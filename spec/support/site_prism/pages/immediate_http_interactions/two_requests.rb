@@ -5,8 +5,8 @@ module ImmediateHttpInteractions
     set_url '/immediate-http-interactions/two-requests'
 
     vcr_options_for_load do
-      fixtures ['tom', 'zeus']
-      waiter   :wait_for_tom_and_zeus
+      fixtures ['ned_stark', 'robb_stark']
+      waiter   :wait_for_ned_stark_and_robb_stark
     end
   end
 end

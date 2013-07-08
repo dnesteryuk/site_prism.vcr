@@ -6,8 +6,8 @@ class AdvancedDslPage < BasePage
   element_with_vcr \
     :link_with_one_request,
     '#link_with_one_request' do
-      fixtures ['max']
-      waiter   :wait_for_result_block
+      fixtures ['ned_stark']
+      waiter   :wait_for_cat_owner
     end
 
   element_with_vcr \
@@ -15,19 +15,19 @@ class AdvancedDslPage < BasePage
     '#link_with_one_request' do
       home_path 'custom'
 
-      fixtures ['~/moris']
-      waiter   :wait_for_result_block
+      fixtures ['~/daenerys_targaryen']
+      waiter   :wait_for_cat_owner
     end
 
   element_with_vcr \
     :link_with_2_requests,
     '#link_with_2_requests',
-    fixtures: ['tom', 'zeus'],
-    waiter:   :wait_for_tom_and_zeus
+    fixtures: ['ned_stark', 'robb_stark'],
+    waiter:   :wait_for_ned_stark_and_robb_stark
 
   element_with_vcr \
-    :link_tom_and_zeus_with_block_waiter,
+    :link_robb_stark_and_ned_stark_with_block_waiter,
     '#link_with_2_requests',
-    fixtures: ['tom', 'zeus'],
-    waiter:   proc{ self.wait_for_tom_and_zeus }
+    fixtures: ['ned_stark', 'robb_stark'],
+    waiter:   proc{ self.wait_for_ned_stark_and_robb_stark }
 end

@@ -2,7 +2,7 @@ require 'spec_integration_helper'
 
 feature 'Http interactions on click > Simple DSL' do
   let(:test_app_page) { SimpleDslPage.new }
-  let(:result_block)  { test_app_page.result_block }
+  let(:cat_owner)  { test_app_page.cat_owner }
 
   before do
     test_app_page.load
@@ -15,19 +15,19 @@ feature 'Http interactions on click > Simple DSL' do
 
     before do
       link.click_and_apply_vcr do
-        fixtures ['custom/moris']
+        fixtures ['custom/daenerys_targaryen']
       end
     end
 
     it 'uses a custom cassette instead of a default one for this element' do
-      result_block.should have_content('Moris')
+      cat_owner.should have_content('Daenerys Targaryen')
     end
 
     context 'when a click is used again without specifying a custom fixture' do
       it 'uses a default fixture again' do
         link.click_and_apply_vcr
 
-        result_block.should have_content('Max')
+        cat_owner.should have_content('Ned Stark')
       end
     end
   end
@@ -38,7 +38,7 @@ feature 'Http interactions on click > Simple DSL' do
     end
 
     it 'applies a fixture' do
-      result_block.should have_content('Max')
+      cat_owner.should have_content('Ned Stark')
     end
   end
 
@@ -48,8 +48,8 @@ feature 'Http interactions on click > Simple DSL' do
     end
 
     it 'applies 2 fixtures' do
-      result_block.should have_content('Max')
-      result_block.should have_content('Felix')
+      cat_owner.should have_content('Ned Stark')
+      cat_owner.should have_content('Robb Stark')
     end
   end
 end
