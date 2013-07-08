@@ -4,9 +4,7 @@
 
 1. Add comments to code
 2. Check documentation about this gem
-3. Make this gem working on JRuby
-4. Think about making more clean fixtures
-5. Think about adding more integration tests
+3. Think about adding more integration tests
 
 ## Release 0.0.2
 
@@ -17,6 +15,7 @@
 5. Create possibility to apply fixtures for page loading without visiting a page. It will be very helpful when we don't visit a page directly, but we use a link to do that
 6. Think how to manage the situation when a method name and a block is passed to the `waiter` helper method
 7. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SitePrism::Vcr#eject)
+8. Make this gem working on JRuby
 
 ## Should be implemented?
 
