@@ -13,7 +13,7 @@ module SitePrism
       @vcr_adjuster
     end
 
-    def load_and_apply_vcr(*args, &adjusting_block)
+    def apply_vcr(*args, action_block, &adjusting_block)
       applier = SitePrism::Vcr::Applier.new(
         self,
         self.class.vcr_options || {},
@@ -23,8 +23,17 @@ module SitePrism
       applier.apply(
         adjusting_block
       ) do
-        load *args
+        action_block.call
       end
+    end
+
+    def load_and_apply_vcr(*args, &adjusting_block)
+      action_block = proc { load(*args) }
+
+      apply_vcr(
+        action_block,
+        &adjusting_block
+      )
     end
   end
 end

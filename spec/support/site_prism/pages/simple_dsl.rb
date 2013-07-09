@@ -3,6 +3,8 @@ require_relative './base'
 class SimpleDslPage < BasePage
   set_url '/'
 
+  element :link_to_go_to_another_page, '#link_to_go_to_another_page'
+
   element_with_vcr \
     :link_with_one_request,
     '#link_with_one_request',

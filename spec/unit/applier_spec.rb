@@ -22,7 +22,7 @@ describe SitePrism::Vcr::Applier do
     let(:raw_options) { 'some options' }
     subject { described_class.new(node, raw_options) }
 
-    it 'initializes the options handler' do
+    it 'initializes the options object' do
       SitePrism::Vcr::Options.should_receive(:new).with(raw_options)
 
       subject

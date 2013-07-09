@@ -1,6 +1,6 @@
 require 'spec_integration_helper'
 
-feature 'Immediate http interactions > Advanced DSL' do
+feature 'Immediate Http interactions > Advanced DSL' do
   let(:cat_owner)  { test_app_page.cat_owner }
   let(:test_app_page) { ImmediateHttpInteractions::OneRequestPage.new }
   let(:action_method) { :load_and_apply_vcr }
