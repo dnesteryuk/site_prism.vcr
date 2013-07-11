@@ -47,6 +47,14 @@ describe SitePrism::Vcr::InitialAdjuster do
       subject.path 'some/path', ['test_fixture1', 'test_fixture2']
     end
 
+    it 'does not add additional "/" if the path name ends with "/"' do
+      fixtures_handler.should_receive(:add_fixtures).with([
+        'some/path/test_fixture1'
+      ])
+
+      subject.path 'some/path/', ['test_fixture1']
+    end
+
     context 'when a home path is used in cassettes list' do
       it 'raises an error about wrong using of "path" method' do
         msg = "You cannot use the home path while listing fixtures in the 'path' method. " <<
