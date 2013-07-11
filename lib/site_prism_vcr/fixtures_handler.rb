@@ -2,6 +2,8 @@
 # 2 responsibilities
 module SitePrism
   module Vcr
+    # This class is responsible for keeping a list
+    # of prepared fixtures to be inserted into VCR
     class FixturesHandler
       attr_reader :fixtures
 
