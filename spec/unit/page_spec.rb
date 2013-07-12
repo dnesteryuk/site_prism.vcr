@@ -49,12 +49,10 @@ describe SitePrism::Page do
     end
 
     it 'applies vcr fixtures and loads the page' do
-      pending 'fix it'
-
       expect(subject).to receive(:apply_vcr) do |action_block|
-        action_block.call
-
         expect(subject).to receive(:load).with('arg1', 'arg2')
+
+        action_block.call
       end
 
       subject.load_and_apply_vcr('arg1', 'arg2') { }
