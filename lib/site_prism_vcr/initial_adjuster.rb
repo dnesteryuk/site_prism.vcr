@@ -50,7 +50,11 @@ module SitePrism
           if name[0..1] == '~/'
             wrong_fixtures << name[2..-1]
           else
-            fixtures << "#{path}/#{name}"
+            fixture_with_path = path.dup
+            fixture_with_path << '/' unless path[-1, 1] == '/'
+            fixture_with_path << name
+
+            fixtures << fixture_with_path
           end
         end
 
