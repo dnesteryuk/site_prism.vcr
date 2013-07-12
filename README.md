@@ -415,6 +415,18 @@ In this case, SitePrism will alter an url and it may look like:
 http://localhost/cats/tom
 ```
 
+There may be situation when we need to apply fixtures for page loading when an user clicks on a link (an user moves from one page to another one). In this case you can use `apply_vcr` method of a page object:
+
+```ruby
+@cars = CarsPage.new
+
+@cars.apply_vcr(-> { page.find('#cars').click }) do
+  fixtures ['cars']
+end
+```
+
+The first argument passed to this method should be a proc object which will do an action. As you can see while applying fixtures without actual loading a page you can use everything what is described for `load_and_apply_vcr`.
+
 ## Contributing
 
 1. Fork it
