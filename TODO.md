@@ -5,6 +5,7 @@
 1. Add comments to code
 2. Check documentation about this gem
 3. Think about adding more integration tests
+4. Add possbility to disable ejecting fixtures from Vcr even if a waiter is defined
 
 ## Release 0.0.2
 
