@@ -11,8 +11,8 @@ feature 'Page Load' do
   end
 
   it 'loads fixtures on opening a page by click' do
-    one_request_page.displayed?.should be_true
+    expect(one_request_page.displayed?).to be_true
 
-    one_request_page.should have_content('Ned Stark')
+    expect(one_request_page).to have_content('Ned Stark')
   end
 end

@@ -17,7 +17,7 @@ describe SitePrism::Page do
     end
 
     it 'initializes the fixtures applier' do
-      SitePrism::Vcr::Applier.should_receive(:new).with(
+      expect(SitePrism::Vcr::Applier).to receive(:new).with(
         subject,
         options
       ).and_return(applier)
@@ -26,7 +26,7 @@ describe SitePrism::Page do
     end
 
     it 'applies fixtures' do
-      applier.should_receive(:apply).with(
+      expect(applier).to receive(:apply).with(
         kind_of(Proc)
       )
 
@@ -36,7 +36,7 @@ describe SitePrism::Page do
     it 'does the action from the action block' do
       applier.stub(:apply).and_yield
 
-      action_block.should_receive(:call)
+      expect(action_block).to receive(:call)
 
       subject.apply_vcr('arg1', 'arg2', action_block) { }
     end

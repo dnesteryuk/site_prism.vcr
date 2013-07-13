@@ -23,13 +23,13 @@ describe SitePrism::Vcr::Applier do
     subject { described_class.new(node, raw_options) }
 
     it 'initializes the options object' do
-      SitePrism::Vcr::Options.should_receive(:new).with(raw_options)
+      expect(SitePrism::Vcr::Options).to receive(:new).with(raw_options)
 
       subject
     end
 
     it 'initializes the initial adjuster' do
-      SitePrism::Vcr::InitialAdjuster.should_receive(:new).with(
+      expect(SitePrism::Vcr::InitialAdjuster).to receive(:new).with(
         options
       )
 
@@ -38,20 +38,20 @@ describe SitePrism::Vcr::Applier do
 
     context 'when a block is given' do
       it 'calls a given block within the context of the adjuster' do
-        initial_adjuster.should_receive(:mymeth)
+        expect(initial_adjuster).to receive(:mymeth)
 
         described_class.new(node, raw_options) { mymeth }
       end
     end
 
     it 'receives the fixtures container' do
-      initial_adjuster.should_receive(:prepared_fixtures)
+      expect(initial_adjuster).to receive(:prepared_fixtures)
 
       subject
     end
 
     it 'initializes the fixtures manager' do
-      SitePrism::Vcr::FixturesManager.should_receive(:new).with(
+      expect(SitePrism::Vcr::FixturesManager).to receive(:new).with(
         options
       ).and_return(fixtures_manager)
 
@@ -82,7 +82,7 @@ describe SitePrism::Vcr::Applier do
     end
 
     it 'initializes the fixtures adjuster with a new instance of options' do
-      SitePrism::Vcr::Adjuster.should_receive(:new).with(
+      expect(SitePrism::Vcr::Adjuster).to receive(:new).with(
         cloned_options,
         fixtures
       )
@@ -91,19 +91,19 @@ describe SitePrism::Vcr::Applier do
     end
 
     it 'calls a given block within the context of the adjuster' do
-      adjuster.should_receive(:mymeth)
+      expect(adjuster).to receive(:mymeth)
 
       applier.apply(proc{ mymeth }) {}
     end
 
     it 'applies fixtures' do
-      fixtures_manager.should_receive(:inject).with(prepared_fixtures)
+      expect(fixtures_manager).to receive(:inject).with(prepared_fixtures)
 
       applier.apply { }
     end
 
     it 'initializes the waiter' do
-      SitePrism::Vcr::Waiter.should_receive(:new).with(
+      expect(SitePrism::Vcr::Waiter).to receive(:new).with(
         node,
         fixtures_manager,
         cloned_options
@@ -113,7 +113,7 @@ describe SitePrism::Vcr::Applier do
     end
 
     it 'does the click action over a node' do
-      node.should_receive(:click)
+      expect(node).to receive(:click)
 
       applier.apply do
         node.click
@@ -121,7 +121,7 @@ describe SitePrism::Vcr::Applier do
     end
 
     it 'waits until all HTTP interactions are finished' do
-      waiter.should_receive(:wait)
+      expect(waiter).to receive(:wait)
 
       applier.apply { }
     end

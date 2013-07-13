@@ -12,7 +12,7 @@ describe SitePrism::Vcr::Element do
 
   describe '.new' do
     it 'initializes the fixtures applier' do
-      SitePrism::Vcr::Applier.should_receive(:new).with(
+      expect(SitePrism::Vcr::Applier).to receive(:new).with(
         parent,
         options
       )
@@ -31,7 +31,7 @@ describe SitePrism::Vcr::Element do
     end
 
     it 'applies custom fixtures' do
-      applier.should_receive(:apply).with(
+      expect(applier).to receive(:apply).with(
         kind_of(Proc)
       )
 
@@ -41,7 +41,7 @@ describe SitePrism::Vcr::Element do
     it 'clicks on an element' do
       applier.stub(:apply).and_yield
 
-      subject.should_receive(:click)
+      expect(subject).to receive(:click)
 
       subject.click_and_apply_vcr
     end

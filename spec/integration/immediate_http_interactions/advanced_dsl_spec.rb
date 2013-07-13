@@ -9,7 +9,7 @@ feature 'Immediate Http interactions > Advanced DSL' do
     it 'opens the page and applies default fixtures' do
       test_app_page.load_and_apply_vcr
 
-      cat_owner.should have_content('Ned Stark')
+      expect(cat_owner).to have_content('Ned Stark')
     end
   end
 
@@ -51,6 +51,6 @@ feature 'Immediate Http interactions > Advanced DSL' do
   it 'applies additional query to url' do
     test_app_page.load_and_apply_vcr(car: 'ford')
 
-    page.current_url.should match(/\?car=ford/)
+    expect(page.current_url).to match(/\?car=ford/)
   end
 end

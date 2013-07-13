@@ -9,8 +9,8 @@ shared_examples 'when a default fixture is exchanged' do
     end
 
     it 'uses the exchanged fixture' do
-      cat_owner.should have_content('Arya Stark')
-      cat_owner.should have_content('Robb Stark')
+      expect(cat_owner).to have_content('Arya Stark')
+      expect(cat_owner).to have_content('Robb Stark')
     end
   end
 
@@ -22,7 +22,7 @@ shared_examples 'when a default fixture is exchanged' do
     end
 
     it 'uses the exchanged fixture which are stored in the sub directory' do
-      cat_owner.should have_content('Bran Stark')
+      expect(cat_owner).to have_content('Bran Stark')
     end
   end
 end

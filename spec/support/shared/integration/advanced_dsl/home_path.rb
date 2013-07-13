@@ -5,7 +5,7 @@ shared_examples 'when a home path is define' do
     end
 
     it 'applies a fixture considering the defined home path' do
-      cat_owner.should have_content('Daenerys Targaryen')
+      expect(cat_owner).to have_content('Daenerys Targaryen')
     end
   end
 
@@ -39,7 +39,7 @@ shared_examples 'when a home path is define' do
     end
 
     it 'uses a home path for defining a custom fixture' do
-      cat_owner.should have_content('Bran Stark')
+      expect(cat_owner).to have_content('Bran Stark')
     end
   end
 end

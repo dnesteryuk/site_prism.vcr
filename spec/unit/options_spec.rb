@@ -14,8 +14,8 @@ describe SitePrism::Vcr::Options do
           'fixtures' => fixtures
         )
 
-        options.waiter.should eq(waiter)
-        options.fixtures.should eq(fixtures)
+        expect(options.waiter).to eq(waiter)
+        expect(options.fixtures).to eq(fixtures)
       end
     end
 
@@ -53,14 +53,14 @@ describe SitePrism::Vcr::Options do
     context 'when the last symbol is a slash' do
       it 'returns the home path as it is' do
         options.home_path = 'some/path/'
-        options.home_path.should eq('some/path/')
+        expect(options.home_path).to eq('some/path/')
       end
     end
 
     context 'when the last symbol is not slash' do
       it 'returns the home path with a slash at the end of the path' do
         options.home_path = 'some/path'
-        options.home_path.should eq('some/path/')
+        expect(options.home_path).to eq('some/path/')
       end
     end
   end
@@ -68,7 +68,7 @@ describe SitePrism::Vcr::Options do
   describe '#fixtures' do
     context 'when no fixtures' do
       it 'returns an empty array' do
-        options.fixtures.should eq([])
+        expect(options.fixtures).to eq([])
       end
     end
 
@@ -77,7 +77,7 @@ describe SitePrism::Vcr::Options do
         fixtures = ['test']
 
         options = described_class.new(fixtures: fixtures)
-        options.fixtures.should eq(fixtures)
+        expect(options.fixtures).to eq(fixtures)
       end
     end
   end
@@ -90,8 +90,8 @@ describe SitePrism::Vcr::Options do
     it 'returns a new instance of options without fixtures' do
       cloned_options = options.dup_without_fixtures
 
-      cloned_options.object_id.should_not eq(options.object_id)
-      cloned_options.fixtures.should eq([])
+      expect(cloned_options.object_id).to_not eq(options.object_id)
+      expect(cloned_options.fixtures).to eq([])
     end
   end
 end

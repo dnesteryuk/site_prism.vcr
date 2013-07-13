@@ -12,7 +12,7 @@ describe SitePrism::Vcr::InitialAdjuster do
 
   describe '.new' do
     it 'initializes the fixtures handler' do
-      SitePrism::Vcr::FixturesHandler.should_receive(:new).with(options)
+      expect(SitePrism::Vcr::FixturesHandler).to receive(:new).with(options)
 
       subject
     end
@@ -22,7 +22,7 @@ describe SitePrism::Vcr::InitialAdjuster do
     let(:raw_fixtures) { 'some fixtures' }
 
     it 'adds fixtures' do
-      fixtures_handler.should_receive(:add_fixtures).with(raw_fixtures)
+      expect(fixtures_handler).to receive(:add_fixtures).with(raw_fixtures)
 
       subject.fixtures(raw_fixtures)
     end
@@ -32,7 +32,7 @@ describe SitePrism::Vcr::InitialAdjuster do
     let(:raw_home_path) { 'some home path' }
 
     it 'defines a default home path' do
-      options.should_receive(:home_path=).with(raw_home_path)
+      expect(options).to receive(:home_path=).with(raw_home_path)
 
       subject.home_path(raw_home_path)
     end
@@ -40,7 +40,7 @@ describe SitePrism::Vcr::InitialAdjuster do
 
   describe '#path' do
     it 'adds fixtures into container' do
-      fixtures_handler.should_receive(:add_fixtures).with([
+      expect(fixtures_handler).to receive(:add_fixtures).with([
         'some/path/test_fixture1', 'some/path/test_fixture2'
       ])
 
@@ -48,7 +48,7 @@ describe SitePrism::Vcr::InitialAdjuster do
     end
 
     it 'does not add additional "/" if the path name ends with "/"' do
-      fixtures_handler.should_receive(:add_fixtures).with([
+      expect(fixtures_handler).to receive(:add_fixtures).with([
         'some/path/test_fixture1'
       ])
 
@@ -72,7 +72,7 @@ describe SitePrism::Vcr::InitialAdjuster do
   describe '#waiter' do
     context 'when a method name is passed' do
       it 'defines a new waiter' do
-        options.should_receive(:waiter=).with(:some_waiter)
+        expect(options).to receive(:waiter=).with(:some_waiter)
 
         subject.waiter :some_waiter
       end
@@ -80,7 +80,7 @@ describe SitePrism::Vcr::InitialAdjuster do
 
     context 'when a block is passed' do
       it 'defines a new waiter' do
-        options.should_receive(:waiter=).with(kind_of(Proc))
+        expect(options).to receive(:waiter=).with(kind_of(Proc))
 
         subject.waiter { 'some waiter here' }
       end
@@ -98,9 +98,9 @@ describe SitePrism::Vcr::InitialAdjuster do
     end
 
     it 'initializes the fixtures handler' do
-      SitePrism::Vcr::Fixtures.should_receive(:new).with(raw_fixtures).and_return(fixtures)
+      expect(SitePrism::Vcr::Fixtures).to receive(:new).with(raw_fixtures).and_return(fixtures)
 
-      subject.prepared_fixtures.should eq(fixtures)
+      expect(subject.prepared_fixtures).to eq(fixtures)
     end
   end
 end

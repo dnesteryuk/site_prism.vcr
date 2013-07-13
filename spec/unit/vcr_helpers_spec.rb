@@ -9,7 +9,7 @@ describe SitePrism::Vcr::Helpers do
     end
 
     it 'ejects all fixtures from VCR' do
-      VCR.should_receive(:eject_cassette).exactly(4).times
+      expect(VCR).to receive(:eject_cassette).exactly(4).times
 
       subject
     end

@@ -9,19 +9,20 @@ describe SitePrism::Vcr::FixturesManager do
     subject(:manager) { described_class.new(options) }
 
     before do
+      # TODO: we should not stub methods which we don't control
       VCR.stub(:insert_cassette)
     end
 
     context 'when there are fixtures' do
       context 'inserting fixtures to VCR' do
         it 'inserts the first fixture to VCR' do
-          VCR.should_receive(:insert_cassette).with('fixture1')
+          expect(VCR).to receive(:insert_cassette).with('fixture1')
 
           manager.inject(fixtures)
         end
 
         it 'inserts the second fixture to VCR' do
-          VCR.should_receive(:insert_cassette).with('fixture2')
+          expect(VCR).to receive(:insert_cassette).with('fixture2')
 
           manager.inject(fixtures)
         end
@@ -42,7 +43,7 @@ describe SitePrism::Vcr::FixturesManager do
     subject { described_class.new(options).eject }
 
     it 'ejects all fixtures from VCR' do
-      SitePrism::Vcr::Helpers.should_receive(:eject_all_cassettes)
+      expect(SitePrism::Vcr::Helpers).to receive(:eject_all_cassettes)
 
       subject
     end

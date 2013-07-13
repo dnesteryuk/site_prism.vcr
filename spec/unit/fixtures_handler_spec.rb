@@ -14,7 +14,7 @@ describe SitePrism::Vcr::FixturesHandler do
 
     context 'when the home_path is defined' do
       it 'returns fixtures with a right path' do
-        fixtures_handler.fixtures.should eq([
+        expect(fixtures_handler.fixtures).to eq([
           'fixtures/path/test',
           'fixtures/path/custom/test',
           'custom/test'
@@ -42,7 +42,7 @@ describe SitePrism::Vcr::FixturesHandler do
       it 'returns prepared fixtures' do
         raw_fixtures = ['some raw']
 
-        fixtures_handler.fixtures(raw_fixtures).should eq(raw_fixtures)
+        expect(fixtures_handler.fixtures(raw_fixtures)).to eq(raw_fixtures)
       end
     end
   end
@@ -50,7 +50,7 @@ describe SitePrism::Vcr::FixturesHandler do
   describe '#add_fixtures' do
     it 'adds new fixtures' do
       fixtures_handler.add_fixtures(['new fixture'])
-      fixtures_handler.fixtures.should eq(['default fixtures', 'new fixture'])
+      expect(fixtures_handler.fixtures).to eq(['default fixtures', 'new fixture'])
     end
   end
 end

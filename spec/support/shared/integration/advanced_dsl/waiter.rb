@@ -9,15 +9,15 @@ shared_examples 'custom waiters' do
     end
 
     it 'uses a custom waiter' do
-      cat_owner.should have_content('Arya Stark')
-      cat_owner.should have_content('Jon Snow')
+      expect(cat_owner).to have_content('Arya Stark')
+      expect(cat_owner).to have_content('Jon Snow')
     end
 
     it 'uses a default waiter after using the custom waiter' do
       actor.public_send(action_method)
 
-      cat_owner.should have_content('Ned Stark')
-      cat_owner.should have_content('Robb Stark')
+      expect(cat_owner).to have_content('Ned Stark')
+      expect(cat_owner).to have_content('Robb Stark')
     end
   end
 
@@ -33,8 +33,8 @@ shared_examples 'custom waiters' do
     end
 
     it 'uses a newly defined waiter' do
-      cat_owner.should have_content('Arya Stark')
-      cat_owner.should have_content('Jon Snow')
+      expect(cat_owner).to have_content('Arya Stark')
+      expect(cat_owner).to have_content('Jon Snow')
     end
   end
 end
@@ -45,7 +45,7 @@ shared_examples 'when a default waiter is defined within a block' do
   end
 
   it 'uses a default waiter' do
-    cat_owner.should have_content('Ned Stark')
-    cat_owner.should have_content('Robb Stark')
+    expect(cat_owner).to have_content('Ned Stark')
+    expect(cat_owner).to have_content('Robb Stark')
   end
 end

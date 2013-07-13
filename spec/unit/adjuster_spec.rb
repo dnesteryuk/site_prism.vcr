@@ -20,13 +20,13 @@ describe SitePrism::Vcr::Adjuster do
     end
 
     it 'replaces fixtures' do
-      fixtures.should_receive(:replace).with(raw_fixtures)
+      expect(fixtures).to receive(:replace).with(raw_fixtures)
 
       subject.replace
     end
 
     it 'cleans fixtures being kept in the fixtures handler' do
-      fixtures_handler.should_receive(:clean_fixtures)
+      expect(fixtures_handler).to receive(:clean_fixtures)
 
       subject.replace
     end
@@ -34,7 +34,7 @@ describe SitePrism::Vcr::Adjuster do
     it 'returns a new container with fixtures' do
       subject.replace
 
-      subject.prepared_fixtures.should eq(replaced_fixtures)
+      expect(subject.prepared_fixtures).to eq(replaced_fixtures)
     end
   end
 
@@ -46,13 +46,13 @@ describe SitePrism::Vcr::Adjuster do
     end
 
     it 'replaces fixtures' do
-      fixtures.should_receive(:union).with(raw_fixtures)
+      expect(fixtures).to receive(:union).with(raw_fixtures)
 
       subject.union
     end
 
     it 'cleans fixtures being kept in the fixtures handler' do
-      fixtures_handler.should_receive(:clean_fixtures)
+      expect(fixtures_handler).to receive(:clean_fixtures)
 
       subject.union
     end
@@ -60,7 +60,7 @@ describe SitePrism::Vcr::Adjuster do
     it 'returns a new container with fixtures' do
       subject.union
 
-      subject.prepared_fixtures.should eq(new_fixtures)
+      expect(subject.prepared_fixtures).to eq(new_fixtures)
     end
   end
 
@@ -74,13 +74,13 @@ describe SitePrism::Vcr::Adjuster do
 
     shared_examples 'when passed arguments are prepared' do
       it 'prepares old fixtures' do
-        fixtures_handler.should_receive(:fixtures).with([*old_fixtures])
+        expect(fixtures_handler).to receive(:fixtures).with([*old_fixtures])
 
         exchange
       end
 
       it 'prepares new fixtures' do
-        fixtures_handler.should_receive(:fixtures).with([*new_fixtures])
+        expect(fixtures_handler).to receive(:fixtures).with([*new_fixtures])
 
         exchange
       end
@@ -112,7 +112,7 @@ describe SitePrism::Vcr::Adjuster do
     end
 
     it 'exchanges fixtures' do
-      fixtures.should_receive(:exchange).with(
+      expect(fixtures).to receive(:exchange).with(
         prepared_old_fixtures, prepared_new_fixtures
       )
 

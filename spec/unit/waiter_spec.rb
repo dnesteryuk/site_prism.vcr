@@ -12,7 +12,7 @@ describe SitePrism::Vcr::Waiter do
 
       context 'when a waiter method is a symbol' do
         it 'calls the waiter to wait until all HTTP interactions are finished' do
-          node.should_receive(:wait_for_me)
+          expect(node).to receive(:wait_for_me)
 
           waiter.wait
         end
@@ -22,14 +22,14 @@ describe SitePrism::Vcr::Waiter do
         let(:options) { double(waiter: proc{ self.wait_content_in_block }) }
 
         it 'calls the waiter to wait until all HTTP interactions are finished' do
-          node.should_receive(:wait_content_in_block)
+          expect(node).to receive(:wait_content_in_block)
 
           waiter.wait
         end
       end
 
       it 'ejects fixtures' do
-        fixtures_handler.should_receive(:eject)
+        expect(fixtures_handler).to receive(:eject)
 
         waiter.wait
       end
@@ -39,7 +39,7 @@ describe SitePrism::Vcr::Waiter do
       let(:options) { double(waiter: nil) }
 
       it 'the fixtures handler does not eject fixtures' do
-        fixtures_handler.should_not_receive(:eject)
+        expect(fixtures_handler).to_not receive(:eject)
 
         waiter.wait
       end
@@ -54,11 +54,11 @@ describe SitePrism::Vcr::Waiter do
     end
 
     it 'has a new waiter method' do
-      @new_waiter.waiter_method.should eq(:wait_for_tom)
+      expect(@new_waiter.waiter_method).to eq(:wait_for_tom)
     end
 
     it 'has the same node' do
-      @new_waiter.node.should eq(node)
+      expect(@new_waiter.node).to eq(node)
     end
   end
 end
