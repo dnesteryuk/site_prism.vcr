@@ -5,21 +5,17 @@ describe SitePrism::Page do
 
   describe '#apply_vcr' do
     let(:applier)      { double(apply: true) }
-    let(:options)      { 'some options' }
     let(:action_block) { double(call: true) }
 
     before do
-      SitePrism::Page.vcr_options_for_load(
-        options
-      )
+      SitePrism::Page.vcr_options_for_load { }
 
       SitePrism::Vcr::Applier.stub(:new).and_return(applier)
     end
 
     it 'initializes the fixtures applier' do
       expect(SitePrism::Vcr::Applier).to receive(:new).with(
-        subject,
-        options
+        subject
       ).and_return(applier)
 
       subject.apply_vcr(action_block)

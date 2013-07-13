@@ -3,7 +3,6 @@ require 'spec_helper'
 describe SitePrism::Vcr::Element do
   let(:node)    { stub   }
   let(:parent)  { double }
-  let(:options) { 'raw options' }
   let(:applier) { double(apply: true) }
 
   before do
@@ -13,18 +12,17 @@ describe SitePrism::Vcr::Element do
   describe '.new' do
     it 'initializes the fixtures applier' do
       expect(SitePrism::Vcr::Applier).to receive(:new).with(
-        parent,
-        options
+        parent
       )
 
       b1 = proc { }
 
-      described_class.new(nil, parent, options)
+      described_class.new(nil, parent)
     end
   end
 
   describe '#click_and_apply_vcr' do
-    subject { described_class.new(nil, parent, options) }
+    subject { described_class.new(nil, parent) }
 
     before do
       subject.stub(:click)

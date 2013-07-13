@@ -13,13 +13,7 @@ feature 'Immediate Http interactions > Advanced DSL' do
     end
   end
 
-  context 'when fixtures are defined in a block' do
-    it_behaves_like 'when do one simple HTTP request'
-  end
-
-  context 'when fixtures are defined in a hash' do
-    let(:test_app_page) { ImmediateHttpInteractions::OptionsInHashPage.new }
-
+  context 'when default fixtures are defined' do
     it_behaves_like 'when do one simple HTTP request'
   end
 

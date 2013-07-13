@@ -2,11 +2,12 @@ require 'delegate'
 
 module SitePrism
   module Vcr
+    # Extends a native Capybara element with new methods.
     class Element < SimpleDelegator
-      def initialize(element, parent, raw_options = {}, &block)
+      def initialize(element, parent, &block)
         super element
 
-        @applier = Applier.new(parent, raw_options, &block)
+        @applier = Applier.new(parent, &block)
       end
 
       def click_and_apply_vcr(&adjusting_block)

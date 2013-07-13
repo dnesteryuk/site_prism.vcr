@@ -1,8 +1,6 @@
 module SitePrism::ElementContainer
-  def element_with_vcr(element_name, selector, *args, &block)
-    options = args.delete_at(-1) || {}
-
-    element element_name, selector
+  def element_with_vcr(element_name, *args, &block)
+    element element_name, *args
 
     origin_element_name = "origin_#{element_name}"
 
@@ -11,7 +9,7 @@ module SitePrism::ElementContainer
     define_method element_name.to_s do
       elem = public_send(origin_element_name)
 
-      SitePrism::Vcr::Element.new(elem, self, options, &block)
+      SitePrism::Vcr::Element.new(elem, self, &block)
     end
   end
 end

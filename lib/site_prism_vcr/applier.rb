@@ -1,15 +1,11 @@
 module SitePrism
   module Vcr
     class Applier
-      # TODO: it should raise an error if a hash is passed and
-      # a block as well
-      def initialize(node, raw_options = {}, &block)
-        @node, @options = node, Options.new(raw_options)
+      def initialize(node, &block)
+        @node, @options = node, Options.new
         adjuster = InitialAdjuster.new(@options)
 
-        if block_given?
-          adjuster.instance_eval &block
-        end
+        adjuster.instance_eval &block
 
         @fixtures = adjuster.prepared_fixtures
 

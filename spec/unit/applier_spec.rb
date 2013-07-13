@@ -19,11 +19,10 @@ describe SitePrism::Vcr::Applier do
   end
 
   describe '.new' do
-    let(:raw_options) { 'some options' }
-    subject { described_class.new(node, raw_options) }
+    subject { described_class.new(node) { } }
 
     it 'initializes the options object' do
-      expect(SitePrism::Vcr::Options).to receive(:new).with(raw_options)
+      expect(SitePrism::Vcr::Options).to receive(:new)
 
       subject
     end
@@ -36,12 +35,10 @@ describe SitePrism::Vcr::Applier do
       subject
     end
 
-    context 'when a block is given' do
-      it 'calls a given block within the context of the adjuster' do
-        expect(initial_adjuster).to receive(:mymeth)
+    it 'calls a given block within the context of the adjuster' do
+      expect(initial_adjuster).to receive(:mymeth)
 
-        described_class.new(node, raw_options) { mymeth }
-      end
+      described_class.new(node) { mymeth }
     end
 
     it 'receives the fixtures container' do
@@ -74,7 +71,7 @@ describe SitePrism::Vcr::Applier do
       )
     end
 
-    subject(:applier) { described_class.new(node, 'raw options') }
+    subject(:applier) { described_class.new(node) { } }
 
     before do
       SitePrism::Vcr::Adjuster.stub(:new).and_return(adjuster)

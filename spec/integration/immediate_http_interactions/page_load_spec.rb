@@ -4,7 +4,7 @@ feature 'Page Load' do
   let(:one_request_page) { ImmediateHttpInteractions::OneRequestPage.new }
 
   before do
-    page = SimpleDslPage.new
+    page = AdvancedDslPage.new
     page.load
 
     one_request_page.apply_vcr proc { page.link_to_go_to_another_page.click }
