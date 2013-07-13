@@ -36,22 +36,7 @@ Or install it yourself as:
 
 ### Linking VCR cassettes with SitePrism elements
 
-To link VCR cassettes with SitePrism elements, you have to use `element_with_vcr` instead of `element` method of SitePrism for specifying elements.
-
-The simplest way is:
-
-```ruby
-class ProductsPage < SitePrism::Page
-  element_with_vcr \
-    :car_details_link,
-    '#car_details',
-    fixtures: ['car', 'car/features']
-end
-```
-
-In `fixtures` option you define VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info configuration options.
-
-Instead of using hash, you can use a block which gives you some additional options:
+To link VCR cassettes with SitePrism elements, you have to use `element_with_vcr` instead of `element` method of SitePrism for specifying elements:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -62,6 +47,8 @@ class ProductsPage < SitePrism::Page
     end
 end
 ```
+
+`fixtures` helper method is used defining VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info configuration options.
 
 #### Path helper method
 
@@ -94,8 +81,6 @@ class ProductsPage < SitePrism::Page
     ]
 end
 ```
-
-As you can see by using a block you can define fixtures much more easily and it is a preferable way in some cases.
 
 #### Home path helper method
 
@@ -204,6 +189,16 @@ or
 end
 ```
 
+Home path can be defined while applying Vcr:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  home_path 'cars/volvo'
+
+  path '~/' ['volvo', 'volvo_features', 'prices']
+end
+
+
 #### Exchange default fixtures
 
 There may be a situation when you need to exchange some default cassette for one specific test. It is a very easy to do:
@@ -237,18 +232,6 @@ Waiters are very important part of this gem (actually, waiters are part of SiteP
 There is reason why you should use them when you use SitePrism.Vcr. If you specify a waiter while describing SitePrism elements or applying VCR cassettes, SitePrism.Vcr will know when the inserted cassettes should be ejected from Vcr to avoid a situation when some unexpected cassette is applied.
 
 There are 2 ways for defining a waiter. When you describe SitePrism elements:
-
-```ruby
-class ProductsPage < SitePrism::Page
-  element_with_vcr \
-    :car_details_link,
-    '#car_details',
-    fixtures: ['car', 'car/features'],
-    waiter:   :wait_until_loading_indicator_invisible
-end
-```
-
-or if you use a block:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -300,26 +283,14 @@ Waiter could be defined within own block:
 class ProductsPage < SitePrism::Page
   element_with_vcr \
     :car_details_link,
-    '#car_details',
-    fixtures: ['car', 'car/features'],
-    waiter:   proc { self.wait_until_loading_indicator_invisible }
-end
-```
-
-*Note:* In the block you have access to an instance of class where you define elements.
-
-Almost the same usage if you use a block for defining fixtures:
-
-```ruby
-class ProductsPage < SitePrism::Page
-  element_with_vcr \
-    :car_details_link,
     '#car_details' do
       fixtures ['ford', 'cars/ford_features']
       waiter { self.wait_until_loading_indicator_invisible }
     end
 end
 ```
+
+*Note:* In the block you have access to an instance of class where you define elements.
 
 If you need to override some waiter, you do it with a block as well:
 
@@ -391,12 +362,6 @@ page.load_and_apply_vcr do
 
   waiter :wait_for_max_and_felix
 end
-```
-
-*Note:* But, there you can use a block only, you *cannot* use something like:
-
-```ruby
-page.load_and_apply_vcr ['max', 'felix']
 ```
 
 It will not work, because all arguments passed to `load_and_apply_vcr` will be passed to `load` method of SitePrism. It allows you to change an url of the being loaded page.
