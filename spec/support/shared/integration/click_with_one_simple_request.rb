@@ -1,4 +1,4 @@
-shared_examples 'clicks and handles one AJAX request' do
+shared_examples 'clicks and handles one HTTP request' do
   before do
     test_app_page.link_with_one_request.click_and_apply_vcr
   end

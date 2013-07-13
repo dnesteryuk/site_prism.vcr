@@ -2,7 +2,7 @@ require_relative '../base'
 
 module ImmediateHttpInteractions
   class OneRequestPage < BasePage
-    set_url '/immediate-http-interactions/one-request?car={car}'
+    set_url '/immediate-http-interactions/one-request?cat={cat}'
     set_url_matcher /immediate\-http\-interactions\/one\-request/
 
     vcr_options_for_load do

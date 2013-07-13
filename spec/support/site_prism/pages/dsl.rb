@@ -1,6 +1,6 @@
 require_relative './base'
 
-class AdvancedDslPage < BasePage
+class DslPage < BasePage
   set_url '/'
 
   element :link_to_go_to_another_page, '#link_to_go_to_another_page'

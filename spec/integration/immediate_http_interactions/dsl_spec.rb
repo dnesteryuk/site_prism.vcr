@@ -1,6 +1,6 @@
 require 'spec_integration_helper'
 
-feature 'Immediate Http interactions > Advanced DSL' do
+feature 'Immediate Http interactions > DSL' do
   let(:cat_owner)  { test_app_page.cat_owner }
   let(:test_app_page) { ImmediateHttpInteractions::OneRequestPage.new }
   let(:action_method) { :load_and_apply_vcr }
@@ -43,8 +43,8 @@ feature 'Immediate Http interactions > Advanced DSL' do
   end
 
   it 'applies additional query to url' do
-    test_app_page.load_and_apply_vcr(car: 'ford')
+    test_app_page.load_and_apply_vcr(cat: 'ford')
 
-    expect(page.current_url).to match(/\?car=ford/)
+    expect(page.current_url).to match(/\?cat=ford/)
   end
 end
