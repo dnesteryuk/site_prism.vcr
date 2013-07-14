@@ -49,8 +49,8 @@ feature 'Http interactions on click > DSL' do
       let(:actor) { test_app_page.link_with_2_requests }
     end
 
-    it_behaves_like 'when a default waiter is defined within a block' do
-      let(:actor) { test_app_page.link_robb_stark_and_ned_stark_with_block_waiter }
+    it_behaves_like 'when a default waiter does not eject fixtures' do
+      let(:actor) { test_app_page.link_without_ejecting_fixtures }
     end
   end
 

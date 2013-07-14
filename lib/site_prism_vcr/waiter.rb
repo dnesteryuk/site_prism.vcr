@@ -1,22 +1,19 @@
 module SitePrism
   module Vcr
     class Waiter
-      attr_reader :waiter_method, :node
-
       def initialize(node, fixtures_handler, options)
         @node, @waiter_method = node, options.waiter
         @fixtures_handler = fixtures_handler
+        @options = options.waiter_options || {}
       end
 
       def wait
-        if waiter_method
-          if waiter_method.respond_to?(:call)
-            @node.instance_eval &waiter_method
-          else
-            @node.public_send waiter_method
-          end
+        if @waiter_method
+          @node.instance_eval &@waiter_method
 
-          @fixtures_handler.eject
+          if @options.fetch(:eject_cassettes, true)
+            @fixtures_handler.eject
+          end
         end
       end
 

@@ -14,7 +14,7 @@ shared_examples 'when a default fixture is exchanged' do
     end
   end
 
-  context 'with a home path' do
+  context 'with a defined home path' do
     before do
       actor_with_home_path.public_send(action_method) do
         exchange '~/daenerys_targaryen', '~/bran_stark'

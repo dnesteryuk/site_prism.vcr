@@ -7,7 +7,7 @@ module ImmediateHttpInteractions
 
     vcr_options_for_load do
       fixtures ['ned_stark']
-      waiter   :wait_for_cat_owner
+      waiter   &:wait_for_cat_owner
     end
   end
 end

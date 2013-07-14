@@ -27,8 +27,8 @@ feature 'Immediate Http interactions > DSL' do
       let(:test_app_page) { actor }
     end
 
-    it_behaves_like 'when a default waiter is defined within a block' do
-      let(:actor) { ImmediateHttpInteractions::WaiterInBlockPage.new }
+    it_behaves_like 'when a default waiter does not eject fixtures' do
+      let(:actor) { ImmediateHttpInteractions::WaiterWithoutFixturesEjectPage.new }
     end
   end
 

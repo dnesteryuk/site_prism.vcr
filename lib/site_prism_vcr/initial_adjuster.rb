@@ -75,21 +75,20 @@ module SitePrism
       # Defines a waiter which will be used for waiting until all HTTP
       # interactions have finished.
       #
-      # @param waiter_method [String, Symbol] Name of a waiter method,
+      # @param options [Hash, nil] Options which allows to change behavior of a waiter.
       #   this method should be defined directly in a section
       #   or a page where fixtures are defined for an element.
+      # @option options :eject_cassettes [Boolean] Whether or not to eject
+      #   all cassettes from VCR once a waiter has finished his work.
       #
       # @yield Block to be used as a waiter.
       #
       # @return [void]
       #
       # @api public
-      def waiter(waiter_method = nil, &block)
-        @options.waiter = if block_given?
-          block
-        else
-          waiter_method
-        end
+      def waiter(waiter_options = nil, &block)
+        @options.waiter         = block
+        @options.waiter_options = waiter_options
       end
 
       def prepared_fixtures

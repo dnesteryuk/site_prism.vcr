@@ -2,10 +2,10 @@
 module SitePrism
   module Vcr
     class Options
-      attr_accessor :fixtures, :waiter, :home_path
+      attr_accessor :fixtures, :waiter, :waiter_options, :home_path
 
       def initialize(options = {})
-        check_options options
+        check_options options # TODO: since we have strict API for defining fixtures, this check we don't need any more
 
         options.each do |key, val|
           public_send("#{key}=", val)
