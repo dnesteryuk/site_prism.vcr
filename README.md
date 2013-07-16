@@ -197,7 +197,7 @@ Home path can be defined while applying Vcr:
 
   path '~/' ['volvo', 'volvo_features', 'prices']
 end
-
+```
 
 #### Exchange default fixtures
 
@@ -227,7 +227,7 @@ end
 
 ### Waiters
 
-Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP requests we have to wait for them, before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on the button to show details of some product, you may wait until loading indicator which you may show on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
+Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP requests we have to wait for them, before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on the button to show details of some product, you may wait until loading indicator which may be shown on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
 
 There is reason why you should use them when you use SitePrism.Vcr. If you specify a waiter while describing SitePrism elements or applying VCR cassettes, SitePrism.Vcr will know when the inserted cassettes should be ejected from Vcr to avoid a situation when some unexpected cassette is applied.
 
@@ -239,7 +239,7 @@ class ProductsPage < SitePrism::Page
     :car_details_link,
     '#car_details' do
       fixtures ['ford', 'cars/ford_features']
-      waiter :wait_until_loading_indicator_invisible
+      waiter &:wait_until_loading_indicator_invisible
     end
 end
 ```
@@ -249,7 +249,7 @@ The second way is to set it while applying Vcr cassettes:
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
   fixtures ['cars/volvo']
-  waiter :wait_until_loading_indicator_invisible
+  waiter &:wait_until_loading_indicator_invisible
 end
 ```
 
@@ -277,40 +277,18 @@ it 'displays details of a product' do
 end
 ```
 
-Waiter could be defined within own block:
+*Note:* Waiters must be defined in a block. In a block you have access to an instance of class where you define elements.
 
-```ruby
-class ProductsPage < SitePrism::Page
-  element_with_vcr \
-    :car_details_link,
-    '#car_details' do
-      fixtures ['ford', 'cars/ford_features']
-      waiter { self.wait_until_loading_indicator_invisible }
-    end
-end
-```
-
-*Note:* In the block you have access to an instance of class where you define elements.
-
-If you need to override some waiter, you do it with a block as well:
+There may be situation when you don't need a waiter to eject all cassettes. In this case you can pass an additional option to a waiter to disable ejecting all cassettes:
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
   fixtures ['cars/volvo']
-  waiter   { self.wait_until_loading_indicator_invisible }
+  waiter({eject_cassettes: false}, &:wait_until_loading_indicator_invisible)
 end
 ```
 
-*Note:* In some cases it is useful when you need to wait for an element which is out of a scope of a current element:
-
-```ruby
-cars_list = @products_page.cars_list
-
-@products_page.car_details_link.click_and_apply_vcr do
-  fixtures ['cars/volvo']
-  waiter   { cars_list.wait_until_loading_indicator_invisible }
-end
-```
+The same thing can be defined for a default waiter.
 
 ### Linking and applying VCR cassettes with SitePrism pages
 
