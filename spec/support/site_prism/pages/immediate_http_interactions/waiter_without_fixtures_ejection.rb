@@ -1,7 +1,7 @@
 require_relative '../base'
 
 module ImmediateHttpInteractions
-  class WaiterWithoutFixturesEjectPage < BasePage
+  class WaiterWithoutFixturesEjectionPage < BasePage
     set_url '/immediate-http-interactions/two-requests'
 
     vcr_options_for_load do

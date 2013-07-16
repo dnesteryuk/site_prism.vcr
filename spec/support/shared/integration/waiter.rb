@@ -13,7 +13,7 @@ shared_examples 'custom waiters' do
       expect(cat_owner).to have_content('Jon Snow')
     end
 
-    it 'VCR does has not any fixtures' do
+    it 'VCR has not any fixtures' do
       expect(VCR.eject_cassette).to be_nil
     end
 
