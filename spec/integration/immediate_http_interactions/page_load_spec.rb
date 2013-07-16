@@ -1,18 +1,50 @@
 require 'spec_integration_helper'
 
-feature 'Page Load' do
-  let(:one_request_page) { ImmediateHttpInteractions::OneRequestPage.new }
+feature 'Immediate Http interactions > Page load' do
+  let(:cat_owner)     { test_app_page.cat_owner }
+  let(:test_app_page) { ImmediateHttpInteractions::OneRequestPage.new }
+  let(:action_method) { :load_and_apply_vcr }
 
-  before do
-    page = DslPage.new
-    page.load
+  shared_examples 'when do one simple HTTP request' do
+    it 'opens the page and applies default fixtures' do
+      test_app_page.load_and_apply_vcr
 
-    one_request_page.apply_vcr proc { page.link_to_go_to_another_page.click }
+      expect(cat_owner).to have_content('Ned Stark')
+    end
   end
 
-  it 'loads fixtures on opening a page by click on a link' do
-    expect(one_request_page.displayed?).to be_true
+  context 'when default fixtures are defined' do
+    it_behaves_like 'when do one simple HTTP request'
+  end
 
-    expect(one_request_page).to have_content('Ned Stark')
+  it_behaves_like 'when a custom cassette is applied' do
+    let(:actor) { test_app_page }
+  end
+
+  context 'waiters' do
+    it_behaves_like 'custom waiters' do
+      let(:actor)         { ImmediateHttpInteractions::TwoRequestsPage.new }
+      let(:test_app_page) { actor }
+    end
+
+    it_behaves_like 'when a default waiter does not eject fixtures' do
+      let(:actor) { ImmediateHttpInteractions::WaiterWithoutFixturesEjectPage.new }
+    end
+  end
+
+  it_behaves_like 'when a home path is define' do
+    let(:actor_with_home_path)    { ImmediateHttpInteractions::HomePathPage.new }
+    let(:actor_without_home_path) { ImmediateHttpInteractions::OneRequestPage.new }
+  end
+
+  it_behaves_like 'when a default fixture is exchanged' do
+    let(:actor_without_home_path) { ImmediateHttpInteractions::TwoRequestsPage.new }
+    let(:actor_with_home_path)    { ImmediateHttpInteractions::HomePathPage.new }
+  end
+
+  it 'applies additional query to url' do
+    test_app_page.load_and_apply_vcr(cat: 'ford')
+
+    expect(page.current_url).to match(/\?cat=ford/)
   end
 end
