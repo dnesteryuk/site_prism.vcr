@@ -5,7 +5,7 @@ require 'site_prism_vcr/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'site_prism.vcr'
-  spec.version       = SitePrism::Vcr::VERSION
+  spec.version       = SPV::VERSION
   spec.authors       = ['Dmitriy Nesteryuk']
   spec.email         = ['nesterukd@gmail.com']
   spec.description   = 'This gem integrates VCR library into SitePrism'

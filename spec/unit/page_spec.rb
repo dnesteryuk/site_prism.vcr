@@ -10,11 +10,11 @@ describe SitePrism::Page do
     before do
       SitePrism::Page.vcr_options_for_load { }
 
-      SitePrism::Vcr::Applier.stub(:new).and_return(applier)
+      SPV::Applier.stub(:new).and_return(applier)
     end
 
     it 'initializes the fixtures applier' do
-      expect(SitePrism::Vcr::Applier).to receive(:new).with(
+      expect(SPV::Applier).to receive(:new).with(
         subject
       ).and_return(applier)
 

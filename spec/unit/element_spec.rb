@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::Element do
+describe SPV::Element do
   let(:node)    { stub   }
   let(:parent)  { double }
   let(:applier) { double(apply: true) }
 
   before do
-    SitePrism::Vcr::Applier.stub(:new).and_return(applier)
+    SPV::Applier.stub(:new).and_return(applier)
   end
 
   describe '.new' do
     it 'initializes the fixtures applier' do
-      expect(SitePrism::Vcr::Applier).to receive(:new).with(
+      expect(SPV::Applier).to receive(:new).with(
         parent
       )
 

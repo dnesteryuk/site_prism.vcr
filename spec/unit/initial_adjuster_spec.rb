@@ -1,18 +1,18 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::InitialAdjuster do
+describe SPV::InitialAdjuster do
   let(:options)          { double }
   let(:fixtures_handler) { double }
 
   subject { described_class.new(options) }
 
   before do
-    SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
+    SPV::FixturesHandler.stub(:new).and_return(fixtures_handler)
   end
 
   describe '.new' do
     it 'initializes the fixtures handler' do
-      expect(SitePrism::Vcr::FixturesHandler).to receive(:new).with(options)
+      expect(SPV::FixturesHandler).to receive(:new).with(options)
 
       subject
     end
@@ -90,13 +90,13 @@ describe SitePrism::Vcr::InitialAdjuster do
     let(:raw_fixtures) { 'some raw fixtures' }
 
     before do
-      SitePrism::Vcr::Fixtures.stub(:new).and_return(fixtures)
+      SPV::Fixtures.stub(:new).and_return(fixtures)
 
       fixtures_handler.stub(:fixtures).and_return(raw_fixtures)
     end
 
     it 'initializes the fixtures handler' do
-      expect(SitePrism::Vcr::Fixtures).to receive(:new).with(raw_fixtures).and_return(fixtures)
+      expect(SPV::Fixtures).to receive(:new).with(raw_fixtures).and_return(fixtures)
 
       expect(subject.prepared_fixtures).to eq(fixtures)
     end

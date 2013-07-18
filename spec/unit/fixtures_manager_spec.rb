@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::FixturesManager do
+describe SPV::FixturesManager do
   let(:options) { double(fixtures: ['some fixture']) }
 
   describe '#inject' do
@@ -43,7 +43,7 @@ describe SitePrism::Vcr::FixturesManager do
     subject { described_class.new(options).eject }
 
     it 'ejects all fixtures from VCR' do
-      expect(SitePrism::Vcr::Helpers).to receive(:eject_all_cassettes)
+      expect(SPV::Helpers).to receive(:eject_all_cassettes)
 
       subject
     end

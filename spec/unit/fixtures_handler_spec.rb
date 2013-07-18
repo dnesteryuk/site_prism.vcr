@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::FixturesHandler do
+describe SPV::FixturesHandler do
   let(:options)          { double(fixtures: ['default fixtures']) }
   let(:fixtures_handler) { described_class.new(options) }
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::Fixtures do
+describe SPV::Fixtures do
   subject(:fixtures) { described_class.new([1, 2, 3]) }
 
   describe '#exchange' do

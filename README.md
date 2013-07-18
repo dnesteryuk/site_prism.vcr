@@ -259,7 +259,7 @@ In this case once we meet an expectation defined in a waiter, Vcr cassettes will
 
 ```ruby
 after do
-  SitePrism::Vcr::Helpers.eject_all_cassettes
+  SPV::Helpers.eject_all_cassettes
 end
 ```
 
@@ -270,7 +270,7 @@ it 'displays details of a product' do
   products_page.products.first.show_details_btn.click_and_apply_vcr
   products_page.details.should have_content('Volvo')
 
-  SitePrism::Vcr::Helpers.eject_all_cassettes
+  SPV::Helpers.eject_all_cassettes
 
   products_page.products.second.show_details_btn.click_and_apply_vcr
   products_page.details.should have_content('Ford')

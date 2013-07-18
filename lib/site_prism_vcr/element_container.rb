@@ -9,7 +9,7 @@ module SitePrism::ElementContainer
     define_method element_name.to_s do
       elem = public_send(origin_element_name)
 
-      SitePrism::Vcr::Element.new(elem, self, &block)
+      SPV::Element.new(elem, self, &block)
     end
   end
 end

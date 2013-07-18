@@ -37,7 +37,7 @@ describe SitePrism::ElementContainer do
       subject { page.el_with_options }
 
       it 'initializes a new instance of an element with empty options' do
-        expect(SitePrism::Vcr::Element).to receive(:new).with(
+        expect(SPV::Element).to receive(:new).with(
           'original element with options', page
         ).and_return(vcr_el)
 

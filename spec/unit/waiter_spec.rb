@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::Waiter do
+describe SPV::Waiter do
   let(:node)             { double }
   let(:options)          { double(waiter_options: nil, waiter: nil) }
   let(:fixtures_handler) { double(eject: true) }

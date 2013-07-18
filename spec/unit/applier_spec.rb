@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::Applier do
+describe SPV::Applier do
   let(:node)             { double }
   let(:options)          { double(fixtures: 'some prepared fixtures') }
   let(:fixtures_manager) { double(inject: true) }
@@ -8,27 +8,27 @@ describe SitePrism::Vcr::Applier do
   let(:initial_adjuster) { double(prepared_fixtures: fixtures) }
 
   before do
-    SitePrism::Vcr::Options.stub(:new).and_return(options)
-    SitePrism::Vcr::InitialAdjuster.stub(:new).and_return(initial_adjuster)
+    SPV::Options.stub(:new).and_return(options)
+    SPV::InitialAdjuster.stub(:new).and_return(initial_adjuster)
 
-    SitePrism::Vcr::FixturesManager.stub(:new).and_return(fixtures_manager)
+    SPV::FixturesManager.stub(:new).and_return(fixtures_manager)
   end
 
   before do
-    SitePrism::Vcr::InitialAdjuster.stub(:new).and_return(initial_adjuster)
+    SPV::InitialAdjuster.stub(:new).and_return(initial_adjuster)
   end
 
   describe '.new' do
     subject { described_class.new(node) { } }
 
     it 'initializes the options object' do
-      expect(SitePrism::Vcr::Options).to receive(:new)
+      expect(SPV::Options).to receive(:new)
 
       subject
     end
 
     it 'initializes the initial adjuster' do
-      expect(SitePrism::Vcr::InitialAdjuster).to receive(:new).with(
+      expect(SPV::InitialAdjuster).to receive(:new).with(
         options
       )
 
@@ -48,7 +48,7 @@ describe SitePrism::Vcr::Applier do
     end
 
     it 'initializes the fixtures manager' do
-      expect(SitePrism::Vcr::FixturesManager).to receive(:new).with(
+      expect(SPV::FixturesManager).to receive(:new).with(
         options
       ).and_return(fixtures_manager)
 
@@ -74,12 +74,12 @@ describe SitePrism::Vcr::Applier do
     subject(:applier) { described_class.new(node) { } }
 
     before do
-      SitePrism::Vcr::Adjuster.stub(:new).and_return(adjuster)
-      SitePrism::Vcr::Waiter.stub(:new).and_return(waiter)
+      SPV::Adjuster.stub(:new).and_return(adjuster)
+      SPV::Waiter.stub(:new).and_return(waiter)
     end
 
     it 'initializes the fixtures adjuster with a new instance of options' do
-      expect(SitePrism::Vcr::Adjuster).to receive(:new).with(
+      expect(SPV::Adjuster).to receive(:new).with(
         cloned_options,
         fixtures
       )
@@ -100,7 +100,7 @@ describe SitePrism::Vcr::Applier do
     end
 
     it 'initializes the waiter' do
-      expect(SitePrism::Vcr::Waiter).to receive(:new).with(
+      expect(SPV::Waiter).to receive(:new).with(
         node,
         fixtures_manager,
         cloned_options

@@ -37,7 +37,7 @@ shared_examples 'custom waiters' do
     end
 
     after do
-      SitePrism::Vcr::Helpers.eject_all_cassettes
+      SPV::Helpers.eject_all_cassettes
     end
 
     it 'uses a custom waiter' do
@@ -59,7 +59,7 @@ shared_examples 'when a default waiter does not eject fixtures' do
   end
 
   after do
-    SitePrism::Vcr::Helpers.eject_all_cassettes
+    SPV::Helpers.eject_all_cassettes
   end
 
   it 'uses a default waiter' do

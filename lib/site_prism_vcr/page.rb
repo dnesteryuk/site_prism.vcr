@@ -13,7 +13,7 @@ module SitePrism
     end
 
     def apply_vcr(*args, action_block, &adjusting_block)
-      applier = SitePrism::Vcr::Applier.new(
+      applier = SPV::Applier.new(
         self,
         &self.class.vcr_adjuster
       )

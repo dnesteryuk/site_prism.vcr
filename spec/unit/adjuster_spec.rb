@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::Adjuster do
+describe SPV::Adjuster do
   let(:raw_fixtures)     { 'some fixtures' }
   let(:fixtures)         { double }
   let(:fixtures_handler) { double(fixtures: raw_fixtures, clean_fixtures: true) }
   let(:options)          { double(waiter: :wait_for_me) }
 
   before do
-    SitePrism::Vcr::FixturesHandler.stub(:new).and_return(fixtures_handler)
+    SPV::FixturesHandler.stub(:new).and_return(fixtures_handler)
   end
 
   subject { described_class.new(options, fixtures) }

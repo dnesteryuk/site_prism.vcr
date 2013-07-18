@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::Options do
+describe SPV::Options do
   let(:options) { described_class.new }
 
   describe '.new' do

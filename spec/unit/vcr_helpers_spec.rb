@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SitePrism::Vcr::Helpers do
+describe SPV::Helpers do
   describe '.eject_all_cassettes' do
     subject { described_class.eject_all_cassettes }
 
