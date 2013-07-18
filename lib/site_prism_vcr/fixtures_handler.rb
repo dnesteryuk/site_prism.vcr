@@ -7,7 +7,7 @@ module SPV
     attr_reader :fixtures
 
     def initialize(options)
-      @fixtures, @options = options.fixtures, options
+      @fixtures, @options = [], options
     end
 
     def fixtures(raw_fixtures = nil)

@@ -65,23 +65,6 @@ describe SPV::Options do
     end
   end
 
-  describe '#fixtures' do
-    context 'when no fixtures' do
-      it 'returns an empty array' do
-        expect(options.fixtures).to eq([])
-      end
-    end
-
-    context 'when fixtures are here' do
-      it 'returns them' do
-        fixtures = ['test']
-
-        options = described_class.new(fixtures: fixtures)
-        expect(options.fixtures).to eq(fixtures)
-      end
-    end
-  end
-
   describe '#dup_without_fixtures' do
     before do
       options.fixtures = ['some fixtures']

@@ -1,7 +1,7 @@
 # TODO: should be this class immutable?
 module SPV
   class Options
-    attr_accessor :fixtures, :waiter, :waiter_options, :home_path
+    attr_accessor :waiter, :waiter_options, :home_path
 
     def initialize(options = {})
       check_options options # TODO: since we have strict API for defining fixtures, this check we don't need any more
@@ -17,10 +17,6 @@ module SPV
       @home_path = val
     end
 
-    def fixtures
-      @fixtures || []
-    end
-
     def dup_without_fixtures
       new_options = dup
       new_options.fixtures = []
@@ -29,7 +25,7 @@ module SPV
 
     protected
       def check_options(options)
-        keys = options.keys.map(&:to_sym) - [:fixtures, :waiter]
+        keys = options.keys.map(&:to_sym) - [:waiter]
 
         if keys.size > 0
           if keys.size == 1
