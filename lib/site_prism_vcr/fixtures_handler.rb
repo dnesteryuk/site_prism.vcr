@@ -2,7 +2,7 @@
 # 2 responsibilities
 module SPV
   # This class is responsible for keeping a list
-  # of prepared fixtures to be inserted into VCR
+  # of prepared fixtures which will be inserted to Vcr
   class FixturesHandler
     attr_reader :fixtures
 
