@@ -6,6 +6,15 @@
 2. Check documentation about this gem
 3. Think about adding more integration tests
 4. Add possibility to pass VCR options to cassettes while applying them
+5. Use another scope instead of 
+
+```ruby
+  module SitePrism
+    module Vcr
+      # code here
+    end
+  end
+```
 
 ## Release 0.0.2
 
