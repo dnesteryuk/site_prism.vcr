@@ -4,7 +4,8 @@ module SPV
   class InitialAdjuster
     def initialize(options)
       @options = options
-      @fixtures_handler = FixturesHandler.new(@options)
+      @fixtures_handler   = FixturesHandler.new(@options)
+      @fixtures_converter = Fixtures::Converter.new(@options)
     end
 
     # Defines fixtures which will be inserted into VCR.
@@ -15,7 +16,8 @@ module SPV
     #
     # @api public
     def fixtures(list)
-      @fixtures_handler.add_fixtures(list)
+      converted_list = @fixtures_converter.raw_to_fixtures(list)
+      @fixtures_handler.add_fixtures(converted_list)
     end
 
     # Defines path to fixtures. Later this path
@@ -45,15 +47,17 @@ module SPV
     def path(path, fixture_names)
       fixtures, wrong_fixtures = [], []
 
-      fixture_names.map do |name|
-        if name[0..1] == '~/'
-          wrong_fixtures << name[2..-1]
-        else
-          fixture_with_path = path.dup
-          fixture_with_path << '/' unless path[-1, 1] == '/'
-          fixture_with_path << name
+      converted_fixtures = @fixtures_converter.raw_to_fixtures(fixture_names)
+      options_with_path  = OptionsWithPath.new(@options)
+      options_with_path.path = path
 
-          fixtures << fixture_with_path
+      modifier = Fixtures::Modifiers::Path.new(options_with_path)
+
+      converted_fixtures.map do |fixture|
+        if fixture.has_link_to_home_path?
+          wrong_fixtures << fixture.name[2..-1]
+        else
+          modifier.modify(fixture)
         end
       end
 
@@ -68,7 +72,7 @@ module SPV
         )
       end
 
-      @fixtures_handler.add_fixtures(fixtures)
+      @fixtures_handler.add_fixtures(converted_fixtures)
     end
 
     # Defines a waiter which will be used for waiting until all HTTP

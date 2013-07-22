@@ -1,24 +1,46 @@
 require 'spec_helper'
 
 describe SPV::FixturesHandler do
-  let(:options)          { double(fixtures: ['default fixtures']) }
+  let(:options)          { double }
   let(:fixtures_handler) { described_class.new(options) }
 
   describe '#fixtures' do
     let(:options) do
       double(
-        home_path: 'fixtures/path/',
-        fixtures:  ['~/test', '~/custom/test', 'custom/test']
+        home_path: 'fixtures/path/'
       )
     end
 
+    let(:fixture1) {
+      double(
+        name:                      'test_with_home_path',
+        set_home_path:             true,
+        :has_link_to_home_path? => true
+      )
+    }
+
+    let(:fixture2) {
+      double(name: 'test_without_home_path', :has_link_to_home_path? => false)
+    }
+
+    subject { fixtures_handler.fixtures }
+
+    before do
+      fixtures_handler.add_fixtures([fixture1, fixture2])
+    end
+
     context 'when the home_path is defined' do
-      it 'returns fixtures with a right path' do
-        expect(fixtures_handler.fixtures).to eq([
-          'fixtures/path/test',
-          'fixtures/path/custom/test',
-          'custom/test'
-        ])
+
+      it 'writes a proper path for first fixture' do
+        expect(fixture1).to receive(:set_home_path).with('fixtures/path/')
+
+        subject
+      end
+
+      it 'does not change second fixture' do
+        expect(fixture2).to_not receive(:set_home_path)
+
+        subject
       end
     end
 
@@ -28,29 +50,24 @@ describe SPV::FixturesHandler do
       end
 
       it 'raises an argument error about wrong way of defining fixtures' do
-        msg = 'You are trying to use a home path for these: ~/test, ~/custom/test fixtures. ' \
+        msg = 'You are trying to use a home path for these: test_with_home_path fixtures. ' \
           'They cannot be used since the home_path is not defined, please refer to the documentation ' \
           'to make sure you define the home path properly.'
 
-        expect { fixtures_handler.fixtures }.to raise_error(
+        expect { subject }.to raise_error(
           ArgumentError, msg
         )
       end
     end
 
     context 'when raw fixtures are passed' do
-      it 'returns prepared fixtures' do
-        raw_fixtures = ['some raw']
+      subject { fixtures_handler.fixtures([fixture1]) }
 
-        expect(fixtures_handler.fixtures(raw_fixtures)).to eq(raw_fixtures)
+      it 'writes a proper path for the fixture' do
+        expect(fixture1).to receive(:set_home_path).with('fixtures/path/')
+
+        subject
       end
-    end
-  end
-
-  describe '#add_fixtures' do
-    it 'adds new fixtures' do
-      fixtures_handler.add_fixtures(['new fixture'])
-      expect(fixtures_handler.fixtures).to eq(['default fixtures', 'new fixture'])
     end
   end
 end

@@ -7,15 +7,12 @@ describe SPV::Options do
     context 'when all allowed options are passed' do
       it 'holds the passed options' do
         waiter   = 'some'
-        fixtures = ['some fixtures']
 
         options = described_class.new(
-          waiter:       waiter,
-          'fixtures' => fixtures
+          waiter: waiter
         )
 
         expect(options.waiter).to eq(waiter)
-        expect(options.fixtures).to eq(fixtures)
       end
     end
 
@@ -66,15 +63,10 @@ describe SPV::Options do
   end
 
   describe '#dup_without_fixtures' do
-    before do
-      options.fixtures = ['some fixtures']
-    end
-
-    it 'returns a new instance of options without fixtures' do
+    it 'returns a new instance of options' do
       cloned_options = options.dup_without_fixtures
 
       expect(cloned_options.object_id).to_not eq(options.object_id)
-      expect(cloned_options.fixtures).to eq([])
     end
   end
 end

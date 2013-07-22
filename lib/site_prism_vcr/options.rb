@@ -17,10 +17,9 @@ module SPV
       @home_path = val
     end
 
+    # TODO: remove this method
     def dup_without_fixtures
-      new_options = dup
-      new_options.fixtures = []
-      new_options
+      dup
     end
 
     protected

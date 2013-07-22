@@ -18,8 +18,8 @@ module SPV
         'No fixtures were specified to insert them into VCR'
       ) if fixtures.size == 0
 
-      fixtures.map do |fixture|
-        VCR.insert_cassette fixture
+      fixtures.each do |fixture|
+        VCR.insert_cassette fixture.name
       end
     end
 

@@ -4,8 +4,11 @@ describe SPV::FixturesManager do
   let(:options) { double(fixtures: ['some fixture']) }
 
   describe '#inject' do
+    let(:fixture1)    { double(name: 'fixture1') }
+    let(:fixture2)    { double(name: 'fixture2') }
+
     let(:cassettes)   { ['some'] }
-    let(:fixtures)    { ['fixture1', 'fixture2'] }
+    let(:fixtures)    { [fixture1, fixture2] }
     subject(:manager) { described_class.new(options) }
 
     before do

@@ -10,15 +10,19 @@ module SPV
       @fixtures, @options = [], options
     end
 
+    # TODO: this code should not live here,
+    # it violates SPR. Actually, for such thing we have to think over
+    # modifier Each fixture should pass through modifiers. Such approach will
+    # allow anything with fixtures.
     def fixtures(raw_fixtures = nil)
       wrong_fixtures = []
 
       raw_fixtures ||= @fixtures
 
-      prepared_fixtures = raw_fixtures.map do |fixture|
-        if fixture[0..1] == '~/'
+      raw_fixtures.each do |fixture|
+        if fixture.has_link_to_home_path?
           if @options.home_path
-            fixture = fixture.gsub(/\A\~\//, @options.home_path)
+            fixture.set_home_path(@options.home_path)
           else
             wrong_fixtures << fixture
           end
@@ -29,12 +33,12 @@ module SPV
 
       if wrong_fixtures.size > 0
         raise ArgumentError.new(
-          "You are trying to use a home path for these: #{wrong_fixtures.join(', ')} fixtures. " \
+          "You are trying to use a home path for these: #{wrong_fixtures.map(&:name).join(', ')} fixtures. " \
           "They cannot be used since the home_path is not defined, please refer to the documentation " \
           "to make sure you define the home path properly."
         )
       else
-        prepared_fixtures
+        raw_fixtures
       end
     end
 

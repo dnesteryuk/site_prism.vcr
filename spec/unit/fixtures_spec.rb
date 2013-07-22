@@ -1,55 +1,76 @@
 require 'spec_helper'
 
 describe SPV::Fixtures do
-  subject(:fixtures) { described_class.new([1, 2, 3]) }
+  let(:fixture1) { double(name: 'fixture1') }
+  let(:fixture2) { double(name: 'fixture2') }
+  let(:fixture3) { double(name: 'fixture3') }
+  let(:fixture4) { double(name: 'fixture4') }
+  let(:fixture5) { double(name: 'fixture5') }
+
+  subject(:fixtures) { described_class.new([fixture1, fixture2, fixture3]) }
 
   describe '#exchange' do
     def exchange
-      fixtures.exchange([1, 3], [4, 5])
+      fixtures.exchange([fixture1, fixture3], [fixture4, fixture5])
     end
 
-    it 'removes "1, 3" elements' do
+    it 'removes "fixture1" and "fixture3" elements' do
       new_fixtures = exchange
 
-      expect(new_fixtures).to_not include(1, 3)
+      expect(new_fixtures).to_not include(fixture1, fixture3)
     end
 
-    it 'adds "4, 5" elements' do
+    it 'adds "fixture4, fixture5" elements' do
       new_fixtures = exchange
 
-      expect(new_fixtures).to include(4, 5)
+      expect(new_fixtures).to include(fixture4, fixture5)
     end
 
     it 'does not touch the original object' do
       exchange
 
-      expect(fixtures).to include(1, 2, 3)
+      expect(fixtures).to include(fixture1, fixture2, fixture3)
     end
   end
 
   describe '#replace' do
-    context 'when cassettes are passed' do
-      it 'does not change an original object' do
-        fixtures.replace([4, 5])
+    context 'when fixtures are passed' do
+      it 'does not change the original object' do
+        fixtures.replace([fixture4, fixture5])
 
-        expect(fixtures).to include(1, 2, 3)
-        expect(fixtures).to_not include(4, 5)
+        expect(fixtures).to include(fixture1, fixture2, fixture3)
+        expect(fixtures).to_not include(fixture4, fixture5)
       end
 
-      it 'returns a new set with fixtures' do
-        new_fixtures = fixtures.replace([4, 5])
+      it 'returns a new container with fixtures' do
+        new_fixtures = fixtures.replace([fixture4, fixture5])
 
-        expect(new_fixtures).to include(4, 5)
-        expect(new_fixtures).to_not include(1, 2, 3)
+        expect(new_fixtures).to include(fixture4, fixture5)
+        expect(new_fixtures).to_not include(fixture1, fixture2, fixture3)
       end
     end
 
-    context 'when no cassettes are passed' do
+    context 'when no fixtures are passed' do
       it 'returns itself' do
         new_fixtures = fixtures.replace([])
 
         expect(new_fixtures).to eq(fixtures)
       end
+    end
+  end
+
+  describe '#union' do
+    it 'does not change the original object' do
+      fixtures.union([fixture4, fixture5])
+
+      expect(fixtures).to include(fixture1, fixture2, fixture3)
+      expect(fixtures).to_not include(fixture4, fixture5)
+    end
+
+    it 'returns a new container with fixtures' do
+      new_fixtures = fixtures.union([fixture4, fixture5])
+
+      expect(new_fixtures).to include(fixture1, fixture2, fixture3, fixture4, fixture5)
     end
   end
 end

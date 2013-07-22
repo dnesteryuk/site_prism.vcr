@@ -1,13 +1,16 @@
 require 'spec_helper'
 
 describe SPV::InitialAdjuster do
-  let(:options)          { double }
-  let(:fixtures_handler) { double }
+  let(:converted_fixtures_list) { 'converted fixtures list' }
+  let(:options)                 { double }
+  let(:fixtures_handler)        { double(add_fixtures: true) }
+  let(:fixtures_converter)      { double(raw_to_fixtures: converted_fixtures_list) }
 
   subject { described_class.new(options) }
 
   before do
     SPV::FixturesHandler.stub(:new).and_return(fixtures_handler)
+    SPV::Fixtures::Converter.stub(:new).and_return(fixtures_converter)
   end
 
   describe '.new' do
@@ -16,13 +19,25 @@ describe SPV::InitialAdjuster do
 
       subject
     end
+
+    it 'initializes the fixtures converter' do
+      expect(SPV::Fixtures::Converter).to receive(:new)
+
+      subject
+    end
   end
 
   describe '#fixtures' do
     let(:raw_fixtures) { 'some fixtures' }
 
+    it 'converts given fixtures' do
+      expect(fixtures_converter).to receive(:raw_to_fixtures).with(raw_fixtures)
+
+      subject.fixtures(raw_fixtures)
+    end
+
     it 'adds fixtures' do
-      expect(fixtures_handler).to receive(:add_fixtures).with(raw_fixtures)
+      expect(fixtures_handler).to receive(:add_fixtures).with(converted_fixtures_list)
 
       subject.fixtures(raw_fixtures)
     end
@@ -39,23 +54,61 @@ describe SPV::InitialAdjuster do
   end
 
   describe '#path' do
+    let(:fixture)                 { double(has_link_to_home_path?: false) }
+    let(:converted_fixtures_list) { [fixture] }
+    let(:options_with_path)       { double('path=' => true) }
+    let(:path_modifier)           { double(modify: true) }
+
+    before do
+      SPV::OptionsWithPath.stub(:new).and_return(options_with_path)
+      SPV::Fixtures::Modifiers::Path.stub(:new).and_return(path_modifier)
+    end
+
+    it 'converts raw fixtures' do
+      expect(fixtures_converter).to receive(:raw_to_fixtures).with(
+        ['test_fixture1']
+      )
+
+      subject.path 'path', ['test_fixture1']
+    end
+
+    it 'initializes a new object with options' do
+      expect(SPV::OptionsWithPath).to receive(:new).with(options)
+
+      subject.path 'path', ['test_fixture1']
+    end
+
+    it 'defines path to fixtures' do
+      expect(options_with_path).to receive(:path=).with('some path')
+
+      subject.path 'some path', ['test_fixture1']
+    end
+
+    it 'initializes the modifier to modify path' do
+      expect(
+        SPV::Fixtures::Modifiers::Path
+      ).to receive(:new).with(options_with_path)
+
+      subject.path 'path', ['test_fixture1']
+    end
+
+    it 'modifies the converted fixture' do
+      expect(path_modifier).to receive(:modify).with(fixture)
+
+      subject.path 'path', ['test_fixture1']
+    end
+
     it 'adds fixtures into container' do
-      expect(fixtures_handler).to receive(:add_fixtures).with([
-        'some/path/test_fixture1', 'some/path/test_fixture2'
-      ])
+      expect(fixtures_handler).to receive(:add_fixtures).with(converted_fixtures_list)
 
-      subject.path 'some/path', ['test_fixture1', 'test_fixture2']
+      subject.path 'path', ['test_fixture1']
     end
 
-    it 'does not add additional "/" if the path name ends with "/"' do
-      expect(fixtures_handler).to receive(:add_fixtures).with([
-        'some/path/test_fixture1'
-      ])
+    context 'when a home path is used in fixtures list' do
+      let(:fixture2) { double(has_link_to_home_path?: true, name: '~/test_fixture2') }
+      let(:fixture3) { double(has_link_to_home_path?: true, name: '~/test_fixture3') }
+      let(:converted_fixtures_list) { [fixture, fixture2, fixture3] }
 
-      subject.path 'some/path/', ['test_fixture1']
-    end
-
-    context 'when a home path is used in cassettes list' do
       it 'raises an error about wrong using of "path" method' do
         msg = "You cannot use the home path while listing fixtures in the 'path' method. " <<
           "Please, use 'fixtures' method for 'test_fixture2, test_fixture3' fixtures or " <<
@@ -63,7 +116,7 @@ describe SPV::InitialAdjuster do
           "Example: path('~/', ['test_fixture2', 'test_fixture3'])"
 
         expect {
-          subject.path 'some/path', ['test_fixture1', '~/test_fixture2', '~/test_fixture3']
+          subject.path 'path', ['test_fixture1']
         }.to raise_error(ArgumentError, msg)
       end
     end
