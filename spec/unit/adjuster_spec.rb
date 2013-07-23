@@ -67,37 +67,64 @@ describe SPV::Adjuster do
   describe '#exchange' do
     def exchange
       subject.exchange(
-        old_fixtures,
-        new_fixtures
+        raw_old_fixtures,
+        raw_new_fixtures
       )
     end
 
     shared_examples 'when passed arguments are prepared' do
-      it 'prepares old fixtures' do
-        expect(fixtures_handler).to receive(:fixtures).with([*old_fixtures])
+      it 'converts old fixtures' do
+        expect(fixtures_converter).to receive(:raw_to_fixtures).with([*raw_old_fixtures])
+
+        exchange
+      end
+
+      it 'sets a home path for old fixture' do
+        expect(home_path_modifier).to receive(:modify).with(old_fixture)
 
         exchange
       end
 
       it 'prepares new fixtures' do
-        expect(fixtures_handler).to receive(:fixtures).with([*new_fixtures])
+        expect(fixtures_converter).to receive(:raw_to_fixtures).with([*raw_new_fixtures])
+
+        exchange
+      end
+
+      it 'sets a home path for old fixture' do
+        expect(home_path_modifier).to receive(:modify).with(new_fixture)
 
         exchange
       end
     end
 
-    let(:fixtures)     { double(exchange: true) }
-    let(:old_fixtures) { ['old fixtures'] }
-    let(:new_fixtures) { ['new fixtures'] }
+    let(:fixtures)           { double(exchange: true) }
+    let(:fixtures_converter) { double(raw_to_fixtures: true) }
+    let(:home_path_modifier) { double(modify: true) }
 
-    let(:prepared_old_fixtures) { 'prepared old fixtures' }
-    let(:prepared_new_fixtures) { 'prepared new fixtures' }
+    let(:raw_old_fixtures) { ['old fixtures'] }
+    let(:raw_new_fixtures) { ['new fixtures'] }
+
+    let(:old_fixture) { double }
+    let(:new_fixture) { double }
+
+    let(:prepared_old_fixtures) { [old_fixture] }
+    let(:prepared_new_fixtures) { [new_fixture] }
 
     before do
-      fixtures_handler.stub(:fixtures).and_return(
+      SPV::Fixtures::Converter.stub(:new).and_return(fixtures_converter)
+      SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
+
+      fixtures_converter.stub(:raw_to_fixtures).and_return(
         prepared_old_fixtures,
         prepared_new_fixtures
       )
+    end
+
+    it 'initializes the home path modifier' do
+      expect(SPV::Fixtures::Modifiers::HomePath).to receive(:new).with(options)
+
+      exchange
     end
 
     context 'when strings are passed as arguments' do

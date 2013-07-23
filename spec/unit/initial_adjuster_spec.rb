@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SPV::InitialAdjuster do
-  let(:converted_fixtures_list) { 'converted fixtures list' }
+  let(:converted_fixtures_list) { [] }
   let(:options)                 { double }
   let(:fixtures_handler)        { double(add_fixtures: true) }
   let(:fixtures_converter)      { double(raw_to_fixtures: converted_fixtures_list) }
@@ -28,10 +28,29 @@ describe SPV::InitialAdjuster do
   end
 
   describe '#fixtures' do
-    let(:raw_fixtures) { 'some fixtures' }
+    let(:raw_fixtures)            { 'some fixtures' }
+    let(:home_path_modifier)      { double(modify: true) }
+    let(:conversted_fixture)      { double }
+    let(:converted_fixtures_list) { [conversted_fixture] }
+
+    before do
+      SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
+    end
 
     it 'converts given fixtures' do
       expect(fixtures_converter).to receive(:raw_to_fixtures).with(raw_fixtures)
+
+      subject.fixtures(raw_fixtures)
+    end
+
+    it 'initializes the home path modifier' do
+      expect(SPV::Fixtures::Modifiers::HomePath).to receive(:new).with(options)
+
+      subject.fixtures(raw_fixtures)
+    end
+
+    it 'sets a home path for the converted fixture' do
+      expect(home_path_modifier).to receive(:modify).with(conversted_fixture)
 
       subject.fixtures(raw_fixtures)
     end
@@ -58,10 +77,12 @@ describe SPV::InitialAdjuster do
     let(:converted_fixtures_list) { [fixture] }
     let(:options_with_path)       { double('path=' => true) }
     let(:path_modifier)           { double(modify: true) }
+    let(:home_path_modifier)      { double(modify: true) }
 
     before do
       SPV::OptionsWithPath.stub(:new).and_return(options_with_path)
       SPV::Fixtures::Modifiers::Path.stub(:new).and_return(path_modifier)
+      SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
     end
 
     it 'converts raw fixtures' do
@@ -92,8 +113,22 @@ describe SPV::InitialAdjuster do
       subject.path 'path', ['test_fixture1']
     end
 
-    it 'modifies the converted fixture' do
+    it 'initializes the modifier to set home path' do
+      expect(
+        SPV::Fixtures::Modifiers::HomePath
+      ).to receive(:new).with(options_with_path)
+
+      subject.path 'path', ['test_fixture1']
+    end
+
+    it 'sets the path to fixture' do
       expect(path_modifier).to receive(:modify).with(fixture)
+
+      subject.path 'path', ['test_fixture1']
+    end
+
+    it 'sets the home path to fixture' do
+      expect(home_path_modifier).to receive(:modify).with(fixture)
 
       subject.path 'path', ['test_fixture1']
     end

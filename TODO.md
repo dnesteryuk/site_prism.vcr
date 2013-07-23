@@ -6,15 +6,7 @@
 2. Check documentation about this gem
 3. Think about adding more integration tests
 4. Add possibility to pass VCR options to cassettes while applying them
-5. Use another scope instead of 
-
-```ruby
-  module SitePrism
-    module Vcr
-      # code here
-    end
-  end
-```
+5. Refactore code to be able to define modifiers for helper methods (namely for fixtures and path helper methods)
 
 ## Release 0.0.2
 

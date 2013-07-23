@@ -17,6 +17,13 @@ module SPV
     # @api public
     def fixtures(list)
       converted_list = @fixtures_converter.raw_to_fixtures(list)
+
+      home_path_modifier = Fixtures::Modifiers::HomePath.new(@options)
+
+      converted_list.each do |fixture|
+        home_path_modifier.modify(fixture)
+      end
+
       @fixtures_handler.add_fixtures(converted_list)
     end
 
@@ -51,13 +58,15 @@ module SPV
       options_with_path  = OptionsWithPath.new(@options)
       options_with_path.path = path
 
-      modifier = Fixtures::Modifiers::Path.new(options_with_path)
+      path_modifier      = Fixtures::Modifiers::Path.new(options_with_path)
+      home_path_modifier = Fixtures::Modifiers::HomePath.new(options_with_path) # TODO: the path modifier can reuse it
 
       converted_fixtures.map do |fixture|
-        if fixture.has_link_to_home_path?
+        if fixture.has_link_to_home_path? # TODO: this thing should be checked in the path modifier
           wrong_fixtures << fixture.name[2..-1]
         else
-          modifier.modify(fixture)
+          path_modifier.modify(fixture)
+          home_path_modifier.modify(fixture)
         end
       end
 
