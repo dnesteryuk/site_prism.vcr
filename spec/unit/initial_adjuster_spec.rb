@@ -4,7 +4,7 @@ describe SPV::InitialAdjuster do
   let(:converted_fixtures_list) { [] }
   let(:options)                 { double }
   let(:fixtures_handler)        { double(add_fixtures: true) }
-  let(:fixtures_converter)      { double(raw_to_fixtures: converted_fixtures_list) }
+  let(:fixtures_converter)      { double(convert_raw: converted_fixtures_list) }
 
   subject { described_class.new(options) }
 
@@ -38,7 +38,7 @@ describe SPV::InitialAdjuster do
     end
 
     it 'converts given fixtures' do
-      expect(fixtures_converter).to receive(:raw_to_fixtures).with(raw_fixtures)
+      expect(fixtures_converter).to receive(:convert_raw).with(raw_fixtures)
 
       subject.fixtures(raw_fixtures)
     end
@@ -86,7 +86,7 @@ describe SPV::InitialAdjuster do
     end
 
     it 'converts raw fixtures' do
-      expect(fixtures_converter).to receive(:raw_to_fixtures).with(
+      expect(fixtures_converter).to receive(:convert_raw).with(
         ['test_fixture1']
       )
 

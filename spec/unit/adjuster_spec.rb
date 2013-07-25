@@ -74,7 +74,7 @@ describe SPV::Adjuster do
 
     shared_examples 'when passed arguments are prepared' do
       it 'converts old fixtures' do
-        expect(fixtures_converter).to receive(:raw_to_fixtures).with([*raw_old_fixtures])
+        expect(fixtures_converter).to receive(:convert_raw).with([*raw_old_fixtures])
 
         exchange
       end
@@ -86,7 +86,7 @@ describe SPV::Adjuster do
       end
 
       it 'prepares new fixtures' do
-        expect(fixtures_converter).to receive(:raw_to_fixtures).with([*raw_new_fixtures])
+        expect(fixtures_converter).to receive(:convert_raw).with([*raw_new_fixtures])
 
         exchange
       end
@@ -99,7 +99,7 @@ describe SPV::Adjuster do
     end
 
     let(:fixtures)           { double(exchange: true) }
-    let(:fixtures_converter) { double(raw_to_fixtures: true) }
+    let(:fixtures_converter) { double(convert_raw: true) }
     let(:home_path_modifier) { double(modify: true) }
 
     let(:raw_old_fixtures) { ['old fixtures'] }
@@ -115,7 +115,7 @@ describe SPV::Adjuster do
       SPV::Fixtures::Converter.stub(:new).and_return(fixtures_converter)
       SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
 
-      fixtures_converter.stub(:raw_to_fixtures).and_return(
+      fixtures_converter.stub(:convert_raw).and_return(
         prepared_old_fixtures,
         prepared_new_fixtures
       )

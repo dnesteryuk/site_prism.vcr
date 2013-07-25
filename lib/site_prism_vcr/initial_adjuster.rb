@@ -16,7 +16,7 @@ module SPV
     #
     # @api public
     def fixtures(list)
-      converted_list = @fixtures_converter.raw_to_fixtures(list)
+      converted_list = @fixtures_converter.convert_raw(list)
 
       home_path_modifier = Fixtures::Modifiers::HomePath.new(@options)
 
@@ -54,7 +54,7 @@ module SPV
     def path(path, fixture_names)
       fixtures, wrong_fixtures = [], []
 
-      converted_fixtures = @fixtures_converter.raw_to_fixtures(fixture_names)
+      converted_fixtures = @fixtures_converter.convert_raw(fixture_names)
       options_with_path  = OptionsWithPath.new(@options)
       options_with_path.path = path
 

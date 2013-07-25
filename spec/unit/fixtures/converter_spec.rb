@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe SPV::Fixtures::Converter do
-  describe '#raw_to_fixtures' do
+  describe '#convert_raw' do
     let(:first_fixture)  { 'test_fixture' }
     let(:second_fixture) { {fixture: 'fixture_name', options: 'vcr options'} }
 
-    subject { described_class.new(nil).raw_to_fixtures(
+    subject { described_class.new(nil).convert_raw(
         [first_fixture, second_fixture]
       )
     }
