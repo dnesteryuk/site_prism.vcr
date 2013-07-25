@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SPV::Adjuster do
+describe SPV::DSL::Adjuster do
   let(:raw_fixtures)     { 'some fixtures' }
   let(:fixtures)         { double }
   let(:tmp_keeper)       { double(fixtures: raw_fixtures, clean_fixtures: true) }

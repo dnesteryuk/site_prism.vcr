@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SPV::InitialAdjuster do
+describe SPV::DSL::InitialAdjuster do
   let(:converted_fixtures_list) { [] }
   let(:options)                 { double }
   let(:tmp_keeper)              { double(add_fixtures: true) }

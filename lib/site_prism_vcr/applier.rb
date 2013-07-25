@@ -2,7 +2,7 @@ module SPV
   class Applier
     def initialize(node, &block)
       @node, @options = node, Options.new
-      adjuster = InitialAdjuster.new(@options)
+      adjuster = DSL::InitialAdjuster.new(@options)
 
       adjuster.instance_eval &block
 
@@ -15,13 +15,13 @@ module SPV
     # caused by an event (click on an element or page loading).
     #
     # @param adjusting_block [nil, Proc] If an adjusting block is given,
-    #  it allows to change fixtures through DSL (@see SPV::Adjuster)
+    #  it allows to change fixtures through DSL (@see SPV::DSL::Adjuster)
     #
     # @return [void]
     def apply(adjusting_block = nil)
       options = @options.dup_without_fixtures
 
-      adjuster = Adjuster.new(
+      adjuster = DSL::Adjuster.new(
         options,
         @fixtures
       )

@@ -9,13 +9,13 @@ describe SPV::Applier do
 
   before do
     SPV::Options.stub(:new).and_return(options)
-    SPV::InitialAdjuster.stub(:new).and_return(initial_adjuster)
+    SPV::DSL::InitialAdjuster.stub(:new).and_return(initial_adjuster)
 
     SPV::FixturesManager.stub(:new).and_return(fixtures_manager)
   end
 
   before do
-    SPV::InitialAdjuster.stub(:new).and_return(initial_adjuster)
+    SPV::DSL::InitialAdjuster.stub(:new).and_return(initial_adjuster)
   end
 
   describe '.new' do
@@ -28,7 +28,7 @@ describe SPV::Applier do
     end
 
     it 'initializes the initial adjuster' do
-      expect(SPV::InitialAdjuster).to receive(:new).with(
+      expect(SPV::DSL::InitialAdjuster).to receive(:new).with(
         options
       )
 
@@ -74,12 +74,12 @@ describe SPV::Applier do
     subject(:applier) { described_class.new(node) { } }
 
     before do
-      SPV::Adjuster.stub(:new).and_return(adjuster)
+      SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
       SPV::Waiter.stub(:new).and_return(waiter)
     end
 
     it 'initializes the fixtures adjuster with a new instance of options' do
-      expect(SPV::Adjuster).to receive(:new).with(
+      expect(SPV::DSL::Adjuster).to receive(:new).with(
         cloned_options,
         fixtures
       )
