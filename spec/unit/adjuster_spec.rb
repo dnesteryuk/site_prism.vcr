@@ -3,11 +3,11 @@ require 'spec_helper'
 describe SPV::Adjuster do
   let(:raw_fixtures)     { 'some fixtures' }
   let(:fixtures)         { double }
-  let(:fixtures_handler) { double(fixtures: raw_fixtures, clean_fixtures: true) }
+  let(:tmp_keeper)       { double(fixtures: raw_fixtures, clean_fixtures: true) }
   let(:options)          { double(waiter: :wait_for_me) }
 
   before do
-    SPV::FixturesHandler.stub(:new).and_return(fixtures_handler)
+    SPV::Fixtures::TmpKeeper.stub(:new).and_return(tmp_keeper)
   end
 
   subject { described_class.new(options, fixtures) }
@@ -26,7 +26,7 @@ describe SPV::Adjuster do
     end
 
     it 'cleans fixtures being kept in the fixtures handler' do
-      expect(fixtures_handler).to receive(:clean_fixtures)
+      expect(tmp_keeper).to receive(:clean_fixtures)
 
       subject.replace
     end
@@ -52,7 +52,7 @@ describe SPV::Adjuster do
     end
 
     it 'cleans fixtures being kept in the fixtures handler' do
-      expect(fixtures_handler).to receive(:clean_fixtures)
+      expect(tmp_keeper).to receive(:clean_fixtures)
 
       subject.union
     end

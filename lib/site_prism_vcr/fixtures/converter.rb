@@ -1,6 +1,6 @@
 module SPV
   # Converts raw fixtures into list of
-  # SPV::Fixture objects, applies modifiers after converting
+  # SPV::Fixture objects.
   class Fixtures
     class Converter
       def initialize(options)

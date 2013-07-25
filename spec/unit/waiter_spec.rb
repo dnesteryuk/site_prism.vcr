@@ -3,9 +3,9 @@ require 'spec_helper'
 describe SPV::Waiter do
   let(:node)             { double }
   let(:options)          { double(waiter_options: nil, waiter: nil) }
-  let(:fixtures_handler) { double(eject: true) }
+  let(:fixtures_manager) { double(eject: true) }
 
-  subject(:waiter)       { described_class.new(node, fixtures_handler, options) }
+  subject(:waiter)       { described_class.new(node, fixtures_manager, options) }
 
   describe '#wait' do
     context 'when a waiter is defined' do
@@ -23,7 +23,7 @@ describe SPV::Waiter do
 
       context 'when the option disallowing fixtures ejection is not passed' do
         it 'ejects fixtures' do
-          expect(fixtures_handler).to receive(:eject)
+          expect(fixtures_manager).to receive(:eject)
 
           waiter.wait
         end
@@ -35,7 +35,7 @@ describe SPV::Waiter do
         end
 
         it 'does not eject fixtures' do
-          expect(fixtures_handler).to_not receive(:eject)
+          expect(fixtures_manager).to_not receive(:eject)
 
           waiter.wait
         end
@@ -44,7 +44,7 @@ describe SPV::Waiter do
 
     context 'when a waiter is not defined' do
       it 'the fixtures handler does not eject fixtures' do
-        expect(fixtures_handler).to_not receive(:eject)
+        expect(fixtures_manager).to_not receive(:eject)
 
         waiter.wait
       end
@@ -58,7 +58,7 @@ describe SPV::Waiter do
       subject
 
       expect(described_class).to receive(:new).with(
-        node, fixtures_handler, new_options
+        node, fixtures_manager, new_options
       )
 
       waiter.with_new_options(new_options)

@@ -3,8 +3,8 @@ module SPV
   # and applying them.
   class InitialAdjuster
     def initialize(options)
-      @options = options
-      @fixtures_handler   = FixturesHandler.new(@options)
+      @options    = options
+      @tmp_keeper = Fixtures::TmpKeeper.new(@options)
       @fixtures_converter = Fixtures::Converter.new(@options)
     end
 
@@ -24,7 +24,7 @@ module SPV
         home_path_modifier.modify(fixture)
       end
 
-      @fixtures_handler.add_fixtures(converted_list)
+      @tmp_keeper.add_fixtures(converted_list)
     end
 
     # Defines path to fixtures. Later this path
@@ -81,7 +81,7 @@ module SPV
         )
       end
 
-      @fixtures_handler.add_fixtures(converted_fixtures)
+      @tmp_keeper.add_fixtures(converted_fixtures)
     end
 
     # Defines a waiter which will be used for waiting until all HTTP
@@ -104,7 +104,7 @@ module SPV
     end
 
     def prepared_fixtures
-      Fixtures.new(@fixtures_handler.fixtures)
+      Fixtures.new(@tmp_keeper.fixtures)
     end
   end # class InitialAdjuster
 end # module SPV

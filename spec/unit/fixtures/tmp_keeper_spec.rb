@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe SPV::FixturesHandler do
-  let(:options)          { double }
-  let(:fixtures_handler) { described_class.new(options) }
+describe SPV::Fixtures::TmpKeeper do
+  let(:options)    { double }
+  let(:tmp_keeper) { described_class.new(options) }
 
   describe '#add_fixtures' do
     subject { described_class.new(options) }

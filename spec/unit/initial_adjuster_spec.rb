@@ -3,19 +3,19 @@ require 'spec_helper'
 describe SPV::InitialAdjuster do
   let(:converted_fixtures_list) { [] }
   let(:options)                 { double }
-  let(:fixtures_handler)        { double(add_fixtures: true) }
+  let(:tmp_keeper)              { double(add_fixtures: true) }
   let(:fixtures_converter)      { double(convert_raw: converted_fixtures_list) }
 
   subject { described_class.new(options) }
 
   before do
-    SPV::FixturesHandler.stub(:new).and_return(fixtures_handler)
+    SPV::Fixtures::TmpKeeper.stub(:new).and_return(tmp_keeper)
     SPV::Fixtures::Converter.stub(:new).and_return(fixtures_converter)
   end
 
   describe '.new' do
     it 'initializes the fixtures handler' do
-      expect(SPV::FixturesHandler).to receive(:new).with(options)
+      expect(SPV::Fixtures::TmpKeeper).to receive(:new).with(options)
 
       subject
     end
@@ -56,7 +56,7 @@ describe SPV::InitialAdjuster do
     end
 
     it 'adds fixtures' do
-      expect(fixtures_handler).to receive(:add_fixtures).with(converted_fixtures_list)
+      expect(tmp_keeper).to receive(:add_fixtures).with(converted_fixtures_list)
 
       subject.fixtures(raw_fixtures)
     end
@@ -134,7 +134,7 @@ describe SPV::InitialAdjuster do
     end
 
     it 'adds fixtures into container' do
-      expect(fixtures_handler).to receive(:add_fixtures).with(converted_fixtures_list)
+      expect(tmp_keeper).to receive(:add_fixtures).with(converted_fixtures_list)
 
       subject.path 'path', ['test_fixture1']
     end
@@ -180,7 +180,7 @@ describe SPV::InitialAdjuster do
     before do
       SPV::Fixtures.stub(:new).and_return(fixtures)
 
-      fixtures_handler.stub(:fixtures).and_return(raw_fixtures)
+      tmp_keeper.stub(:fixtures).and_return(raw_fixtures)
     end
 
     it 'initializes the fixtures handler' do

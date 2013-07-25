@@ -44,8 +44,8 @@ module SPV
 
     private
       def change_fixtures(action)
-        @fixtures = @fixtures.public_send(action, @fixtures_handler.fixtures)
-        @fixtures_handler.clean_fixtures
+        @fixtures = @fixtures.public_send(action, @tmp_keeper.fixtures)
+        @tmp_keeper.clean_fixtures
         @is_action_done = true
       end
   end

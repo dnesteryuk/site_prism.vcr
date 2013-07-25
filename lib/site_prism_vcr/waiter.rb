@@ -1,8 +1,8 @@
 module SPV
   class Waiter
-    def initialize(node, fixtures_handler, options)
+    def initialize(node, fixtures_manager, options)
       @node, @waiter_method = node, options.waiter
-      @fixtures_handler = fixtures_handler
+      @fixtures_manager = fixtures_manager
       @options = options.waiter_options || {}
     end
 
@@ -11,13 +11,13 @@ module SPV
         @node.instance_eval &@waiter_method
 
         if @options.fetch(:eject_cassettes, true)
-          @fixtures_handler.eject
+          @fixtures_manager.eject
         end
       end
     end
 
     def with_new_options(options)
-      self.class.new(@node, @fixtures_handler, options)
+      self.class.new(@node, @fixtures_manager, options)
     end
   end
 end
