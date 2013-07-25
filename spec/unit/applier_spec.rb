@@ -11,7 +11,7 @@ describe SPV::Applier do
     SPV::Options.stub(:new).and_return(options)
     SPV::DSL::InitialAdjuster.stub(:new).and_return(initial_adjuster)
 
-    SPV::FixturesManager.stub(:new).and_return(fixtures_manager)
+    SPV::Fixtures::Manager.stub(:new).and_return(fixtures_manager)
   end
 
   before do
@@ -48,7 +48,7 @@ describe SPV::Applier do
     end
 
     it 'initializes the fixtures manager' do
-      expect(SPV::FixturesManager).to receive(:new).with(
+      expect(SPV::Fixtures::Manager).to receive(:new).with(
         options
       ).and_return(fixtures_manager)
 

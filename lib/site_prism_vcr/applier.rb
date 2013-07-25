@@ -8,7 +8,7 @@ module SPV
 
       @fixtures = adjuster.prepared_fixtures
 
-      @fixtures_manager = FixturesManager.new(@options)
+      @fixtures_manager = Fixtures::Manager.new(@options)
     end
 
     # Applies fixtures to be used for stubbing HTTP interactions
