@@ -4,6 +4,7 @@ module SPV
   class Fixture
     attr_accessor :name, :options
 
+    # TODO: may be it makes sense to separately keep path from the name of a fixture?
     def initialize(name, vcr_options = {})
       @name, @options = name, vcr_options
     end
@@ -18,6 +19,11 @@ module SPV
 
     def has_link_to_home_path?
       self.name[0..1] == '~/'
+    end
+
+    # Returns a name without a link to a home path
+    def clean_name
+      self.name[2..-1]
     end
   end
 end

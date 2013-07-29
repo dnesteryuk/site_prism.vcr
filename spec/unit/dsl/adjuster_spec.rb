@@ -72,34 +72,28 @@ describe SPV::DSL::Adjuster do
       )
     end
 
-    shared_examples 'when passed arguments are prepared' do
-      it 'converts old fixtures' do
-        expect(fixtures_converter).to receive(:convert_raw).with([*raw_old_fixtures])
+    shared_examples 'when passed arguments are handled' do
+      it 'handles old fixtures' do
+        expect(fixtures_handler).to receive(:handle_raw).with(
+          [*raw_old_fixtures],
+          [home_path_modifier]
+        )
 
         exchange
       end
 
-      it 'sets a home path for old fixture' do
-        expect(home_path_modifier).to receive(:modify).with(old_fixture)
-
-        exchange
-      end
-
-      it 'prepares new fixtures' do
-        expect(fixtures_converter).to receive(:convert_raw).with([*raw_new_fixtures])
-
-        exchange
-      end
-
-      it 'sets a home path for old fixture' do
-        expect(home_path_modifier).to receive(:modify).with(new_fixture)
+      it 'handles new fixtures' do
+        expect(fixtures_handler).to receive(:handle_raw).with(
+          [*raw_new_fixtures],
+          [home_path_modifier]
+        )
 
         exchange
       end
     end
 
     let(:fixtures)           { double(exchange: true) }
-    let(:fixtures_converter) { double(convert_raw: true) }
+    let(:fixtures_handler)   { double(handle_raw: true) }
     let(:home_path_modifier) { double(modify: true) }
 
     let(:raw_old_fixtures) { ['old fixtures'] }
@@ -108,16 +102,16 @@ describe SPV::DSL::Adjuster do
     let(:old_fixture) { double }
     let(:new_fixture) { double }
 
-    let(:prepared_old_fixtures) { [old_fixture] }
-    let(:prepared_new_fixtures) { [new_fixture] }
+    let(:handled_old_fixtures) { [old_fixture] }
+    let(:handled_new_fixtures) { [new_fixture] }
 
     before do
-      SPV::Fixtures::Converter.stub(:new).and_return(fixtures_converter)
+      SPV::Fixtures::Handler.stub(:new).and_return(fixtures_handler)
       SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
 
-      fixtures_converter.stub(:convert_raw).and_return(
-        prepared_old_fixtures,
-        prepared_new_fixtures
+      fixtures_handler.stub(:handle_raw).and_return(
+        handled_old_fixtures,
+        handled_new_fixtures
       )
     end
 
@@ -131,16 +125,16 @@ describe SPV::DSL::Adjuster do
       let(:old_fixtures) { 'old fixtures' }
       let(:new_fixtures) { 'new fixtures' }
 
-      it_behaves_like 'when passed arguments are prepared'
+      it_behaves_like 'when passed arguments are handled'
     end
 
     context 'when arrays are passed as arguments' do
-      it_behaves_like 'when passed arguments are prepared'
+      it_behaves_like 'when passed arguments are handled'
     end
 
     it 'exchanges fixtures' do
       expect(fixtures).to receive(:exchange).with(
-        prepared_old_fixtures, prepared_new_fixtures
+        handled_old_fixtures, handled_new_fixtures
       )
 
       exchange

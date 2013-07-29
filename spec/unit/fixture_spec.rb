@@ -34,4 +34,12 @@ describe SPV::Fixture do
       ).to be_false
     end
   end
+
+  describe '#clean_name' do
+    subject { described_class.new('~/fixture_name') }
+
+    it 'returns a name without a home path' do
+      expect(subject.clean_name).to eq('fixture_name')
+    end
+  end
 end

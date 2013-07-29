@@ -18,16 +18,8 @@ module SPV
       def exchange(old_fixtures, new_fixtures)
         home_path_modifier = Fixtures::Modifiers::HomePath.new(@options)
 
-        old_fixtures = @fixtures_converter.convert_raw([*old_fixtures])
-        new_fixtures = @fixtures_converter.convert_raw([*new_fixtures])
-
-        old_fixtures.each do |fixture|
-          home_path_modifier.modify(fixture)
-        end
-
-        new_fixtures.each do |fixture|
-          home_path_modifier.modify(fixture)
-        end
+        old_fixtures = @fixtures_handler.handle_raw([*old_fixtures], [home_path_modifier])
+        new_fixtures = @fixtures_handler.handle_raw([*new_fixtures], [home_path_modifier])
 
         @fixtures = @fixtures.exchange(
           old_fixtures,

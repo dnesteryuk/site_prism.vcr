@@ -4,9 +4,9 @@ module SPV
     # and applying them.
     class InitialAdjuster
       def initialize(options)
-        @options    = options
-        @tmp_keeper = Fixtures::TmpKeeper.new(@options)
-        @fixtures_converter = Fixtures::Converter.new(@options)
+        @options          = options
+        @tmp_keeper       = Fixtures::TmpKeeper.new(@options)
+        @fixtures_handler = Fixtures::Handler.new(@options)
       end
 
       # Defines fixtures which will be inserted into VCR.
@@ -17,15 +17,12 @@ module SPV
       #
       # @api public
       def fixtures(list)
-        converted_list = @fixtures_converter.convert_raw(list)
+        prepared_fixtures = @fixtures_handler.handle_raw(
+          list,
+          [Fixtures::Modifiers::HomePath.new(@options)]
+        )
 
-        home_path_modifier = Fixtures::Modifiers::HomePath.new(@options)
-
-        converted_list.each do |fixture|
-          home_path_modifier.modify(fixture)
-        end
-
-        @tmp_keeper.add_fixtures(converted_list)
+        @tmp_keeper.add_fixtures(prepared_fixtures)
       end
 
       # Defines path to fixtures. Later this path
@@ -53,36 +50,21 @@ module SPV
       #
       # @api public
       def path(path, fixture_names)
-        fixtures, wrong_fixtures = [], []
-
-        converted_fixtures = @fixtures_converter.convert_raw(fixture_names)
         options_with_path  = OptionsWithPath.new(@options)
         options_with_path.path = path
 
         path_modifier      = Fixtures::Modifiers::Path.new(options_with_path)
-        home_path_modifier = Fixtures::Modifiers::HomePath.new(options_with_path) # TODO: the path modifier can reuse it
+        home_path_modifier = Fixtures::Modifiers::HomePath.new(options_with_path)
 
-        converted_fixtures.map do |fixture|
-          if fixture.has_link_to_home_path? # TODO: this thing should be checked in the path modifier
-            wrong_fixtures << fixture.name[2..-1]
-          else
-            path_modifier.modify(fixture)
-            home_path_modifier.modify(fixture)
-          end
-        end
+        prepared_fixtures = @fixtures_handler.handle_raw(
+          fixture_names,
+          [
+            path_modifier,
+            home_path_modifier
+          ]
+        )
 
-        if wrong_fixtures.length > 0
-          prepared_names = wrong_fixtures.join("', '")
-
-          raise ArgumentError.new(
-            "You cannot use the home path while listing fixtures in the 'path' method. " <<
-            "Please, use 'fixtures' method for '#{wrong_fixtures.join(', ')}' fixtures or " <<
-            "you can additionally use the 'path' method where you will specify a home path as a path name." <<
-            "Example: path('~/', ['#{prepared_names}'])"
-          )
-        end
-
-        @tmp_keeper.add_fixtures(converted_fixtures)
+        @tmp_keeper.add_fixtures(prepared_fixtures)
       end
 
       # Defines a waiter which will be used for waiting until all HTTP
