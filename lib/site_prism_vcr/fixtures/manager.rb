@@ -13,14 +13,14 @@ module SPV
       #
       # @return [void]
       #
-      # @raise [ArgumentError] If a list with fixtures is empty.
+      # @raise [ArgumentError] If a list of fixtures is empty.
       def inject(fixtures)
         raise ArgumentError.new(
           'No fixtures were specified to insert them into VCR'
         ) if fixtures.size == 0
 
         fixtures.each do |fixture|
-          VCR.insert_cassette fixture.name
+          VCR.insert_cassette fixture.name, fixture.options
         end
       end
 
