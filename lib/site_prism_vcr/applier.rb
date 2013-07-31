@@ -4,7 +4,9 @@ module SPV
       @node, @options = node, Options.new
       adjuster = DSL::InitialAdjuster.new(@options)
 
-      adjuster.instance_eval &block
+      if block_given?
+        adjuster.instance_eval &block
+      end
 
       @fixtures = adjuster.prepared_fixtures
 

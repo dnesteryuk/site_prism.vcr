@@ -35,10 +35,18 @@ describe SPV::Applier do
       subject
     end
 
-    it 'calls a given block within the context of the adjuster' do
-      expect(initial_adjuster).to receive(:mymeth)
+    context 'when a block is given' do
+      it 'calls a given block within the context of the adjuster' do
+        expect(initial_adjuster).to receive(:mymeth)
 
-      described_class.new(node) { mymeth }
+        described_class.new(node) { mymeth }
+      end
+    end
+
+    context 'when a block is not given' do
+      it 'does not get an error' do
+        described_class.new(node)
+      end
     end
 
     it 'receives the fixtures container' do
