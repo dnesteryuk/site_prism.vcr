@@ -6,30 +6,28 @@ describe SPV::Fixtures::Manager do
   describe '#inject' do
     let(:fixture1)    { double(name: 'arya_stark', options: {erb: {testvar: true}}) }
     let(:fixture2)    { double(name: 'jon_snow', options: {}) }
-
     let(:fixtures)    { [fixture1, fixture2] }
+
     subject(:manager) { described_class.new(options) }
 
     context 'when there are fixtures' do
-      context 'inserting fixtures to VCR' do
-        it 'inserts the first fixture to VCR' do
-          manager.inject(fixtures)
+      it 'VCR holds the first fixture' do
+        manager.inject(fixtures)
 
-          VCR.eject_cassette
-          fixture = VCR.eject_cassette
+        VCR.eject_cassette
+        fixture = VCR.eject_cassette
 
-          expect(fixture.name).to eq('arya_stark')
-          expect(fixture.erb).to eq({testvar: true})
-        end
+        expect(fixture.name).to eq('arya_stark')
+        expect(fixture.erb).to eq({testvar: true})
+      end
 
-        it 'inserts the second fixture to VCR' do
-          manager.inject(fixtures)
+      it 'VCR holds the second fixture' do
+        manager.inject(fixtures)
 
-          fixture = VCR.eject_cassette
+        fixture = VCR.eject_cassette
 
-          expect(fixture.name).to eq('jon_snow')
-          expect(fixture.erb).to be_nil
-        end
+        expect(fixture.name).to eq('jon_snow')
+        expect(fixture.erb).to be_nil
       end
     end
 

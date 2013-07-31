@@ -7,9 +7,9 @@ module SPV
         @options = options
       end
 
-      # Injects given fixtures for Vcr.
+      # Injects given fixtures to Vcr.
       #
-      # @param fixtures [Array] List of fixtures.
+      # @param fixtures [Array<SPV::Fixture>] List of fixtures.
       #
       # @return [void]
       #
