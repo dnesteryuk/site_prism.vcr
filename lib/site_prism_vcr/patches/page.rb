@@ -1,5 +1,12 @@
 module SitePrism
   class Page
+    def self.inherited(subclass)
+      # This code is required to allow subpages to inherit
+      # a defined adjuster block. Otherwise, that block should be
+      # duplicated in a subpage as well.
+      subclass.instance_variable_set(:@vcr_adjuster, @vcr_adjuster)
+    end
+
     def self.vcr_options_for_load(&block)
       @vcr_adjuster = block
     end

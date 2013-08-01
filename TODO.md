@@ -13,7 +13,6 @@
   @products.load_and_apply_vcr do
     exchange '~/cars', {fixture: '~/cars', options: {erb: {name: 'Ford'}}
   end
-8. Options defined through `vcr_options_for_load` are not inherited
 
 ## Release 0.0.2
 

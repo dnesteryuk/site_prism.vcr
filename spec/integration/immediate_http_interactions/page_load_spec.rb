@@ -19,6 +19,16 @@ feature 'Immediate Http interactions > Page load' do
     expect(page.current_url).to match(/\?cat=ford/)
   end
 
+  context 'when a subpage inherits a page with a defined vcr options' do
+    let(:test_app_page) { ImmediateHttpInteractions::SubPage.new }
+
+    it 'subpage inherits the defined options for its parent page' do
+      test_app_page.load_and_apply_vcr
+
+      expect(cat_owner).to have_content('Ned Stark')
+    end
+  end
+
   it_behaves_like 'when a custom fixture is applied' do
     let(:actor) { test_app_page }
   end
