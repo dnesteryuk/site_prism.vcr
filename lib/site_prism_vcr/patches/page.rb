@@ -4,10 +4,6 @@ module SitePrism
       @vcr_adjuster = block
     end
 
-    def self.vcr_options
-      @vcr_options
-    end
-
     def self.vcr_adjuster
       @vcr_adjuster
     end
