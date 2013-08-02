@@ -15,14 +15,28 @@ shared_examples 'when a default fixture is exchanged' do
   end
 
   context 'with a defined home path' do
-    before do
-      actor_with_home_path.public_send(action_method) do
-        exchange '~/daenerys_targaryen', '~/bran_stark'
+    context 'when fixtures are defined without Vcr options' do
+      before do
+        actor_with_home_path.public_send(action_method) do
+          exchange '~/daenerys_targaryen', '~/bran_stark'
+        end
+      end
+
+      it 'uses the exchanged fixture which are stored in the sub directory' do
+        expect(cat_owner).to have_content('Bran Stark')
       end
     end
 
-    it 'uses the exchanged fixture which are stored in the sub directory' do
-      expect(cat_owner).to have_content('Bran Stark')
+    context 'when fixtures are defined with Vcr options', mytest23: true do
+      before do
+        actor_with_home_path.public_send(action_method) do
+          exchange '~/daenerys_targaryen', {fixture: '~/blank', options: {erb: {cat_owner: 'Robert Baratheon'} }}
+        end
+      end
+
+      it 'uses the exchanged fixture with specified erb variables' do
+
+      end
     end
   end
 end

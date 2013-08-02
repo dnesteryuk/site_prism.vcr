@@ -75,7 +75,7 @@ describe SPV::DSL::Adjuster do
     shared_examples 'when passed arguments are handled' do
       it 'handles old fixtures' do
         expect(fixtures_handler).to receive(:handle_raw).with(
-          [*raw_old_fixtures],
+          expected_raw_old_fixtures,
           [home_path_modifier]
         )
 
@@ -84,7 +84,7 @@ describe SPV::DSL::Adjuster do
 
       it 'handles new fixtures' do
         expect(fixtures_handler).to receive(:handle_raw).with(
-          [*raw_new_fixtures],
+          expected_raw_new_fixtures,
           [home_path_modifier]
         )
 
@@ -98,6 +98,9 @@ describe SPV::DSL::Adjuster do
 
     let(:raw_old_fixtures) { ['old fixtures'] }
     let(:raw_new_fixtures) { ['new fixtures'] }
+
+    let(:expected_raw_old_fixtures) { raw_old_fixtures }
+    let(:expected_raw_new_fixtures) { raw_new_fixtures }
 
     let(:old_fixture) { double }
     let(:new_fixture) { double }
@@ -121,9 +124,12 @@ describe SPV::DSL::Adjuster do
       exchange
     end
 
-    context 'when strings are passed as arguments' do
-      let(:old_fixtures) { 'old fixtures' }
-      let(:new_fixtures) { 'new fixtures' }
+    context 'when no arrays are passed as arguments' do
+      let(:raw_old_fixtures) { {old_fixtures: 'hash with vcr options'} }
+      let(:raw_new_fixtures) { {new_fixtures: 'hash with vcr options'} }
+
+      let(:expected_raw_old_fixtures) { [raw_old_fixtures] }
+      let(:expected_raw_new_fixtures) { [raw_new_fixtures] }
 
       it_behaves_like 'when passed arguments are handled'
     end

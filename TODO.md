@@ -7,12 +7,6 @@
 3. Think about adding more integration tests
 4. Add possibility to pass VCR options to cassettes while applying them
 5. Remove tests stubbing VCR methods
-6. Think about adding the integration test when we use the exchange method with ERB variables
-7. There is a bug with:
-
-  @products.load_and_apply_vcr do
-    exchange '~/cars', {fixture: '~/cars', options: {erb: {name: 'Ford'}}
-  end
 
 ## Release 0.0.2
 
