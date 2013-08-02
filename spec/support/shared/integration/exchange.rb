@@ -27,7 +27,7 @@ shared_examples 'when a default fixture is exchanged' do
       end
     end
 
-    context 'when fixtures are defined with Vcr options', mytest23: true do
+    context 'when fixtures are defined with Vcr options' do
       before do
         actor_with_home_path.public_send(action_method) do
           exchange '~/daenerys_targaryen', {fixture: '~/blank', options: {erb: {cat_owner: 'Robert Baratheon'} }}

@@ -3,20 +3,12 @@ require 'spec_helper'
 describe SPV::Fixtures::Handler do
   let(:options)            { double }
   let(:converted_fixtures) { [] }
-  let(:fixtures_converter) { double(convert_raw: converted_fixtures) }
+  let(:fixtures_converter) { SPV::Fixtures::Converter }
 
   subject { described_class.new(options) }
 
   before do
-    SPV::Fixtures::Converter.stub(:new).and_return(fixtures_converter)
-  end
-
-  describe '.new' do
-    it 'initializes the fixtures handler' do
-      expect(SPV::Fixtures::Converter).to receive(:new)
-
-      subject
-    end
+    SPV::Fixtures::Converter.stub(:convert_raw).and_return(converted_fixtures)
   end
 
   describe '#handle_raw' do

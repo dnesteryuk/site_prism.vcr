@@ -3,10 +3,7 @@ module SPV
   # SPV::Fixture objects.
   class Fixtures
     class Converter
-      def initialize(options)
-      end
-
-      def convert_raw(raw_list)
+      def self.convert_raw(raw_list)
         raw_list.map do |item|
           if item.kind_of?(String)
             Fixture.new(item)
