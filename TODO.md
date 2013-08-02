@@ -5,8 +5,6 @@
 1. Add comments to code
 2. Check documentation about this gem
 3. Think about adding more integration tests
-4. Add possibility to pass VCR options to cassettes while applying them
-5. Remove tests stubbing VCR methods
 
 ## Release 0.0.2
 
