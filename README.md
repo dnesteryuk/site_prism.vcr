@@ -125,7 +125,7 @@ class ProductsPage < SitePrism::Page
     '#car_details' do
       home_path 'cars/small'
 
-      path '~/' ['ford', 'ford_features', 'prices']
+      path '~/', ['ford', 'ford_features', 'prices']
     end
 end
 ```
@@ -185,7 +185,7 @@ or
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
-  path '~/' ['volvo', 'volvo_features', 'prices']
+  path '~/', ['volvo', 'volvo_features', 'prices']
 end
 ```
 
@@ -195,7 +195,7 @@ Home path can be defined while applying Vcr:
 @products_page.car_details_link.click_and_apply_vcr do
   home_path 'cars/volvo'
 
-  path '~/' ['volvo', 'volvo_features', 'prices']
+  path '~/', ['volvo', 'volvo_features', 'prices']
 end
 ```
 
@@ -353,7 +353,7 @@ class ProductsPage < SitePrism::Page
     '#car_details' do
       home_path 'cars/small'
 
-      path '~/' [{fixture: 'ford', options: {erb: {amount: 109} } }, 'ford_features', 'prices']
+      path '~/', [{fixture: 'ford', options: {erb: {amount: 109} } }, 'ford_features', 'prices']
     end
 end
 ```
