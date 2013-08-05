@@ -15,6 +15,21 @@
 5. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
 6. Make this gem working on JRuby
 7. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
+8. Turn this code:
+
+```ruby
+@cars.apply_vcr(-> { page.find('#cars').click }) do
+  fixtures ['cars']
+end
+```
+
+into
+
+```ruby
+@cars.shift_event{ page.find('#cars').click }.apply_vcr do
+  fixtures ['cars']
+end
+```
 
 ## Should be implemented?
 

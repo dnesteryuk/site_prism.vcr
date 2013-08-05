@@ -48,7 +48,7 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-`fixtures` helper method is used defining VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info configuration options.
+`fixtures` helper method is used for defining VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info about configuration options.
 
 #### Path helper method
 
@@ -65,7 +65,7 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-The `path` helper method can be used a few times in the block to define cassettes. The code above is identical to:
+The `path` helper method can be used a few times in a block to define cassettes. The code above is identical to:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -138,7 +138,7 @@ Now cassettes can be applied only on a click event:
 @products_page.car_details_link.click_and_apply_vcr
 ```
 
-This code applies VCR cassettes which were specified while describing a SitePrism element. But, there is also possibility to override them:
+This code applies VCR cassettes which were specified while defining a SitePrism element. But, there is also possibility to override them:
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
@@ -161,11 +161,11 @@ Also, there is possibility to add new cassettes instead of overriding default on
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
   fixtures ['cars/volvo']
-  union
+  union # makes this library add new cassettes to a list with default cassettes
 end
 ```
 
-Similar to describing SitePrism elements with VCR cassettes, you can use `path` helper while applying fixtures:
+Similar to defining SitePrism elements with VCR cassettes, you can use `path` helper method while applying fixtures:
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
@@ -173,7 +173,7 @@ Similar to describing SitePrism elements with VCR cassettes, you can use `path` 
 end
 ```
 
-Also, if you have specified a home path while describing a SitePrism element, you can use it here:
+Also, if you have specified a home path while defining a SitePrism element, you can use it here:
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
@@ -227,11 +227,11 @@ end
 
 ### Waiters
 
-Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP requests we have to wait for them, before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on the button to show details of some product, you may wait until loading indicator which may be shown on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
+Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP interactions we have to wait for a result of them, before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on a button to show details of some product, you may wait until loading indicator which may be shown on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
 
 There is reason why you should use them when you use SitePrism.Vcr. If you specify a waiter while describing SitePrism elements or applying VCR cassettes, SitePrism.Vcr will know when the inserted cassettes should be ejected from Vcr to avoid a situation when some unexpected cassette is applied.
 
-There are 2 ways for defining a waiter. When you describe SitePrism elements:
+There are 2 ways for defining a waiter. When you define SitePrism elements:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -239,7 +239,7 @@ class ProductsPage < SitePrism::Page
     :car_details_link,
     '#car_details' do
       fixtures ['ford', 'cars/ford_features']
-      waiter &:wait_until_loading_indicator_invisible
+      waiter &:wait_until_loading_indicator_invisible # our code will wait until the loading indicator has disappeared from a page
     end
 end
 ```
@@ -253,7 +253,7 @@ The second way is to set it while applying Vcr cassettes:
 end
 ```
 
-*Note:* Using the second way, you can override a default waiter which was specified while describing SitePrism element.
+*Note:* Using the second way, you can override a default waiter which was specified while defining SitePrism element.
 
 In this case once we meet an expectation defined in a waiter, Vcr cassettes will be ejected and you will avoid issues with mixing unexpected cassettes. If you don't specify a waiter, you have to eject them manually:
 
@@ -284,7 +284,7 @@ There may be situation when you don't need a waiter to eject all cassettes. In t
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr do
   fixtures ['cars/volvo']
-  waiter({eject_cassettes: false}, &:wait_until_loading_indicator_invisible)
+  waiter(eject_cassettes: false) { self.wait_until_loading_indicator_invisible }
 end
 ```
 
@@ -292,7 +292,7 @@ The same thing can be defined for a default waiter.
 
 ### Linking and applying VCR cassettes with SitePrism pages
 
-External HTTP interactions may be done on page loading. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
+External HTTP interactions may be done on page loading as well. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -302,35 +302,7 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-Everything described above about defining cassettes for SitePrism elements is true for defining cassettes for pages. You can use a block as we saw in the previous example or a hash:
-
-```ruby
-class ProductsPage < SitePrism::Page
-  vcr_options_for_load fixtures: ['max']
-end
-```
-
-You can define a waiter:
-
-```ruby
-class ProductsPage < SitePrism::Page
-  vcr_options_for_load do
-    fixtures ['max']
-    waiter   :wait_for_list
-  end
-end
-```
-
-you can define a waiter as a block:
-
-```ruby
-class ProductsPage < SitePrism::Page
-  vcr_options_for_load do
-    fixtures ['max']
-    waiter   { self.wait_for_list }
-  end
-end
-```
+Everything described above about defining cassettes for SitePrism elements is true for defining cassettes for pages.
 
 Applying cassettes is almost the same as we saw for a click event:
 
@@ -338,21 +310,21 @@ Applying cassettes is almost the same as we saw for a click event:
 page.load_and_apply_vcr do
   fixtures ['max', 'felix']
 
-  waiter :wait_for_max_and_felix
+  waiter &:wait_for_max_and_felix
 end
 ```
 
-It will not work, because all arguments passed to `load_and_apply_vcr` will be passed to `load` method of SitePrism. It allows you to change an url of the being loaded page.
+All arguments passed to `load_and_apply_vcr` method will be passed to `load` method of SitePrism. It allows you to change an url of the being loaded page.
 
 ```ruby
 page.load_and_apply_vcr(cat: 'tom') do
   fixtures ['max', 'felix']
 
-  waiter :wait_for_max_and_felix
+  waiter &:wait_for_max_and_felix
 end
 ```
 
-In this case, SitePrism will alter an url and it may look like:
+In this case, SitePrism will alter an url and it will look like:
 
 ```ruby
 http://localhost/cats/tom
@@ -368,7 +340,31 @@ There may be situation when we need to apply fixtures for page loading when an u
 end
 ```
 
-The first argument passed to this method should be a proc object which will do an action. As you can see while applying fixtures without actual loading a page you can use everything what is described for `load_and_apply_vcr`.
+The first argument passed to this method should be a proc object which will do an action. As you can see while applying fixtures without actual loading a page you can use everything what is described for `load_and_apply_vcr` method.
+
+### Using Vcr options for cassettes
+
+Vcr provides number of options which can be used for cassettes. For example, you may [pass ERB into cassettes](https://relishapp.com/vcr/vcr/v/2-5-0/docs/cassettes/dynamic-erb-cassettes). This gem doesn't bother you use any options for Vcr cassettes. If you want to do so, you have to use a hash instead of a cassette name:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details' do
+      home_path 'cars/small'
+
+      path '~/' [{fixture: 'ford', options: {erb: {amount: 109} } }, 'ford_features', 'prices']
+    end
+end
+```
+
+It works with any kind of helper methods where you list names of cassettes, even with the `exchange` helper method:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  exchange '~/volvo', {fixture: '~/toyota', options: {erb: {amount: 1000} } }
+end
+```
 
 ## Contributing
 
