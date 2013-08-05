@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SPV::Applier do
   let(:node)             { double }
-  let(:options)          { double(fixtures: 'some prepared fixtures') }
+  let(:options)          { double }
   let(:fixtures_manager) { double(inject: true) }
   let(:fixtures)         { double }
   let(:initial_adjuster) { double(prepared_fixtures: fixtures) }
@@ -66,7 +66,7 @@ describe SPV::Applier do
 
   describe '#apply' do
     let(:cloned_options)    { 'cloned options' }
-    let(:options)           { double(dup_without_fixtures: cloned_options, fixtures: false) }
+    let(:options)           { double(clone_options: cloned_options) }
     let(:waiter)            { double(wait: true) }
     let(:prepared_fixtures) { 'prepared_fixtures by adjuster' }
 

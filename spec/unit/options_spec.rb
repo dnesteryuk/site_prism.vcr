@@ -4,45 +4,14 @@ describe SPV::Options do
   let(:options) { described_class.new }
 
   describe '.new' do
-    context 'when all allowed options are passed' do
-      it 'holds the passed options' do
-        waiter   = 'some'
+    it 'holds the passed options' do
+      waiter = 'some'
 
-        options = described_class.new(
-          waiter: waiter
-        )
+      options = described_class.new(
+        waiter: waiter
+      )
 
-        expect(options.waiter).to eq(waiter)
-      end
-    end
-
-    context 'when no allowed option is passed' do
-      it 'raises an error' do
-        expect {
-          described_class.new(
-            myopt:  true,
-            waiter: 'some waiter'
-          )
-        }.to raise_error(
-          ArgumentError,
-          "'myopt' is not known option for handling Vcr fixtures"
-        )
-      end
-    end
-
-    context 'when a few no allowed options are passed' do
-      it 'raises an error' do
-        expect {
-          described_class.new(
-            myopt:      true,
-            test_opt:   false,
-            'waiter' => 'some waiter'
-          )
-        }.to raise_error(
-          ArgumentError,
-          "'myopt', 'test_opt' are not known options for handling Vcr fixtures"
-        )
-      end
+      expect(options.waiter).to eq(waiter)
     end
   end
 
@@ -62,9 +31,9 @@ describe SPV::Options do
     end
   end
 
-  describe '#dup_without_fixtures' do
+  describe '#clone_options' do
     it 'returns a new instance of options' do
-      cloned_options = options.dup_without_fixtures
+      cloned_options = options.clone_options
 
       expect(cloned_options.object_id).to_not eq(options.object_id)
     end

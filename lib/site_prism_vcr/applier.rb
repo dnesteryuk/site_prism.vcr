@@ -21,7 +21,7 @@ module SPV
     #
     # @return [void]
     def apply(adjusting_block = nil)
-      options = @options.dup_without_fixtures
+      options = @options.clone_options
 
       adjuster = DSL::Adjuster.new(
         options,
