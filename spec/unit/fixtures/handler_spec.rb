@@ -37,4 +37,36 @@ describe SPV::Fixtures::Handler do
       expect(handle_raw).to eq(converted_fixtures)
     end
   end
+
+  describe '#handle_set_raws' do
+    def handle_set_raws
+      subject.handle_set_raws(raw_fixtures_1, raw_fixtures_2, modifiers)
+    end
+
+    let(:raw_fixtures_1)     { 'raw fixtures #1' }
+    let(:raw_fixtures_2)     { 'raw fixtures #2' }
+    let(:handled_fixtures_1) { 'handled fixtures #1' }
+    let(:handled_fixtures_2) { 'handled fixtures #2' }
+    let(:modifiers)          { 'some modifiers' }
+
+    before do
+      subject.stub(:handle_raw).and_return(handled_fixtures_1, handled_fixtures_2)
+    end
+
+    it 'handles the first set of raw fixtures' do
+      expect(subject).to receive(:handle_raw).with(raw_fixtures_1, modifiers)
+
+      handle_set_raws
+    end
+
+    it 'handles the second set of raw fixtures' do
+      expect(subject).to receive(:handle_raw).with(raw_fixtures_2, modifiers)
+
+      handle_set_raws
+    end
+
+    it 'returns all handled fixtures' do
+      expect(handle_set_raws).to eq([handled_fixtures_1, handled_fixtures_2])
+    end
+  end
 end

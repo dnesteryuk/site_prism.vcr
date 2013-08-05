@@ -73,17 +73,9 @@ describe SPV::DSL::Adjuster do
     end
 
     shared_examples 'when passed arguments are handled' do
-      it 'handles old fixtures' do
-        expect(fixtures_handler).to receive(:handle_raw).with(
+      it 'handles raw fixtures' do
+        expect(fixtures_handler).to receive(:handle_set_raws).with(
           expected_raw_old_fixtures,
-          [home_path_modifier]
-        )
-
-        exchange
-      end
-
-      it 'handles new fixtures' do
-        expect(fixtures_handler).to receive(:handle_raw).with(
           expected_raw_new_fixtures,
           [home_path_modifier]
         )
@@ -93,7 +85,7 @@ describe SPV::DSL::Adjuster do
     end
 
     let(:fixtures)           { double(exchange: true) }
-    let(:fixtures_handler)   { double(handle_raw: true) }
+    let(:fixtures_handler)   { double }
     let(:home_path_modifier) { double(modify: true) }
 
     let(:raw_old_fixtures) { ['old fixtures'] }
@@ -112,10 +104,10 @@ describe SPV::DSL::Adjuster do
       SPV::Fixtures::Handler.stub(:new).and_return(fixtures_handler)
       SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
 
-      fixtures_handler.stub(:handle_raw).and_return(
+      fixtures_handler.stub(:handle_set_raws).and_return([
         handled_old_fixtures,
         handled_new_fixtures
-      )
+      ])
     end
 
     it 'initializes the home path modifier' do
