@@ -31,6 +31,8 @@ into
 end
 ```
 
+9. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
+
 ## Should be implemented?
 
 1. Create possibility to define fixtures without the click action:
