@@ -5,14 +5,6 @@
 1. Add comments to code
 2. Check documentation about this gem
 3. Think about adding more integration tests
-4. Add possibility to pass VCR options to cassettes while applying them
-5. Remove tests stubbing VCR methods
-6. Think about adding the integration test when we use the exchange method with ERB variables
-7. There is a bug with:
-
-  @products.load_and_apply_vcr do
-    exchange '~/cars', {fixture: '~/cars', options: {erb: {name: 'Ford'}}
-  end
 
 ## Release 0.0.2
 
@@ -22,7 +14,25 @@
 4. Think how to manage the situation when a method name and a block is passed to the `waiter` helper method
 5. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
 6. Make this gem working on JRuby
-7. Think how to avoid monkey patching to add stuffs to SitePrism
+7. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
+8. Turn this code:
+
+```ruby
+@cars.apply_vcr(-> { page.find('#cars').click }) do
+  fixtures ['cars']
+end
+```
+
+into
+
+```ruby
+@cars.shift_event{ page.find('#cars').click }.apply_vcr do
+  fixtures ['cars']
+end
+```
+
+9. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
+10. Think how to avoid monkey patching to add stuffs to SitePrism
 
 ## Should be implemented?
 

@@ -73,18 +73,10 @@ describe SPV::DSL::Adjuster do
     end
 
     shared_examples 'when passed arguments are handled' do
-      it 'handles old fixtures' do
-        expect(fixtures_handler).to receive(:handle_raw).with(
-          [*raw_old_fixtures],
-          [home_path_modifier]
-        )
-
-        exchange
-      end
-
-      it 'handles new fixtures' do
-        expect(fixtures_handler).to receive(:handle_raw).with(
-          [*raw_new_fixtures],
+      it 'handles raw fixtures' do
+        expect(fixtures_handler).to receive(:handle_set_raws).with(
+          expected_raw_old_fixtures,
+          expected_raw_new_fixtures,
           [home_path_modifier]
         )
 
@@ -93,11 +85,14 @@ describe SPV::DSL::Adjuster do
     end
 
     let(:fixtures)           { double(exchange: true) }
-    let(:fixtures_handler)   { double(handle_raw: true) }
+    let(:fixtures_handler)   { double }
     let(:home_path_modifier) { double(modify: true) }
 
     let(:raw_old_fixtures) { ['old fixtures'] }
     let(:raw_new_fixtures) { ['new fixtures'] }
+
+    let(:expected_raw_old_fixtures) { raw_old_fixtures }
+    let(:expected_raw_new_fixtures) { raw_new_fixtures }
 
     let(:old_fixture) { double }
     let(:new_fixture) { double }
@@ -109,10 +104,10 @@ describe SPV::DSL::Adjuster do
       SPV::Fixtures::Handler.stub(:new).and_return(fixtures_handler)
       SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
 
-      fixtures_handler.stub(:handle_raw).and_return(
+      fixtures_handler.stub(:handle_set_raws).and_return([
         handled_old_fixtures,
         handled_new_fixtures
-      )
+      ])
     end
 
     it 'initializes the home path modifier' do
@@ -121,9 +116,12 @@ describe SPV::DSL::Adjuster do
       exchange
     end
 
-    context 'when strings are passed as arguments' do
-      let(:old_fixtures) { 'old fixtures' }
-      let(:new_fixtures) { 'new fixtures' }
+    context 'when no arrays are passed as arguments' do
+      let(:raw_old_fixtures) { {old_fixtures: 'hash with vcr options'} }
+      let(:raw_new_fixtures) { {new_fixtures: 'hash with vcr options'} }
+
+      let(:expected_raw_old_fixtures) { [raw_old_fixtures] }
+      let(:expected_raw_new_fixtures) { [raw_new_fixtures] }
 
       it_behaves_like 'when passed arguments are handled'
     end

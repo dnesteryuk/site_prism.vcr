@@ -11,6 +11,11 @@ describe SPV::Fixtures::Manager do
     subject(:manager) { described_class.new(options) }
 
     context 'when there are fixtures' do
+      after do
+        VCR.eject_cassette
+        VCR.eject_cassette
+      end
+
       it 'VCR holds the first fixture' do
         manager.inject(fixtures)
 

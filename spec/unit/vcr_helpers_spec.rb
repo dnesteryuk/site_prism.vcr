@@ -5,13 +5,14 @@ describe SPV::Helpers do
     subject { described_class.eject_all_cassettes }
 
     before do
-      VCR.stub(:eject_cassette).and_return(1, 2, 3, false)
+      VCR.insert_cassette 'arya_stark'
+      VCR.insert_cassette 'jon_snow'
     end
 
     it 'ejects all fixtures from VCR' do
-      expect(VCR).to receive(:eject_cassette).exactly(4).times
-
       subject
+
+      expect(VCR.eject_cassette).to be_nil
     end
   end
 end
