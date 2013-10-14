@@ -1,5 +1,6 @@
 module SitePrism
   class Page
+    # TODO: it should make sure this method does not a native method of SitePrism::Page class
     def self.inherited(subclass)
       # This code is required to allow subpages to inherit
       # a defined adjuster block. Otherwise, that block should be

@@ -22,6 +22,7 @@
 4. Think how to manage the situation when a method name and a block is passed to the `waiter` helper method
 5. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
 6. Make this gem working on JRuby
+7. Think how to avoid monkey patching to add stuffs to SitePrism
 
 ## Should be implemented?
 
