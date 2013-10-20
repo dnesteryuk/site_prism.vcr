@@ -1,9 +1,5 @@
 # TODO
 
-## Release 0.0.1
-
-1. Add comments to code and review existing comments.
-
 ## Release 0.0.2
 
 1. Think about adding more integration tests
