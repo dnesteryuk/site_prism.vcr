@@ -71,10 +71,8 @@ module SPV
       # interactions have finished.
       #
       # @param options [Hash, nil] Options which allows to change behavior of a waiter.
-      #   this method should be defined directly in a section
-      #   or a page where fixtures are defined for an element.
       # @option options :eject_cassettes [Boolean] Whether or not to eject
-      #   all cassettes from VCR once a waiter has finished his work.
+      #   all cassettes from VCR once a waiter meets an expectation.
       #
       # @yield Block to be used as a waiter.
       #
@@ -86,6 +84,11 @@ module SPV
         @options.waiter_options = waiter_options
       end
 
+      # Returns set of prepared fixtures.
+      #
+      # @return [SPV::Fixtures] A set of prepared fixtures.
+      #
+      # @api public
       def prepared_fixtures
         Fixtures.new(@tmp_keeper.fixtures)
       end
