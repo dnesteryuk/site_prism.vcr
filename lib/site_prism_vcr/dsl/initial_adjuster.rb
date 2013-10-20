@@ -42,7 +42,7 @@ module SPV
       # those fixtures to be inserted into VCR.
       #
       # @param path [String] Path to fixtures.
-      # @param fixture_names [Array<String>] List of fixtures,
+      # @param fixture_names [Array<String>] List of fixtures.
       #
       # @return [void]
       #

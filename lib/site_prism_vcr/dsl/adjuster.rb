@@ -1,5 +1,7 @@
 module SPV
   module DSL
+    # This class extends SPV::DSL::InitialAdjuster with new methods
+    # which can be used in a block for manipulating fixtures before applying them.
     class Adjuster < InitialAdjuster
       def initialize(options, fixtures)
         super options
@@ -7,14 +9,36 @@ module SPV
         @options, @fixtures = options, fixtures
       end
 
+      # Replaces default fixtures with a set of fixtures
+      # defined in a block passed while applying fixtures.
+      #
+      # @return [void]
+      #
+      # @api public
       def replace
         change_fixtures :replace
       end
 
+      # Joins default fixtures with a set of fixtures
+      # defined in a block passed while applying fixtures.
+      #
+      # @return [void]
+      #
+      # @api public
       def union
         change_fixtures :union
       end
 
+      # Exchanges certain default fixtures with another fixtures.
+      #
+      # @param old_fixtures [String, Array<String>] List of fixtures which should be removed.
+      #   If string is passed instead of an array, it will be converted to an array.
+      # @param new_fixtures [String, Array<String>] List of fixtures which should added.
+      #   If string is passed instead of an array, it will be converted to an array.
+      #
+      # @return [void]
+      #
+      # @api public
       def exchange(old_fixtures, new_fixtures)
         home_path_modifier = Fixtures::Modifiers::HomePath.new(@options)
 
@@ -33,6 +57,12 @@ module SPV
         )
       end
 
+      # Performs the replace action when no explicit action is defined
+      # in a block for manipulating fixtures before applying them.
+      #
+      # @return [SPV::Fixtures] A set of prepared fixtures.
+      #
+      # @api public
       def prepared_fixtures
         # If no action has been performed,
         # it should be performed manually, before allowing
