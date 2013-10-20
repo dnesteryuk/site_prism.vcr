@@ -3,7 +3,6 @@
 ## Release 0.0.1
 
 1. Add comments to code and review existing comments.
-2. Check documentation about this gem
 
 ## Release 0.0.2
 

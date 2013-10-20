@@ -1,4 +1,6 @@
 module SPV
+  # This class manages defining default fixtures
+  # and applying them on an event.
   class Applier
     def initialize(node, &block)
       @node, @options = node, Options.new
@@ -16,8 +18,12 @@ module SPV
     # Applies fixtures to be used for stubbing HTTP interactions
     # caused by an event (click on an element or page loading).
     #
+    # Makes a defined waiter to meet expectation before ejecting
+    # fixtures from VCR.
+    #
     # @param adjusting_block [nil, Proc] If an adjusting block is given,
-    #  it allows to change fixtures through DSL (@see SPV::DSL::Adjuster)
+    #  it allows to change fixtures through DSL (@see SPV::DSL::InitialAdjuster
+    #  and @see SPV::DSL::Adjuster)
     #
     # @return [void]
     def apply(adjusting_block = nil)
