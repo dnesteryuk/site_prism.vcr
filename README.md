@@ -72,14 +72,15 @@ The `path` helper method can be used a few times in a block to define cassettes.
 class ProductsPage < SitePrism::Page
   element_with_vcr \
     :car_details_link,
-    '#car_details',
-    fixtures: [
-      'cars/small/ford',
-      'cars/small/ford_features',
-      'cars/small/prices',
-      'offerings/used_cars',
-      'offerings/new_cars'
-    ]
+    '#car_details' do
+      fixtures [
+        'cars/small/ford',
+        'cars/small/ford_features',
+        'cars/small/prices',
+        'offerings/used_cars',
+        'offerings/new_cars'
+      ]
+    end
 end
 ```
 
