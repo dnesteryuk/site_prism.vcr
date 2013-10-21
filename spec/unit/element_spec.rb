@@ -44,4 +44,20 @@ describe SPV::Element do
       subject.click_and_apply_vcr
     end
   end
+
+  describe '#apply_vcr' do
+    subject { described_class.new(nil, parent) }
+
+    before do
+      subject.stub(:click)
+    end
+
+    it 'applies custom fixtures' do
+      expect(applier).to receive(:apply).with(
+        kind_of(Proc)
+      )
+
+      subject.apply_vcr( -> { }) {}
+    end
+  end
 end
