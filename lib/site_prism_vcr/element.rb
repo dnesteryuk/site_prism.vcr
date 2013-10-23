@@ -10,9 +10,11 @@ module SPV
     end
 
     def click_and_apply_vcr(&adjusting_block)
-      @applier.apply(adjusting_block) do
-        click
-      end
+      apply_vcr( -> {click}, &adjusting_block )
+    end
+
+    def apply_vcr(action_block, &adjusting_block)
+      @applier.apply(adjusting_block, &action_block)
     end
   end
 end

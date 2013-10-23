@@ -134,7 +134,7 @@ end
 
 ### Applying VCR cassettes on click
 
-Now cassettes can be applied only on a click event:
+Cassettes can be applied on a click event:
 
 ```ruby
 @products_page.car_details_link.click_and_apply_vcr
@@ -200,6 +200,16 @@ Home path can be defined while applying Vcr:
   path '~/', ['volvo', 'volvo_features', 'prices']
 end
 ```
+
+### Applying VCR cassettes on an event
+
+Now cassettes can be applied not only on click event:
+
+```ruby
+@products_page.car_details_link.apply_vcr( -> { page.find('#cars').click })
+```
+The first argument passed to this method should be a proc object which will do an action. This code applies VCR cassettes which were specified while defining a SitePrism element. But, Similar to click_and_apply_vcr, you can override cassettes, add new cassettes, use `path` helper method while applying fixtures and specified a home path while defining a SitePrism element:
+
 
 #### Exchange default fixtures
 
