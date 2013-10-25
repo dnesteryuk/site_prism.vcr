@@ -8,6 +8,7 @@ group :development do
   gem 'sinatra'
   gem 'httpi'
   gem 'capybara-firebug'
+  gem 'sandi_meter'
 end
 
 group :test do
