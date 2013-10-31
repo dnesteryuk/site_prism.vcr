@@ -19,6 +19,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'site_prism', '~> 2.5'
-  spec.add_dependency 'vcr',        '~> 2.6.0'
+  spec.add_dependency 'vcr',        '~> 2.7.0'
   spec.add_dependency 'webmock'
 end
