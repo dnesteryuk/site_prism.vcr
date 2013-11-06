@@ -9,12 +9,12 @@ module SPV
       @applier = Applier.new(parent, &block)
     end
 
-    def click_and_apply_vcr(&adjusting_block)
-      apply_vcr( -> {click}, &adjusting_block )
+    def click_and_apply_vcr(&block)
+      shift_event { click }.apply_vcr &block
     end
 
-    def apply_vcr(action_block, &adjusting_block)
-      @applier.apply(adjusting_block, &action_block)
+    def shift_event(&block)
+      @applier.shift_event(&block)
     end
   end
 end

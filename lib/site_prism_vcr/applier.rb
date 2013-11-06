@@ -15,6 +15,12 @@ module SPV
       @fixtures_manager = Fixtures::Manager.new(@options)
     end
 
+    def shift_event(&block)
+      @event_action = block
+
+      self
+    end
+
     # Applies fixtures to be used for stubbing HTTP interactions
     # caused by an event (click on an element or page loading).
     #
@@ -26,7 +32,7 @@ module SPV
     #  and @see SPV::DSL::Adjuster)
     #
     # @return [void]
-    def apply(adjusting_block = nil)
+    def apply(&block)
       options = @options.clone_options
 
       adjuster = DSL::Adjuster.new(
@@ -34,13 +40,13 @@ module SPV
         @fixtures
       )
 
-      if adjusting_block
-        adjuster.instance_eval &adjusting_block
+      if block_given?
+        adjuster.instance_eval &block
       end
 
       @fixtures_manager.inject(adjuster.prepared_fixtures)
 
-      yield
+      @event_action.call
 
       @waiter = Waiter.new(
         @node,
