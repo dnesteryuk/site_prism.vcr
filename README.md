@@ -378,6 +378,10 @@ It works with any kind of helper methods where you list names of cassettes, even
 end
 ```
 
+## Examples
+
+The simple example of using this gem you can find [here](https://github.com/dnesteryuk/site_prism.vcr_example)
+
 ## Contributing
 
 1. Fork it
