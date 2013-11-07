@@ -32,7 +32,7 @@ module SPV
     #  and @see SPV::DSL::Adjuster)
     #
     # @return [void]
-    def apply(&block)
+    def apply_vcr(&block)
       options = @options.clone_options
 
       adjuster = DSL::Adjuster.new(
@@ -46,6 +46,7 @@ module SPV
 
       @fixtures_manager.inject(adjuster.prepared_fixtures)
 
+      # TODO: what if we don't have a defined event block?
       @event_action.call
 
       @waiter = Waiter.new(

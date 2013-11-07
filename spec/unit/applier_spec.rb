@@ -64,7 +64,8 @@ describe SPV::Applier do
     end
   end
 
-  describe '#apply' do
+  describe '#apply_vcr' do
+    let(:node)              { double(click: true) }
     let(:cloned_options)    { 'cloned options' }
     let(:options)           { double(clone_options: cloned_options) }
     let(:waiter)            { double(wait: true) }
@@ -84,6 +85,8 @@ describe SPV::Applier do
     before do
       SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
       SPV::Waiter.stub(:new).and_return(waiter)
+
+      applier.shift_event { node.click }
     end
 
     it 'initializes the fixtures adjuster with a new instance of options' do
@@ -92,19 +95,21 @@ describe SPV::Applier do
         fixtures
       )
 
-      applier.apply { }
+      applier.apply_vcr
     end
 
-    it 'calls a given block within the context of the adjuster' do
-      expect(adjuster).to receive(:mymeth)
+    context 'when a block is given' do
+      it 'calls a given block within the context of the adjuster' do
+        expect(adjuster).to receive(:mymeth)
 
-      applier.apply(proc{ mymeth }) {}
+        applier.apply_vcr { mymeth }
+      end
     end
 
     it 'applies fixtures' do
       expect(fixtures_manager).to receive(:inject).with(prepared_fixtures)
 
-      applier.apply { }
+      applier.apply_vcr
     end
 
     it 'initializes the waiter' do
@@ -114,21 +119,19 @@ describe SPV::Applier do
         cloned_options
       ).and_return(waiter)
 
-      applier.apply { }
+      applier.apply_vcr
     end
 
     it 'does the click action over a node' do
       expect(node).to receive(:click)
 
-      applier.apply do
-        node.click
-      end
+      applier.apply_vcr
     end
 
     it 'waits until all HTTP interactions are finished' do
       expect(waiter).to receive(:wait)
 
-      applier.apply { }
+      applier.apply_vcr
     end
   end
 end
