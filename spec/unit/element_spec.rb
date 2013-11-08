@@ -37,9 +37,9 @@ describe SPV::Element do
     end
 
     it 'applies vcr' do
-      expect(applier).to receive(:apply_vcr).with(kind_of(Proc))
+      expect(applier).to receive(:apply_vcr)
 
-      subject.click_and_apply_vcr {}
+      subject.click_and_apply_vcr
     end
   end
 end

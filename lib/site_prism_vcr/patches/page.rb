@@ -1,41 +1,40 @@
+require 'forwardable'
+
 module SitePrism
   class Page
-    # TODO: it should make sure this method does not a native method of SitePrism::Page class
-    def self.inherited(subclass)
-      # This code is required to allow subpages to inherit
-      # a defined adjuster block. Otherwise, that block should be
-      # duplicated in a subpage as well.
-      subclass.instance_variable_set(:@vcr_adjuster, @vcr_adjuster)
-    end
+    extend Forwardable
 
-    def self.vcr_options_for_load(&block)
-      @vcr_adjuster = block
-    end
+    def_delegator :@applier, :shift_event
 
-    def self.vcr_adjuster
-      @vcr_adjuster
-    end
+    class << self
+      # TODO: it should make sure this method does not a native method of SitePrism::Page class
+      def inherited(subclass)
+        # This code is required to allow subpages to inherit
+        # a defined adjuster block. Otherwise, that block should be
+        # duplicated in a subpage as well.
+        subclass.instance_variable_set(:@vcr_adjuster, @vcr_adjuster)
+      end
 
-    def apply_vcr(*args, action_block, &adjusting_block)
-      applier = SPV::Applier.new(
-        self,
-        &self.class.vcr_adjuster
-      )
+      def vcr_options_for_load(&block)
+        @vcr_adjuster = block
+      end
 
-      applier.apply(
-        adjusting_block
-      ) do
-        action_block.call
+      def vcr_adjuster
+        @vcr_adjuster
       end
     end
 
-    def load_and_apply_vcr(*args, &adjusting_block)
-      action_block = proc { load(*args) }
+    def initialize(*args)
+      super
 
-      apply_vcr(
-        action_block,
-        &adjusting_block
+      @applier = SPV::Applier.new(
+        self,
+        &self.class.vcr_adjuster
       )
+    end
+
+    def load_and_apply_vcr(*args, &block)
+      shift_event { load(*args) }.apply_vcr(&block)
     end
   end
 end
