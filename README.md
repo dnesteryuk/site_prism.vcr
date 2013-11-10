@@ -302,6 +302,28 @@ end
 
 The same thing can be defined for a default waiter.
 
+### Custom events
+
+There may be a situation when you need to apply fixtures for some custom event rather than for a click event. It may be a change event for a select box or a drag-and-drop event for a list or a blur event for an input element. SitePrism.Vcr gem provides a way to archive such goal:
+
+```ruby
+@products_page.cars_dropdown.shift_event{
+  set 'Ford'
+}.apply_vcr # uses default fixtures defined for this element
+```
+
+or if you need to use another cassettes:
+
+```ruby
+@products_page.cars_dropdown.shift_event{
+  set 'Ford'
+}.apply_vcr do
+  fixtures ['cars/ford/prices']
+end
+```
+
+The block which is passed to `shift_event` method is executed in a context of an element, it means any method of [Capybara::Node::Element](http://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Element) object can be used there. Also, `apply_vcr` method supports all helpers which were described above.
+
 ### Linking and applying VCR cassettes with SitePrism pages
 
 External HTTP interactions may be done on page loading as well. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
@@ -316,7 +338,7 @@ end
 
 Everything described above about defining cassettes for SitePrism elements is true for defining cassettes for pages.
 
-Applying cassettes is almost the same as we saw for a click event:
+Applying cassettes is almost the same as you saw for a click event:
 
 ```ruby
 page.load_and_apply_vcr do
@@ -341,18 +363,6 @@ In this case, SitePrism will alter an url and it will look like:
 ```ruby
 http://localhost/cats/tom
 ```
-
-There may be situation when we need to apply fixtures for page loading when an user clicks on a link (an user moves from one page to another one). In this case you can use `apply_vcr` method of a page object:
-
-```ruby
-@cars = CarsPage.new
-
-@cars.apply_vcr(-> { page.find('#cars').click }) do
-  fixtures ['cars']
-end
-```
-
-The first argument passed to this method should be a proc object which will do an action. As you can see while applying fixtures without actual loading a page you can use everything what is described for `load_and_apply_vcr` method.
 
 ### Using Vcr options for cassettes
 
