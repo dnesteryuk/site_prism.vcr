@@ -13,9 +13,10 @@ Such integration allows you to write acceptance tests more easily since you rece
 
   * Links VCR cassettes with SitePrism elements.
   * Links VCR cassettes with SitePrism pages.
-  * Applies VCR cassettes while clicking on an element.
-  * Applies VCR cassettes while loading a page.
-  * Defines a waiter which will be used for waiting until an expected element is on a page or until an expected element has disappeared from a page (It is very helpful when a few external API requests are being executed after clicking on an element).
+  * Applies VCR cassettes on a click event.
+  * Applies VCR cassettes on any custom event.
+  * Applies VCR cassettes on page loading.
+  * Defines a waiter which will be used for waiting until an expected element is on a page or until an expected element has disappeared from a page (It is very helpful when a few external API requests are being executed after doing some event).
   * Allows to redefine default VCR cassettes (cassettes which were specified while describing a SitePrism element or a SitePrism page).
   * Allows to redefine a default waiter (a waiter which was specified while describing a SitePrism element or a SitePrism page).
 
