@@ -201,16 +201,6 @@ Home path can be defined while applying Vcr:
 end
 ```
 
-### Applying VCR cassettes on an event
-
-Now cassettes can be applied not only on click event:
-
-```ruby
-@products_page.car_details_link.apply_vcr( -> { page.find('#cars').click })
-```
-The first argument passed to this method should be a proc object which will do an action. This code applies VCR cassettes which were specified while defining a SitePrism element. But, Similar to click_and_apply_vcr, you can override cassettes, add new cassettes, use `path` helper method while applying fixtures and specified a home path while defining a SitePrism element:
-
-
 #### Exchange default fixtures
 
 There may be a situation when you need to exchange some default cassette for one specific test. It is a very easy to do:
@@ -302,9 +292,9 @@ end
 
 The same thing can be defined for a default waiter.
 
-### Custom events
+### Applying VCR cassettes on any event
 
-There may be a situation when you need to apply fixtures for some custom event rather than for a click event. It may be a change event for a select box or a drag-and-drop event for a list or a blur event for an input element. SitePrism.Vcr gem provides a way to archive such goal:
+There may be a situation when you need to apply cassettes for some custom event rather than for a click event. It may be a change event for a select box or a drag-and-drop event for a list or a blur event for an input element. SitePrism.Vcr gem provides a way to archive such goal:
 
 ```ruby
 @products_page.cars_dropdown.shift_event{
@@ -322,7 +312,7 @@ or if you need to use another cassettes:
 end
 ```
 
-The block which is passed to `shift_event` method is executed in a context of an element, it means any method of [Capybara::Node::Element](http://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Element) object can be used there. Also, `apply_vcr` method supports all helpers which were described above.
+The block which is passed to `shift_event` method is executed in a context of an element, it means any method of [Capybara::Node::Element](http://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Element) object can be used there. Similar to `click_and_apply_vcr` method, you can override cassettes, add new cassettes, use `path` helper method while applying cassettes and `home_path` helper method specified while defining a SitePrism element.
 
 ### Linking and applying VCR cassettes with SitePrism pages
 
