@@ -1,6 +1,6 @@
 require 'spec_integration_helper'
 
-feature 'Http interactions on event provided as a proc' do
+feature 'Http interactions on an event provided as a proc' do
   let(:cat_owner)     { test_app_page.cat_owner }
   let(:test_app_page) { HomePage.new }
 
@@ -10,9 +10,9 @@ feature 'Http interactions on event provided as a proc' do
 
   context 'applies and handles HTTP request' do
     before do
-      test_app_page.link_with_one_request.apply_vcr(
-        -> {test_app_page.link_with_one_request.click}
-      )
+      test_app_page.link_with_one_request.shift_event {
+        test_app_page.link_with_one_request.click
+      }.apply_vcr
     end
 
     it 'applies a default fixture' do

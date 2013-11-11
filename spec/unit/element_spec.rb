@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SPV::Element do
   let(:node)    { stub   }
   let(:parent)  { double }
-  let(:applier) { double(apply: true) }
+  let(:applier) { double(apply_vcr: true) }
 
   before do
     SPV::Applier.stub(:new).and_return(applier)
@@ -25,39 +25,21 @@ describe SPV::Element do
     subject { described_class.new(nil, parent) }
 
     before do
-      subject.stub(:apply_vcr)
-      subject.stub( :click )
+      subject.stub(:click)
+      subject.stub(:shift_event).and_yield.and_return(applier)
     end
 
-    it 'call apply_vcr with click event in action_block' do
-      expect(subject).to receive(:apply_vcr) do |action_block|
-        expect(subject).to receive(:click)
-
-        action_block.call
-      end
+    it 'shifts a click event to the applier' do
+      expect(subject).to receive(:shift_event).and_yield.and_return(applier)
+      expect(subject).to receive(:click)
 
       subject.click_and_apply_vcr
     end
-  end
 
-  describe '#apply_vcr' do
-    subject { described_class.new(nil, parent) }
-    let(:action_block) { proc { } }
+    it 'applies vcr' do
+      expect(applier).to receive(:apply_vcr)
 
-    it 'applies custom fixtures' do
-      expect(applier).to receive(:apply).with(
-        kind_of(Proc)
-      )
-
-      subject.apply_vcr(action_block) {}
-    end
-
-    it 'runs action described in the proc' do
-      applier.stub(:apply).and_yield
-
-      expect(action_block).to receive(:call)
-
-      subject.apply_vcr(action_block) {}
+      subject.click_and_apply_vcr
     end
   end
 end

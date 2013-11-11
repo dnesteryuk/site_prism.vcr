@@ -7,7 +7,9 @@ feature 'Immediate Http interactions > Page load on click' do
     index_page = HomePage.new
     index_page.load
 
-    one_request_page.apply_vcr proc { index_page.link_to_go_to_another_page.click }
+    one_request_page.shift_event {
+      index_page.link_to_go_to_another_page.click
+    }.apply_vcr
   end
 
   it 'loads fixtures on opening a page by click on a link' do
