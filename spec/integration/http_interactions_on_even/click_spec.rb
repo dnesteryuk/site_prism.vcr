@@ -19,6 +19,16 @@ feature 'Http interactions on event > Click' do
     end
   end
 
+  context 'when Vcr is associated for already defined elements' do
+    before do
+      test_app_page.link_without_vcr.click_and_apply_vcr
+    end
+
+    it 'applies a default fixture' do
+      expect(test_app_page.cat_owner).to have_content('Ned Stark')
+    end
+  end
+
   context 'when there is a delay between clicking and doing an HTTP request' do
     before do
       test_app_page.link_with_one_request_and_delay.click_and_apply_vcr

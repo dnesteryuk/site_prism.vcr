@@ -41,4 +41,11 @@ class HomePage < BasePage
       fixtures ['ned_stark', 'robb_stark']
       waiter({eject_cassettes: false}, &:wait_for_ned_stark_and_robb_stark)
     end
+
+  element :link_without_vcr, '#link_with_one_request'
+
+  link_vcr_with_element :link_without_vcr do
+    fixtures ['ned_stark']
+    waiter   &:wait_for_cat_owner
+  end
 end

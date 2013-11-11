@@ -7,38 +7,51 @@ class TestPageWithElement
     def element(*); end
   end
 
-  def el_with_options
-    'original element with options'
+  def test_el1; end
+  def test_el2
+    'original element'
   end
 
-  def test_el; end
-
-  element_with_vcr(:el_with_options, '#selector', fixtures: 'some fixtures') {}
+  link_vcr_with_element :test_el2
 end
 
 describe SitePrism::ElementContainer do
   describe '.element_with_vcr' do
+    subject do
+      TestPageWithElement.instance_eval do
+        element_with_vcr :test_el1, '#test_selector', visible: false
+      end
+    end
+
     it 'calls the original element method with given arguments' do
       expect(TestPageWithElement).to receive(:element).with(
-        :test_el,
+        :test_el1,
         '#test_selector',
         visible: false
       )
 
-      TestPageWithElement.instance_eval do
-        element_with_vcr :test_el, '#test_selector', visible: false
-      end
+      subject
     end
 
+    it 'links vcr with an element' do
+      expect(TestPageWithElement).to receive(:link_vcr_with_element).with(
+        :test_el1
+      )
+
+      subject
+    end
+  end
+
+  describe '.link_vcr_with_element' do
     context 'when a method for getting an element is called' do
       let(:page)   { TestPageWithElement.new }
       let(:vcr_el) { 'vcr element' }
 
-      subject { page.el_with_options }
+      subject { page.test_el2 }
 
-      it 'initializes a new instance of an element with empty options' do
+      it 'initializes a new instance of an element' do
         expect(SPV::Element).to receive(:new).with(
-          'original element with options', page
+          'original element', page
         ).and_return(vcr_el)
 
         expect(subject).to eq(vcr_el)
