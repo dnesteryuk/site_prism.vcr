@@ -11,12 +11,12 @@
       fixtures ['cars']
     end
   ```
-  
+
   Now we use changeable way for this purpose:
-  
+
   ```ruby
     @cars = CarsPage.new
-  
+
     @cars.shift_event {
       page.find('#cars').click
     }.apply_vcr do
@@ -29,9 +29,22 @@
   * added possibility to apply Vcr cassettes for any event of an element. [Roman Rott and Dmitriy Nesteryuk]
 
   ```ruby
-  @products_page.cars_dropdown.shift_event{
-    set 'Ford'
-  }.apply_vcr do
-    fixtures ['cars/ford/prices']
-  end
+    @products_page.cars_dropdown.shift_event{
+      set 'Ford'
+    }.apply_vcr do
+      fixtures ['cars/ford/prices']
+    end
+  ```
+
+  * added possibility to link Vcr with already defined elements, it will be helpful in case they are inherited
+
+  ```ruby
+    class CarsPage < TransportPage
+      link_vcr_with_element :transport_details_link do
+        fixtures ['cars/ford']
+      end
+    end
+
+    @page = CarsPage.new
+    @page.transport_details_link.click_and_apply_vcr
   ```

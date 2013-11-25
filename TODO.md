@@ -2,10 +2,10 @@
 
 ## Release 0.1.0
 
-1. Add possibility to add fixtures for existing elements, it will be helpful in case they are inherited
-2. Think about adding more integration tests
-3. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
-4. Make this gem working on JRuby
+1. Think about adding more integration tests
+2. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
+3. Make this gem working on JRuby
+4. Split tests in spec/integration/http_interactions_on_even/click_spec.rb
 
 ## Release 0.1.1
 

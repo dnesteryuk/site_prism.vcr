@@ -12,6 +12,7 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-fire'
   gem 'selenium-webdriver'
   gem 'coveralls', require: false
 end

@@ -1,6 +1,6 @@
 require 'spec_integration_helper'
 
-feature 'Http interactions on an event provided as a proc' do
+feature 'Http interactions on any event' do
   let(:cat_owner)     { test_app_page.cat_owner }
   let(:test_app_page) { HomePage.new }
 
