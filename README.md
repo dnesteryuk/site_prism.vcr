@@ -7,16 +7,15 @@
 
 The purpose of this gem is to give an easy way for integrating [SitePrism](https://github.com/natritmeyer/site_prism) (it is Page Object Model DSL for Capybara) and [VCR](https://github.com/vcr/vcr) (it is a powerful tool for recording and stubbing HTTP interactions).
 
-Such integration allows you to write acceptance tests more easily since you receive handy tool for managing VCR cassettes. Those cassettes can be easily linked with SitePrism elements (in fact, Capybara elements since SitePrism doesn't have own elements). Afterwards those linked cassettes can be used for stubbing external API responses while clicking on an element that cassettes are defined for.
+Such integration allows you to write acceptance tests more easily since you receive handy tool for managing VCR cassettes. Those cassettes can be easily linked with SitePrism elements (in fact, Capybara elements since SitePrism doesn't have own elements). Afterwards those linked cassettes can be used for stubbing external API responses while doing actions (click, change etc) over an element that cassettes are defined for.
 
 ## Features
 
   * Links VCR cassettes with SitePrism elements.
   * Links VCR cassettes with SitePrism pages.
-  * Applies VCR cassettes on a click event.
-  * Applies VCR cassettes on any custom event.
+  * Applies VCR cassettes on any event (click, change, blur etc).
   * Applies VCR cassettes on page loading.
-  * Defines a waiter which will be used for waiting until an expected element is on a page or until an expected element has disappeared from a page (It is very helpful when a few external API requests are being executed after doing some event).
+  * Defines a waiter which will be used for waiting until an expected element is on a page or until an expected element has disappeared from a page (It is very helpful when a few external API requests are being executed after raising an event).
   * Allows to redefine default VCR cassettes (cassettes which were specified while describing a SitePrism element or a SitePrism page).
   * Allows to redefine a default waiter (a waiter which was specified while describing a SitePrism element or a SitePrism page).
 
@@ -52,6 +51,20 @@ end
 
 `fixtures` helper method is used for defining VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info about configuration options.
 
+If your page inherits some another page with already defined elements, you can specify cassettes for already defined elements:
+
+```ruby
+class TransportPage < SitePrism::Page
+  element :car_details_link, '#car_details'
+end
+
+class CarsPage < TransportPage
+  link_vcr_with_element :car_details_link do
+    fixtures ['cars/ford']
+  end
+end
+```
+
 #### Path helper method
 
 In case you have a lot of cassettes which are stored in some subdirectory, there is more better way for defining cassettes:
@@ -67,7 +80,8 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-The `path` helper method can be used a few times in a block to define cassettes. The code above is identical to:
+The `path` helper method can be used a few times in a block to define cassettes.
+The code above is identical to:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -101,7 +115,7 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-If some fixture name begins with `~/`, it means that a defined home path will be applied to find such fixture. The previous example is identical to this one:
+If some cassette name begins with `~/`, it means that a defined home path will be applied to find such cassette. The previous example is identical to this one:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -230,7 +244,7 @@ end
 
 ### Waiters
 
-Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP interactions we have to wait for a result of them, before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on a button to show details of some product, you may wait until loading indicator which may be shown on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
+Waiters are very important part of this gem (actually, waiters are part of SitePrism gem, but they are used widely here). When we do some action and that action causes a few HTTP interactions we have to wait for a result of them before expecting something on a page. The good approach is to wait for some visibility or invisibility of an element. For example, you have a list of products when you click on a button to show details of some product, you may wait until loading indicator which may be shown on a details page of a product disappears. Capybara already waits for an element to appear, but it hasn't any possibility to wait for invisibility of an element, SitePrism has this capability and it is very useful.
 
 There is reason why you should use them when you use SitePrism.Vcr. If you specify a waiter while describing SitePrism elements or applying VCR cassettes, SitePrism.Vcr will know when the inserted cassettes should be ejected from Vcr to avoid a situation when some unexpected cassette is applied.
 
