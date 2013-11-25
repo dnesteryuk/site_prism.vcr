@@ -51,15 +51,15 @@ end
 
 `fixtures` helper method is used for defining VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info about configuration options.
 
-If your page inherits some another page with already defined elements, you can specify cassettes for already defined elements:
+You can specify cassettes for already defined elements, for example, your page inherits another one:
 
 ```ruby
 class TransportPage < SitePrism::Page
-  element :car_details_link, '#car_details'
+  element :transport_details_link, '#car_details'
 end
 
 class CarsPage < TransportPage
-  link_vcr_with_element :car_details_link do
+  link_vcr_with_element :transport_details_link do
     fixtures ['cars/ford']
   end
 end
