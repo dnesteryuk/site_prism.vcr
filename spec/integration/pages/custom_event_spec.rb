@@ -1,7 +1,7 @@
 require 'spec_integration_helper'
 
 feature 'Pages > Load > Custom event' do
-  let(:one_request_page) { ImmediateHttpInteractions::OneRequestPage.new }
+  let(:one_request_page) { PageLoad::OneRequestPage.new }
 
   before do
     index_page = HomePage.new

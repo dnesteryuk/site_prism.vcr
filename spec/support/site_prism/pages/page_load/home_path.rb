@@ -1,6 +1,6 @@
 require_relative '../base'
 
-module ImmediateHttpInteractions
+module PageLoad
   class HomePathPage < BasePage
     set_url '/immediate-http-interactions/one-request'
     set_url_matcher /immediate\-http\-interactions\/one\-request/
