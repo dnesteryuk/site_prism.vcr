@@ -6,6 +6,7 @@
 2. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
 3. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
 4. Split tests in spec/integration/http_interactions_on_even/click_spec.rb
+5. Apply RspecFire for unit tests
 
 ## Release 0.1.1
 
