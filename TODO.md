@@ -4,7 +4,7 @@
 
 1. Think about adding more integration tests
 2. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
-3. Make this gem working on JRuby
+3. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
 4. Split tests in spec/integration/http_interactions_on_even/click_spec.rb
 
 ## Release 0.1.1

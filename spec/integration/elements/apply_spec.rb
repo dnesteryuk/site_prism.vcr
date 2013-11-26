@@ -3,8 +3,13 @@ require 'spec_integration_helper'
 feature 'Elements > Apply Vcr' do
   # It may be any other event, we use this one
   # because it is the simplest one
-  def shift_click_event(link, &adjuster)
+  def shift_click_event(link)
     link.shift_event { link.click }
+  end
+
+  def shift_click_event_to(link_name)
+    link = test_app_page.public_send(link_name)
+    shift_click_event(link)
   end
 
   let(:cat_owner)     { test_app_page.cat_owner }
@@ -17,7 +22,7 @@ feature 'Elements > Apply Vcr' do
 
   context 'clicks and handles one HTTP request' do
     before do
-      shift_click_event(test_app_page.link_with_one_request).apply_vcr
+      shift_click_event_to(:link_with_one_request).apply_vcr
     end
 
     it 'applies a default fixture' do
@@ -25,9 +30,9 @@ feature 'Elements > Apply Vcr' do
     end
   end
 
-  context 'when Vcr is associated for already defined elements' do
+  context 'when VCR is associated with already defined elements' do
     before do
-      shift_click_event(test_app_page.link_without_vcr).apply_vcr
+      shift_click_event_to(:link_without_vcr).apply_vcr
     end
 
     it 'applies a default fixture' do
@@ -37,7 +42,7 @@ feature 'Elements > Apply Vcr' do
 
   context 'when there is a delay between clicking and doing an HTTP request' do
     before do
-      shift_click_event(test_app_page.link_with_one_request_and_delay).apply_vcr
+      shift_click_event_to(:link_with_one_request_and_delay).apply_vcr
     end
 
     it 'applies a fixture and the test waits for results' do
@@ -48,7 +53,7 @@ feature 'Elements > Apply Vcr' do
   # TODO: should we write the same test for the page load?
   context 'when an user clicks on the link which causes 2 HTTP requests' do
     before do
-      shift_click_event(test_app_page.link_with_2_requests).apply_vcr
+      shift_click_event_to(:link_with_2_requests).apply_vcr
     end
 
     it 'applies 2 fixtures' do
@@ -58,7 +63,7 @@ feature 'Elements > Apply Vcr' do
   end
 
   it_behaves_like 'when a custom fixture is applied' do
-    let(:actor) { shift_click_event(test_app_page.link_with_one_request) }
+    let(:actor) { shift_click_event_to(:link_with_one_request) }
 
     context 'when clicks again without specifying a custom fixture' do
       it 'uses a default fixture again' do
@@ -71,21 +76,21 @@ feature 'Elements > Apply Vcr' do
 
   context 'waiters' do
     it_behaves_like 'when a default waiter does not eject fixtures' do
-      let(:actor) { shift_click_event(test_app_page.link_without_ejecting_fixtures) }
+      let(:actor) { shift_click_event_to(:link_without_ejecting_fixtures) }
     end
 
     it_behaves_like 'custom waiters' do
-      let(:actor) { shift_click_event(test_app_page.link_with_2_requests) }
+      let(:actor) { shift_click_event_to(:link_with_2_requests) }
     end
   end
 
   it_behaves_like 'when a home path is define' do
-    let(:actor_with_home_path)    { shift_click_event(test_app_page.link_with_home_path) }
-    let(:actor_without_home_path) { shift_click_event(test_app_page.link_with_one_request) }
+    let(:actor_with_home_path)    { shift_click_event_to(:link_with_home_path) }
+    let(:actor_without_home_path) { shift_click_event_to(:link_with_one_request) }
   end
 
   it_behaves_like 'when a default fixture is exchanged' do
-    let(:actor_with_home_path)    { shift_click_event(test_app_page.link_with_home_path) }
-    let(:actor_without_home_path) { shift_click_event(test_app_page.link_with_2_requests) }
+    let(:actor_with_home_path)    { shift_click_event_to(:link_with_home_path) }
+    let(:actor_without_home_path) { shift_click_event_to(:link_with_2_requests) }
   end
 end
