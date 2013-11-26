@@ -1,6 +1,6 @@
 require 'spec_integration_helper'
 
-feature 'Immediate Http interactions > Page load on click' do
+feature 'Immediate Http interactions > Page load on custom event' do
   let(:one_request_page) { ImmediateHttpInteractions::OneRequestPage.new }
 
   before do
