@@ -96,7 +96,7 @@ describe SPV::DSL::Adjuster do
     end
 
     let(:fixtures_handler)   { instance_double('SPV::Fixtures::Handler') }
-    let(:home_path_modifier) { 'home path modifier' }
+    let(:home_path_modifier) { double('home path modifier') }
 
     let(:raw_old_fixtures) { ['old fixtures'] }
     let(:raw_new_fixtures) { ['new fixtures'] }

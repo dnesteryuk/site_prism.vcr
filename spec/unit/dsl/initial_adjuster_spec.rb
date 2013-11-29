@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe SPV::DSL::InitialAdjuster do
-  let(:options)          { double }
-  let(:tmp_keeper)       { double(add_fixtures: true) }
-  let(:handled_fixtures) { double }
-  let(:fixtures_handler) { double(handle_raw: handled_fixtures) }
+  let(:options)          { instance_double('SPV::Options') }
+  let(:tmp_keeper)       { instance_double('SPV::Fixtures::TmpKeeper', add_fixtures: true) }
+  let(:handled_fixtures) { 'handled fixtures' }
+  let(:fixtures_handler) { instance_double('SPV::Fixtures::Handler', handle_raw: handled_fixtures) }
 
   subject { described_class.new(options) }
 
@@ -29,7 +29,7 @@ describe SPV::DSL::InitialAdjuster do
 
   describe '#fixtures' do
     let(:raw_fixtures)       { 'some fixtures' }
-    let(:home_path_modifier) { 'some home path modifier' }
+    let(:home_path_modifier) { double('home path modifier') }
 
     before do
       SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
@@ -73,10 +73,10 @@ describe SPV::DSL::InitialAdjuster do
     end
 
     let(:raw_fixtures)       { 'some raw fixtures' }
-    let(:options_with_path)  { double('path=' => true) }
+    let(:options_with_path)  { instance_double('SPV::OptionsWithPath', 'path=' => true) }
 
-    let(:path_modifier)       { double }
-    let(:home_path_modifier)  { double }
+    let(:path_modifier)      { double('path modifier') }
+    let(:home_path_modifier) { double('home path modifier') }
 
     before do
       SPV::OptionsWithPath.stub(:new).and_return(options_with_path)
@@ -132,7 +132,13 @@ describe SPV::DSL::InitialAdjuster do
   end
 
   describe '#waiter' do
-    let(:options) { double('waiter='.to_sym => true, 'waiter_options='.to_sym => true) }
+    let(:options) {
+      instance_double(
+        'SPV::Options',
+        'waiter='.to_sym         => true,
+        'waiter_options='.to_sym => true
+      )
+    }
 
     it 'defines a new waiter' do
       expect(options).to receive(:waiter=).with(kind_of(Proc))
@@ -148,7 +154,7 @@ describe SPV::DSL::InitialAdjuster do
   end
 
   describe '#prepared_fixtures' do
-    let(:fixtures)     { double }
+    let(:fixtures)     { double('fixtures') }
     let(:raw_fixtures) { 'some raw fixtures' }
 
     before do
