@@ -1,6 +1,7 @@
 require 'bundler/setup'
 
 require 'rspec'
+require 'rspec/fire'
 require 'coveralls'
 
 require 'site_prism.vcr'
@@ -11,6 +12,8 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.include(RSpec::Fire)
 end
 
 VCR.configure do |c|

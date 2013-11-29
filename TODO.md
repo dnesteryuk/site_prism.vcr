@@ -7,6 +7,17 @@
 3. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
 4. Split tests in spec/integration/http_interactions_on_even/click_spec.rb
 5. Apply RspecFire for unit tests
+6. The way how we do actions (replace, union etc) in adjuster is ugly. We should do something with `prepared_fixtures` method. We should find better way for performing a default action. There may be even a bug since the default action may not be performed:
+
+```ruby
+  self.some_link.click_and_apply_vcr do
+    fixtures ['test', 'test2']
+    union
+    fixtures ['test3']
+  end
+```
+
+The last fixture will be lost due to a simple mistake in ordering.
 
 ## Release 0.1.1
 

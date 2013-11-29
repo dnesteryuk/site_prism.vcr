@@ -1,10 +1,21 @@
 require 'spec_helper'
 
 describe SPV::DSL::Adjuster do
-  let(:raw_fixtures)     { 'some fixtures' }
-  let(:fixtures)         { double }
-  let(:tmp_keeper)       { double(fixtures: raw_fixtures, clean_fixtures: true) }
-  let(:options)          { double(waiter: :wait_for_me) }
+  let(:raw_fixtures) { 'some fixtures' }
+  let(:fixtures)     { instance_double('SPV::Fixtures', exchange: true) }
+  let(:tmp_keeper)   {
+    instance_double(
+      'SPV::Fixtures::TmpKeeper',
+      {fixtures: raw_fixtures, clean_fixtures: true}
+    )
+  }
+
+  let(:options) {
+    instance_double(
+      'SPV::Options',
+      waiter: :wait_for_me
+    )
+  }
 
   before do
     SPV::Fixtures::TmpKeeper.stub(:new).and_return(tmp_keeper)
@@ -84,9 +95,8 @@ describe SPV::DSL::Adjuster do
       end
     end
 
-    let(:fixtures)           { double(exchange: true) }
-    let(:fixtures_handler)   { double }
-    let(:home_path_modifier) { double(modify: true) }
+    let(:fixtures_handler)   { instance_double('SPV::Fixtures::Handler') }
+    let(:home_path_modifier) { 'home path modifier' }
 
     let(:raw_old_fixtures) { ['old fixtures'] }
     let(:raw_new_fixtures) { ['new fixtures'] }
@@ -94,11 +104,8 @@ describe SPV::DSL::Adjuster do
     let(:expected_raw_old_fixtures) { raw_old_fixtures }
     let(:expected_raw_new_fixtures) { raw_new_fixtures }
 
-    let(:old_fixture) { double }
-    let(:new_fixture) { double }
-
-    let(:handled_old_fixtures) { [old_fixture] }
-    let(:handled_new_fixtures) { [new_fixture] }
+    let(:handled_old_fixtures) { ['old fixture'] }
+    let(:handled_new_fixtures) { ['old fixture'] }
 
     before do
       SPV::Fixtures::Handler.stub(:new).and_return(fixtures_handler)
