@@ -5,9 +5,8 @@
 1. Think about adding more integration tests
 2. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
 3. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
-4. Split tests in spec/integration/http_interactions_on_even/click_spec.rb
-5. Apply RspecFire for unit tests
-6. The way how we do actions (replace, union etc) in adjuster is ugly. We should do something with `prepared_fixtures` method. We should find better way for performing a default action. There may be even a bug since the default action may not be performed:
+4. Split tests in spec/integration/elements/apply_spec.rb
+5. The way how we do actions (replace, union etc) in adjuster is ugly. We should do something with `prepared_fixtures` method. We should find better way for performing a default action. There may be even a bug since the default action may not be performed:
 
 ```ruby
   self.some_link.click_and_apply_vcr do
@@ -18,6 +17,7 @@
 ```
 
 The last fixture will be lost due to a simple mistake in ordering.
+6. Move all "TODO" from source code to this file
 
 ## Release 0.1.1
 

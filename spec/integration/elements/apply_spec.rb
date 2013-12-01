@@ -1,7 +1,7 @@
 require 'spec_integration_helper'
 
 feature 'Elements > Apply Vcr' do
-  # It may be any other event, we use this one
+  # It may be any other event, we use click event
   # because it is the simplest one
   def shift_click_event(link)
     link.shift_event { link.click }
