@@ -1,11 +1,16 @@
 require 'spec_helper'
 
 describe SPV::Applier do
-  let(:node)             { double }
-  let(:options)          { double }
-  let(:fixtures_manager) { double(inject: true) }
-  let(:fixtures)         { double }
-  let(:initial_adjuster) { double(prepared_fixtures: fixtures) }
+  let(:node)             { double('node of DOM') }
+  let(:options)          { instance_double('SPV::Options') }
+  let(:fixtures_manager) { instance_double('SPV::Fixtures::Manager', inject: true) }
+  let(:fixtures)         { double('fixtures') }
+  let(:initial_adjuster) do
+    instance_double(
+      'SPV::DSL::InitialAdjuster',
+      prepared_fixtures: fixtures
+    )
+  end
 
   before do
     SPV::Options.stub(:new).and_return(options)
@@ -65,17 +70,16 @@ describe SPV::Applier do
   end
 
   describe '#apply_vcr' do
-    let(:node)              { double(click: true) }
+    let(:node)              { double('node of DOM', click: true) }
     let(:cloned_options)    { 'cloned options' }
-    let(:options)           { double(clone_options: cloned_options) }
-    let(:waiter)            { double(wait: true) }
+    let(:options)           { instance_double('SPV::Options', clone_options: cloned_options) }
+    let(:waiter)            { instance_double('SPV::Waiter', wait: true) }
     let(:prepared_fixtures) { 'prepared_fixtures by adjuster' }
 
     let(:adjuster) do
-      double(
-        mymeth:            true,
+      instance_double(
+        'DSL::Adjuster',
         fixtures:          true,
-        replace:           true,
         prepared_fixtures: prepared_fixtures
       )
     end
@@ -100,9 +104,9 @@ describe SPV::Applier do
 
     context 'when a block is given' do
       it 'calls a given block within the context of the adjuster' do
-        expect(adjuster).to receive(:mymeth)
+        expect(adjuster).to receive(:fixtures)
 
-        applier.apply_vcr { mymeth }
+        applier.apply_vcr { fixtures }
       end
     end
 

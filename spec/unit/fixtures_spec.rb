@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe SPV::Fixtures do
-  let(:fixture1) { double(name: 'fixture1') }
-  let(:fixture2) { double(name: 'fixture2') }
-  let(:fixture3) { double(name: 'fixture3') }
-  let(:fixture4) { double(name: 'fixture4') }
-  let(:fixture5) { double(name: 'fixture5') }
+  let(:fixture1) { instance_double('SPV::Fixture', name: 'fixture1') }
+  let(:fixture2) { instance_double('SPV::Fixture', name: 'fixture2') }
+  let(:fixture3) { instance_double('SPV::Fixture', name: 'fixture3') }
+  let(:fixture4) { instance_double('SPV::Fixture', name: 'fixture4') }
+  let(:fixture5) { instance_double('SPV::Fixture', name: 'fixture5') }
 
   subject(:fixtures) { described_class.new([fixture1, fixture2, fixture3]) }
 

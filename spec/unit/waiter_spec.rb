@@ -1,15 +1,27 @@
 require 'spec_helper'
 
 describe SPV::Waiter do
-  let(:node)             { double }
-  let(:options)          { double(waiter_options: nil, waiter: nil) }
-  let(:fixtures_manager) { double(eject: true) }
+  let(:node)    { double('node of DOM') }
+  let(:options) {
+    instance_double(
+      'SPV::Options',
+      waiter_options: nil,
+      waiter: nil
+    )
+  }
+
+  let(:fixtures_manager) {
+    instance_double(
+      'SPV::Fixtures::Manager',
+      eject: true
+    )
+  }
 
   subject(:waiter)       { described_class.new(node, fixtures_manager, options) }
 
   describe '#wait' do
     context 'when a waiter is defined' do
-      let(:node) { double(wait_for_content: true) }
+      let(:node) { double('node of DOM', wait_for_content: true) }
 
       before do
         options.stub(:waiter).and_return(proc { self.wait_for_content })

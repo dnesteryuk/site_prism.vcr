@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe SPV::Element do
-  let(:node)    { stub   }
-  let(:parent)  { double }
-  let(:applier) { double(apply_vcr: true) }
+  let(:node)    { double('node of DOM') }
+  let(:parent)  { double('parent element') }
+  let(:applier) { instance_double('SPV::Applier', apply_vcr: true) }
 
   before do
     SPV::Applier.stub(:new).and_return(applier)
