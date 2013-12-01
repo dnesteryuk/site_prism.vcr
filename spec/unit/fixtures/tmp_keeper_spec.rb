@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SPV::Fixtures::TmpKeeper do
-  let(:options)    { double }
+  let(:options)    { instance_double('SPV::Options') }
   let(:tmp_keeper) { described_class.new(options) }
 
   describe '#add_fixtures' do

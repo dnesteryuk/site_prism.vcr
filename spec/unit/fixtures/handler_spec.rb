@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SPV::Fixtures::Handler do
-  let(:options)            { double }
+  let(:options)            { instance_double('SPV::Options') }
   let(:converted_fixtures) { [] }
   let(:fixtures_converter) { SPV::Fixtures::Converter }
 
@@ -19,7 +19,12 @@ describe SPV::Fixtures::Handler do
     let(:raw_fixtures)       { 'some raw fixtures' }
     let(:converted_fixture)  { 'converted fixture' }
     let(:converted_fixtures) { [converted_fixture] }
-    let(:modifier)           { double(modify: true) }
+    let(:modifier)           do
+      instance_double(
+        'SPV::Fixtures::Modifiers::HomePath',
+        modify: true
+      )
+    end
 
     it 'converts raw fixtures' do
       expect(fixtures_converter).to receive(:convert_raw).with(raw_fixtures)

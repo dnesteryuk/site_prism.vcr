@@ -1,12 +1,28 @@
 require 'spec_helper'
 
 describe SPV::Fixtures::Manager do
-  let(:options) { double(fixtures: ['some fixture']) }
+  let(:options) { instance_double('SPV::Options', fixtures: ['some fixture']) }
 
   describe '#inject' do
-    let(:fixture1)    { double(name: 'arya_stark', options: {erb: {testvar: true}}) }
-    let(:fixture2)    { double(name: 'jon_snow', options: {}) }
-    let(:fixtures)    { [fixture1, fixture2] }
+    let(:fixture1) do
+      instance_double(
+        'SPV::Fixture',
+        name: 'arya_stark',
+        options: {erb: {testvar: true}}
+      )
+    end
+
+    let(:fixture2) do
+      instance_double(
+        'SPV::Fixture',
+        name: 'jon_snow',
+        options: {}
+      )
+    end
+
+    let(:fixtures) do
+      [fixture1, fixture2]
+    end
 
     subject(:manager) { described_class.new(options) }
 
