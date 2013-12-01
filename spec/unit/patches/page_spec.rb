@@ -3,7 +3,12 @@ require 'spec_helper'
 describe SitePrism::Page do
   subject { SitePrism::Page.new }
 
-  let(:applier) { double(apply_vcr: true) }
+  let(:applier) do
+    instance_double(
+      'SPV::Applier',
+      apply_vcr: true
+    )
+  end
 
   before do
     SitePrism::Page.vcr_options_for_load { }
