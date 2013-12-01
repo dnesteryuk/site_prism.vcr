@@ -3,8 +3,14 @@ require 'spec_helper'
 describe SPV::Fixtures::Modifiers::HomePath do
   describe '#modify' do
     let(:path)    { 'some home path' }
-    let(:options) { double(home_path: path) }
-    let(:fixture) { double(name: 'test_with_home_path', :has_link_to_home_path? => true) }
+    let(:options) { instance_double('SPV::Options', home_path: path) }
+    let(:fixture) do
+      instance_double(
+        'SPV::Fixture',
+        name: 'test_with_home_path',
+        :has_link_to_home_path? => true
+      )
+    end
 
     subject { described_class.new(options).modify(fixture) }
 
@@ -35,7 +41,12 @@ describe SPV::Fixtures::Modifiers::HomePath do
     end
 
     context 'when a name of the fixture has no link to the home path' do
-      let(:fixture) { double(:has_link_to_home_path? => false) }
+      let(:fixture) do
+        instance_double(
+          'SPV::Fixture',
+          :has_link_to_home_path? => false
+        )
+      end
 
       it 'does not set any home path' do
         expect(fixture).to_not receive(:set_home_path)

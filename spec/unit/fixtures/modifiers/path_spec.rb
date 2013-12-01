@@ -3,8 +3,8 @@ require 'spec_helper'
 describe SPV::Fixtures::Modifiers::Path do
   describe '#modify' do
     let(:path)    { 'some path' }
-    let(:options) { double(path: path) }
-    let(:fixture) { double(:has_link_to_home_path? => false) }
+    let(:options) { instance_double('SPV::Options', path: path) }
+    let(:fixture) { instance_double('SPV::Fixture', :has_link_to_home_path? => false) }
 
     subject { described_class.new(options).modify(fixture) }
 
@@ -27,7 +27,13 @@ describe SPV::Fixtures::Modifiers::Path do
     end
 
     context 'when the fixture has a link to the home path' do
-      let(:fixture) { double(:has_link_to_home_path? => true, clean_name: 'Max') }
+      let(:fixture) do
+        instance_double(
+          'SPV::Fixture',
+          :has_link_to_home_path? => true,
+          clean_name: 'Max'
+        )
+      end
 
       it 'raises an error about link to the home path' do
         expect{
