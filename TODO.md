@@ -18,6 +18,7 @@
 
 The last fixture will be lost due to a simple mistake in ordering.
 6. Move all "TODO" from source code to this file
+7. Change integration tests to use real data.
 
 ## Release 0.1.1
 
