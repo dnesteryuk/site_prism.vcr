@@ -4,7 +4,6 @@ module SPV
   class Fixture
     attr_accessor :name, :options
 
-    # TODO: may be it makes sense to separately keep path from the name of a fixture?
     def initialize(name, vcr_options = {})
       @name, @options = name, vcr_options
     end

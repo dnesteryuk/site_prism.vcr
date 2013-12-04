@@ -67,7 +67,7 @@ module SPV
         # If no action has been performed,
         # it should be performed manually, before allowing
         # to get prepared fixtures.
-        replace unless @is_action_done # TODO: do something with this logic, it looks ugly
+        replace unless @is_action_done
         @fixtures
       end
 

@@ -7,7 +7,6 @@ module SitePrism
     def_delegator :@applier, :shift_event
 
     class << self
-      # TODO: it should make sure this method does not a native method of SitePrism::Page class
       def inherited(subclass)
         # This code is required to allow subpages to inherit
         # a defined adjuster block. Otherwise, that block should be

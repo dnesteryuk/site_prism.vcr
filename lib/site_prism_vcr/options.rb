@@ -1,4 +1,3 @@
-# TODO: should be this class immutable?
 module SPV
   class Options
     attr_accessor :waiter, :waiter_options, :home_path

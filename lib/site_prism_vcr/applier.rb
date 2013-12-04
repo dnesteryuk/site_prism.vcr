@@ -46,7 +46,6 @@ module SPV
 
       @fixtures_manager.inject(adjuster.prepared_fixtures)
 
-      # TODO: what if we don't have a defined event block?
       @event_action.call
 
       @waiter = Waiter.new(

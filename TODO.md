@@ -14,32 +14,8 @@
     end
   ```
 The last fixture will be lost due to a simple mistake in ordering.
-4. Move all "TODO" from source code to this file
-5. Such tests looks like duplicate each other:
-
-  ```ruby
-    context 'when clicks again without specifying a custom fixture' do
-      it 'uses a default fixture again' do
-        actor.apply_vcr
-
-        expect(cat_owner).to have_content('Ned Stark')
-      end
-    end
-  ```
-
-and
-
-  ```ruby
-    it 'uses a default waiter after using the custom waiter' do
-      actor.public_send(action_method)
-
-      expect(cat_owner).to have_content('Ned Stark')
-      expect(cat_owner).to have_content('Robb Stark')
-    end
-  ```
-
-May be we should not separate tests for testing custom fixtures and custom waiters?
-6. Change integration tests to use real data.
+4. Change integration tests to use real data.
+5. Write tests to check that `apply_vcr` method cannot be used without shifted event.
 
 ## Release 0.1.1
 
@@ -77,3 +53,6 @@ May be we should not separate tests for testing custom fixtures and custom waite
 1. Should we add the integration tests for page load to make sure 2 HTTP requests will be handled properly?
 2. Should we add own integration tests to test the path helper method?
 3. Should we add a test for testing to HTTP requests on page load?
+4. Should be Options class immutable?
+5. May be it makes sense to separately keep path from the name of a fixture? See SPV::Fixture class
+
