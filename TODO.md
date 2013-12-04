@@ -6,14 +6,13 @@
 2. Split tests in spec/integration/elements/apply_spec.rb
 3. The way how we do actions (replace, union etc) in adjuster is ugly. We should do something with `prepared_fixtures` method. We should find better way for performing a default action. There may be even a bug since the default action may not be performed:
 
-```ruby
-  self.some_link.click_and_apply_vcr do
-    fixtures ['test', 'test2']
-    union
-    fixtures ['test3']
-  end
-```
-
+  ```ruby
+    self.some_link.click_and_apply_vcr do
+      fixtures ['test', 'test2']
+      union
+      fixtures ['test3']
+    end
+  ```
 The last fixture will be lost due to a simple mistake in ordering.
 4. Move all "TODO" from source code to this file
 5. Such tests looks like duplicate each other:
@@ -40,6 +39,7 @@ and
   ```
 
 May be we should not separate tests for testing custom fixtures and custom waiters?
+6. Change integration tests to use real data.
 
 ## Release 0.1.1
 
