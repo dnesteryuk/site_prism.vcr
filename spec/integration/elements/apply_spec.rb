@@ -45,7 +45,7 @@ feature 'Elements > Apply Vcr' do
       shift_click_event_to(:link_with_one_request_and_delay).apply_vcr
     end
 
-    it 'applies a fixture and the test waits for results' do
+    it 'applies a fixture and waits for results' do
       expect(cat_owner).to have_content('Ned Stark')
     end
   end

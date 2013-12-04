@@ -35,7 +35,7 @@ shared_examples 'when a default fixture is exchanged' do
       end
 
       it 'uses the exchanged fixture with specified erb variables' do
-
+        expect(cat_owner).to have_content('Robert Baratheon')
       end
     end
   end

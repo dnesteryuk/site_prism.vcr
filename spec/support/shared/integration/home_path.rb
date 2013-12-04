@@ -1,7 +1,7 @@
 shared_examples 'when a home path is define' do
   shared_examples 'expects the custom fixture on the page' do
     it 'applies a stored fixture in the directory defined in the home path' do
-      expect(test_app_page.cat_owner).to have_content('Bran Stark')
+      expect(cat_owner).to have_content('Bran Stark')
     end
   end
 
