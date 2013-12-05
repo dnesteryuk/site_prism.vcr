@@ -38,6 +38,10 @@ feature 'Pages > Load' do
       let(:actor) { PageLoad::WaiterWithoutFixturesEjectionPage.new }
     end
 
+    it_behaves_like 'when options are redefined for waiters' do
+      let(:actor) { PageLoad::TwoRequestsPage.new }
+    end
+
     it_behaves_like 'custom waiters' do
       let(:actor)         { PageLoad::TwoRequestsPage.new }
       let(:test_app_page) { actor }

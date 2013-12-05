@@ -13,7 +13,8 @@ describe SPV::DSL::Adjuster do
   let(:options) {
     instance_double(
       'SPV::Options',
-      waiter: :wait_for_me
+      waiter:                :wait_for_me,
+      merge_waiter_options!: nil
     )
   }
 
@@ -143,6 +144,14 @@ describe SPV::DSL::Adjuster do
       )
 
       exchange
+    end
+  end
+
+  describe '#waiter_options' do
+    it 'merges default waiter options with a given' do
+      expect(options).to receive(:merge_waiter_options!).with(my: 'options')
+
+      subject.waiter_options(my: 'options')
     end
   end
 end

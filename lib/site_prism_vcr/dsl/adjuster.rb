@@ -57,6 +57,19 @@ module SPV
         )
       end
 
+      # Redefines default waiter options or if default waiter options is not defined,
+      # it defines new options for a waiter. This method doesn't redefine all default options,
+      # it redefines only options passed in a hash.
+      #
+      # @param options [Hash] Options for a waiter
+      #
+      # @return [void]
+      #
+      # @api public
+      def waiter_options(options)
+        @options.merge_waiter_options!(options)
+      end
+
       # Performs the replace action when no explicit action is defined
       # in a block for manipulating fixtures before applying them.
       #

@@ -79,6 +79,10 @@ feature 'Elements > Apply Vcr' do
       let(:actor) { shift_click_event_to(:link_without_ejecting_fixtures) }
     end
 
+    it_behaves_like 'when options are redefined for waiters' do
+      let(:actor) { shift_click_event_to(:link_with_2_requests) }
+    end
+
     it_behaves_like 'custom waiters' do
       let(:actor) { shift_click_event_to(:link_with_2_requests) }
     end

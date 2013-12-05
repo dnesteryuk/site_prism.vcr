@@ -73,3 +73,28 @@ shared_examples 'when a default waiter does not eject fixtures' do
     expect(VCR.eject_cassette).to be_nil
   end
 end
+
+shared_examples 'when options are redefined for waiters' do
+  context 'when the option to not eject default fixtures is passed' do
+    before do
+      actor.public_send(action_method) do
+        waiter_options(eject_cassettes: false)
+      end
+    end
+
+    after do
+      SPV::Helpers.eject_all_cassettes
+    end
+
+    it 'uses a default waiter' do
+      expect(cat_owner).to have_content('Ned Stark')
+      expect(cat_owner).to have_content('Robb Stark')
+    end
+
+    it 'VCR contains all cassettes' do
+      expect(VCR.eject_cassette.name).to eq('robb_stark')
+      expect(VCR.eject_cassette.name).to eq('ned_stark')
+      expect(VCR.eject_cassette).to be_nil
+    end
+  end
+end

@@ -17,5 +17,17 @@ module SPV
     def clone_options
       dup
     end
+
+    def waiter_options
+      @waiter_options || {}
+    end
+
+    # Merges already defined waiter's options with a given hash.
+    #
+    # If waiter's options are not defined yet, it will define waiter options
+    # with a given hash.
+    def merge_waiter_options!(options)
+      self.waiter_options = self.waiter_options.merge(options)
+    end
   end
 end

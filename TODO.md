@@ -2,9 +2,10 @@
 
 ## Release 0.1.0
 
-1. Give possibility to define options for a waiter instead of redefining a whole waiter in a subclass
-2. Split tests in spec/integration/elements/apply_spec.rb
-3. The way how we do actions (replace, union etc) in adjuster is ugly. We should do something with `prepared_fixtures` method. We should find better way for performing a default action. There may be even a bug since the default action may not be performed:
+1. Add documentation about waiter_options
+2. Add info to change log about waiter_options
+3. Recheck integration tests for waiters
+4. The way how we do actions (replace, union etc) in adjuster is ugly. We should do something with `prepared_fixtures` method. We should find better way for performing a default action. There may be even a bug since the default action may not be performed:
 
   ```ruby
     self.some_link.click_and_apply_vcr do
@@ -14,8 +15,8 @@
     end
   ```
 The last fixture will be lost due to a simple mistake in ordering.
-4. Change integration tests to use real data.
-5. Write tests to check that `apply_vcr` method cannot be used without shifted event.
+5. Change integration tests to use real data.
+6. Write tests to check that `apply_vcr` method cannot be used without shifted event.
 
 ## Release 0.1.1
 

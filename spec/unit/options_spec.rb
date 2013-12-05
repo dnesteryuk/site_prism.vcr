@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SPV::Options do
-  let(:options) { described_class.new }
+  subject(:options) { described_class.new }
 
   describe '.new' do
     it 'holds the passed options' do
@@ -36,6 +36,40 @@ describe SPV::Options do
       cloned_options = options.clone_options
 
       expect(cloned_options.object_id).to_not eq(options.object_id)
+    end
+  end
+
+  describe '#waiter_options' do
+    context 'when options are not defined' do
+      it 'returns an empty hash' do
+        expect(options.waiter_options).to be_a(Hash)
+      end
+    end
+
+    context 'when options are defined' do
+      it 'returns it' do
+        expected = {eject_fixtures: false}
+
+        subject.waiter_options = expected
+
+        expect(subject.waiter_options).to eq(expected)
+      end
+    end
+  end
+
+  describe '#merge_waiter_options!' do
+    it 'redefines default options' do
+      subject.waiter_options = {
+        eject_fixtures:      false,
+        some_another_option: true
+      }
+
+      subject.merge_waiter_options!(eject_fixtures: true)
+
+      expect(options.waiter_options).to include(
+        eject_fixtures:      true,
+        some_another_option: true
+      )
     end
   end
 end
