@@ -70,72 +70,83 @@ describe SPV::Applier do
   end
 
   describe '#apply_vcr' do
-    let(:node)              { double('node of DOM', click: true) }
-    let(:cloned_options)    { 'cloned options' }
-    let(:options)           { instance_double('SPV::Options', clone_options: cloned_options) }
-    let(:waiter)            { instance_double('SPV::Waiter', wait: true) }
-    let(:prepared_fixtures) { 'prepared_fixtures by adjuster' }
-
-    let(:adjuster) do
-      instance_double(
-        'DSL::Adjuster',
-        fixtures:          true,
-        prepared_fixtures: prepared_fixtures
-      )
-    end
-
+    let(:node)        { double('node of DOM', click: true) }
     subject(:applier) { described_class.new(node) { } }
 
-    before do
-      SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
-      SPV::Waiter.stub(:new).and_return(waiter)
+    context 'when an event is shifted' do
+      let(:cloned_options)    { 'cloned options' }
+      let(:options)           { instance_double('SPV::Options', clone_options: cloned_options) }
+      let(:waiter)            { instance_double('SPV::Waiter', wait: true) }
+      let(:prepared_fixtures) { 'prepared_fixtures by adjuster' }
 
-      applier.shift_event { node.click }
-    end
+      let(:adjuster) do
+        instance_double(
+          'DSL::Adjuster',
+          fixtures:          true,
+          prepared_fixtures: prepared_fixtures
+        )
+      end
 
-    it 'initializes the fixtures adjuster with a new instance of options' do
-      expect(SPV::DSL::Adjuster).to receive(:new).with(
-        cloned_options,
-        fixtures
-      )
+      before do
+        SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
+        SPV::Waiter.stub(:new).and_return(waiter)
 
-      applier.apply_vcr
-    end
+        applier.shift_event { node.click }
+      end
 
-    context 'when a block is given' do
-      it 'calls a given block within the context of the adjuster' do
-        expect(adjuster).to receive(:fixtures)
+      it 'initializes the fixtures adjuster with a new instance of options' do
+        expect(SPV::DSL::Adjuster).to receive(:new).with(
+          cloned_options,
+          fixtures
+        )
 
-        applier.apply_vcr { fixtures }
+        applier.apply_vcr
+      end
+
+      context 'when a block is given' do
+        it 'calls a given block within the context of the adjuster' do
+          expect(adjuster).to receive(:fixtures)
+
+          applier.apply_vcr { fixtures }
+        end
+      end
+
+      it 'applies fixtures' do
+        expect(fixtures_manager).to receive(:inject).with(prepared_fixtures)
+
+        applier.apply_vcr
+      end
+
+      it 'initializes the waiter' do
+        expect(SPV::Waiter).to receive(:new).with(
+          node,
+          fixtures_manager,
+          cloned_options
+        ).and_return(waiter)
+
+        applier.apply_vcr
+      end
+
+      it 'does the click action over a node' do
+        expect(node).to receive(:click)
+
+        applier.apply_vcr
+      end
+
+      it 'waits until all HTTP interactions are finished' do
+        expect(waiter).to receive(:wait)
+
+        applier.apply_vcr
       end
     end
 
-    it 'applies fixtures' do
-      expect(fixtures_manager).to receive(:inject).with(prepared_fixtures)
-
-      applier.apply_vcr
-    end
-
-    it 'initializes the waiter' do
-      expect(SPV::Waiter).to receive(:new).with(
-        node,
-        fixtures_manager,
-        cloned_options
-      ).and_return(waiter)
-
-      applier.apply_vcr
-    end
-
-    it 'does the click action over a node' do
-      expect(node).to receive(:click)
-
-      applier.apply_vcr
-    end
-
-    it 'waits until all HTTP interactions are finished' do
-      expect(waiter).to receive(:wait)
-
-      applier.apply_vcr
+    context 'when an event is not shifted' do
+      it 'raise an error about no event' do
+        expect{ subject.apply_vcr }.to raise_error(
+          SPV::Applier::EventError,
+          'Event is not shifted, before applying Vcr you have to shift event with "shift_event" method'
+        )
+      end
     end
   end
 end

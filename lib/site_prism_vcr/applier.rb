@@ -2,6 +2,8 @@ module SPV
   # This class manages defining default fixtures
   # and applying them on an event.
   class Applier
+    class EventError < StandardError; end
+
     def initialize(node, &block)
       @node, @options = node, Options.new
       adjuster = DSL::InitialAdjuster.new(@options)
@@ -33,6 +35,12 @@ module SPV
     #
     # @return [void]
     def apply_vcr(&block)
+      if @event_action.nil?
+        raise EventError.new(
+          'Event is not shifted, before applying Vcr you have to shift event with "shift_event" method'
+        )
+      end
+
       options = @options.clone_options
 
       adjuster = DSL::Adjuster.new(

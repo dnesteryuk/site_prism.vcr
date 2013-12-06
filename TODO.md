@@ -14,7 +14,6 @@
   ```
 The last fixture will be lost due to a simple mistake in ordering.
 3. Change integration tests to use real data.
-4. Write tests to check that `apply_vcr` method cannot be used without shifted event.
 
 ## Release 0.1.1
 
@@ -23,7 +22,7 @@ The last fixture will be lost due to a simple mistake in ordering.
 3. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
 4. Think how to avoid monkey patching to add stuffs to SitePrism
 5. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
-
+6. SPV::Applier#apply_vcr should be refactored, it is too complex
 
 ## Should be implemented?
 
