@@ -48,3 +48,20 @@
     @page = CarsPage.new
     @page.transport_details_link.click_and_apply_vcr
   ```
+
+  * added possibility to redefine default options for a default waiter
+
+  ```ruby
+    class ProductsPage < SitePrism::Page
+      link_vcr_with_element :details_link do
+        fixtures ['cars/ford']
+
+        waiter(eject_cassettes: false) { self.wait_until_loading_indicator_invisible } # default waiter with options
+      end
+    end
+
+    @page = ProductsPage.new
+    @page.details_link.click_and_apply_vcr do
+      waiter_options(eject_cassettes: true) # redefines default options
+    end
+  ```
