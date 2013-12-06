@@ -307,6 +307,14 @@ end
 
 The same thing can be defined for a default waiter.
 
+In case you need to change only options defined for a default waiter, but you don't need to change a waiter, you can use `waiter_options` helper method:
+
+```ruby
+@products_page.car_details_link.click_and_apply_vcr do
+  waiter_options(eject_cassettes: false)
+end
+```
+
 ### Applying VCR cassettes on any event
 
 There may be a situation when you need to apply cassettes for some custom event rather than for a click event. It may be a change event for a select box or a drag-and-drop event for a list or a blur event for an input element. SitePrism.Vcr gem provides a way to archive such goal:
