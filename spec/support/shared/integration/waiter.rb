@@ -1,3 +1,23 @@
+shared_examples 'when cassettes are not ejected' do |texts, cassettes|
+  after do
+    SPV::Helpers.eject_all_cassettes
+  end
+
+  it 'uses a default waiter' do
+    texts.each do |expected_text|
+      expect(cat_owner).to have_content(expected_text)
+    end
+  end
+
+  it 'VCR contains all cassettes' do
+    cassettes.each do |expected_cassette|
+      expect(VCR.eject_cassette.name).to eq(expected_cassette)
+    end
+
+    expect(VCR.eject_cassette).to be_nil
+  end
+end
+
 shared_examples 'custom waiters' do
   context 'when a waiter is redefined' do
     before do
@@ -36,20 +56,9 @@ shared_examples 'custom waiters' do
       end
     end
 
-    after do
-      SPV::Helpers.eject_all_cassettes
-    end
-
-    it 'uses a custom waiter' do
-      expect(cat_owner).to have_content('Arya Stark')
-      expect(cat_owner).to have_content('Jon Snow')
-    end
-
-    it 'VCR contains all cassettes' do
-      expect(VCR.eject_cassette.name).to eq('jon_snow')
-      expect(VCR.eject_cassette.name).to eq('arya_stark')
-      expect(VCR.eject_cassette).to be_nil
-    end
+    it_behaves_like 'when cassettes are not ejected',
+      ['Arya Stark', 'Jon Snow'],
+      ['jon_snow', 'arya_stark']
   end
 end
 
@@ -58,20 +67,9 @@ shared_examples 'when a default waiter does not eject fixtures' do
     actor.public_send(action_method)
   end
 
-  after do
-    SPV::Helpers.eject_all_cassettes
-  end
-
-  it 'uses a default waiter' do
-    expect(cat_owner).to have_content('Ned Stark')
-    expect(cat_owner).to have_content('Robb Stark')
-  end
-
-  it 'VCR contains all cassettes' do
-    expect(VCR.eject_cassette.name).to eq('robb_stark')
-    expect(VCR.eject_cassette.name).to eq('ned_stark')
-    expect(VCR.eject_cassette).to be_nil
-  end
+  it_behaves_like 'when cassettes are not ejected',
+    ['Ned Stark', 'Robb Stark'],
+    ['robb_stark', 'ned_stark']
 end
 
 shared_examples 'when options are redefined for waiters' do
@@ -82,19 +80,8 @@ shared_examples 'when options are redefined for waiters' do
       end
     end
 
-    after do
-      SPV::Helpers.eject_all_cassettes
-    end
-
-    it 'uses a default waiter' do
-      expect(cat_owner).to have_content('Ned Stark')
-      expect(cat_owner).to have_content('Robb Stark')
-    end
-
-    it 'VCR contains all cassettes' do
-      expect(VCR.eject_cassette.name).to eq('robb_stark')
-      expect(VCR.eject_cassette.name).to eq('ned_stark')
-      expect(VCR.eject_cassette).to be_nil
-    end
+    it_behaves_like 'when cassettes are not ejected',
+      ['Ned Stark', 'Robb Stark'],
+      ['robb_stark', 'ned_stark']
   end
 end
