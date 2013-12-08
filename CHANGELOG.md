@@ -2,7 +2,7 @@
 
 ## Changed
 
-  * updated dependencies. Now gem depends on Vcr 2.7.0 and SitePrism 2.5.
+  * dependencies. Now gem depends on Vcr 2.7.0 and SitePrism 2.5.
   * re-factored the way how Vcr cassettes could be applying for any event of a page.
     Before that change we had to use ugly way:
 
@@ -24,9 +24,20 @@
     end
   ```
 
+## Fixed
+
+  * the issue with defining an action over cassettes in the adjusting block. Now even if an action is defined before a list of cassettes, the adjusting block will be performed properly
+
+  ```ruby
+    @products_page.cars_dropdown.click_and_apply_vcr do
+      replace
+      fixtures ['cars/ford/prices']
+    end
+  ```
+
 ## Added
 
-  * added possibility to apply Vcr cassettes for any event of an element. [Roman Rott and Dmitriy Nesteryuk]
+  * possibility to apply Vcr cassettes for any event of an element. [Roman Rott and Dmitriy Nesteryuk]
 
   ```ruby
     @products_page.cars_dropdown.shift_event{
@@ -36,7 +47,7 @@
     end
   ```
 
-  * added possibility to link Vcr with already defined elements, it will be helpful in case they are inherited
+  * possibility to link Vcr with already defined elements, it will be helpful in case they are inherited
 
   ```ruby
     class CarsPage < TransportPage
@@ -49,7 +60,7 @@
     @page.transport_details_link.click_and_apply_vcr
   ```
 
-  * added possibility to redefine default options for a default waiter
+  * possibility to redefine default options for a default waiter
 
   ```ruby
     class ProductsPage < SitePrism::Page

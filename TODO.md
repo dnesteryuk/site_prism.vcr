@@ -2,17 +2,7 @@
 
 ## Release 0.1.0
 
-1. The way how we do actions (replace, union etc) in adjuster is ugly. We should do something with `prepared_fixtures` method. We should find better way for performing a default action. There may be even a bug since the default action may not be performed:
-
-  ```ruby
-    self.some_link.click_and_apply_vcr do
-      fixtures ['test', 'test2']
-      union
-      fixtures ['test3']
-    end
-  ```
-The last fixture will be lost due to a simple mistake in ordering.
-2. Change integration tests to use real data.
+1. Change integration tests to use real data.
 
 ## Release 0.1.1
 

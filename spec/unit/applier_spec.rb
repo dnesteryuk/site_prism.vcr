@@ -141,7 +141,7 @@ describe SPV::Applier do
     end
 
     context 'when an event is not shifted' do
-      it 'raise an error about no event' do
+      it 'raises an error about no event' do
         expect{ subject.apply_vcr }.to raise_error(
           SPV::Applier::EventError,
           'Event is not shifted, before applying Vcr you have to shift event with "shift_event" method'
