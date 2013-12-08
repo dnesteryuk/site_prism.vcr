@@ -23,6 +23,18 @@ The last fixture will be lost due to a simple mistake in ordering.
 5. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
 6. SPV::Applier#apply_vcr should be refactored, it is too complex
 7. Think about renaming current integration tests on acceptance tests and create new integration tests which will test integration between classes without involving a browser. It will solve a lot of issues with shared tests to check the same things for pages and elements. In acceptance tests we will test very basic stuffs.
+8. We should freeze an instance of SPV::Fixtures to make sure it is not mutable, otherwise, there may be situation when default fixtures will be corrupted.
+9. We should disable double defining actions in the adjusting block:
+
+  ```ruby
+    self.some_link.click_and_apply_vcr do
+      fixtures ['test', 'test2']
+      union
+      fixtures ['test3']
+      replace
+    end
+  ```
+It will lead to mess.
 
 ## Should be implemented?
 

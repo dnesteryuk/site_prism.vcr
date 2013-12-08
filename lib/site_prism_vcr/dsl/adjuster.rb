@@ -96,9 +96,7 @@ module SPV
       #
       # @api public
       def prepare_fixtures
-        @fixtures = @fixtures.public_send(@action, @tmp_keeper.fixtures)
-        @tmp_keeper.clean_fixtures
-        @fixtures
+        @fixtures.public_send(@action, @tmp_keeper.fixtures)
       end
     end # class Adjuster
   end # module DSL

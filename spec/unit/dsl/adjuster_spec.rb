@@ -40,18 +40,12 @@ describe SPV::DSL::Adjuster do
         subject.prepare_fixtures
       end
 
-      it 'cleans fixtures being kept in the fixtures handler' do
-        expect(tmp_keeper).to receive(:clean_fixtures)
-
-        subject.prepare_fixtures
-      end
-
       it 'returns a new container with fixtures' do
         expect(subject.prepare_fixtures).to eq(replaced_fixtures)
       end
     end
 
-    describe 'when the union action is defined' do
+    context 'when the union action is defined' do
       let(:new_fixtures) { 'new fixtures' }
 
       before do
@@ -65,15 +59,15 @@ describe SPV::DSL::Adjuster do
         subject.prepare_fixtures
       end
 
-      it 'cleans fixtures being kept in the fixtures handler' do
-        expect(tmp_keeper).to receive(:clean_fixtures)
-
-        subject.prepare_fixtures
-      end
-
       it 'returns a new container with fixtures' do
         expect(subject.prepare_fixtures).to eq(new_fixtures)
       end
+    end
+
+    it 'the replace action is used as a default' do
+      expect(fixtures).to receive(:replace).with(raw_fixtures)
+
+      subject.prepare_fixtures
     end
   end
 
