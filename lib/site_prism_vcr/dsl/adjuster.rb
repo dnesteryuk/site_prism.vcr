@@ -7,26 +7,45 @@ module SPV
         super options
 
         @options, @fixtures = options, fixtures
+        @action = :replace
       end
 
-      # Replaces default fixtures with a set of fixtures
-      # defined in a block passed while applying fixtures.
+      # Defines the replace action as an action which
+      # will be performed over cassettes while adjusting cassettes.
+      #
+      # Example:
+      #   @page.details_link.click_and_apply_vcr do
+      #     fixtures ['no_found']
+      #     replace
+      #   end
+      #
+      # In this case 'no_found' cassette will be used instead
+      # of default cassettes defined for 'details_link'.
       #
       # @return [void]
       #
       # @api public
       def replace
-        change_fixtures :replace
+        @action = :replace
       end
 
-      # Joins default fixtures with a set of fixtures
-      # defined in a block passed while applying fixtures.
+      # Defines the union action as an action which
+      # will be performed over cassettes while adjusting cassettes.
+      #
+      # Example:
+      #   @page.details_link.click_and_apply_vcr do
+      #     fixtures ['no_found']
+      #     union
+      #   end
+      #
+      # In this case 'no_found' cassette will be used a long with
+      # default cassettes.
       #
       # @return [void]
       #
       # @api public
       def union
-        change_fixtures :union
+        @action = :union
       end
 
       # Exchanges certain default fixtures with another fixtures.
@@ -76,20 +95,11 @@ module SPV
       # @return [SPV::Fixtures] A set of prepared fixtures.
       #
       # @api public
-      def prepared_fixtures
-        # If no action has been performed,
-        # it should be performed manually, before allowing
-        # to get prepared fixtures.
-        replace unless @is_action_done
+      def prepare_fixtures
+        @fixtures = @fixtures.public_send(@action, @tmp_keeper.fixtures)
+        @tmp_keeper.clean_fixtures
         @fixtures
       end
-
-      private
-        def change_fixtures(action)
-          @fixtures = @fixtures.public_send(action, @tmp_keeper.fixtures)
-          @tmp_keeper.clean_fixtures
-          @is_action_done = true
-        end
     end # class Adjuster
   end # module DSL
 end # module SPV

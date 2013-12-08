@@ -153,7 +153,7 @@ describe SPV::DSL::InitialAdjuster do
     end
   end
 
-  describe '#prepared_fixtures' do
+  describe '#prepare_fixtures' do
     let(:fixtures)     { double('fixtures') }
     let(:raw_fixtures) { 'some raw fixtures' }
 
@@ -166,7 +166,7 @@ describe SPV::DSL::InitialAdjuster do
     it 'initializes the fixtures handler' do
       expect(SPV::Fixtures).to receive(:new).with(raw_fixtures).and_return(fixtures)
 
-      expect(subject.prepared_fixtures).to eq(fixtures)
+      expect(subject.prepare_fixtures).to eq(fixtures)
     end
   end
 end

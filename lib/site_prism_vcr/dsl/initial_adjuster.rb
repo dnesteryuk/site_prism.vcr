@@ -89,7 +89,7 @@ module SPV
       # @return [SPV::Fixtures] A set of prepared fixtures.
       #
       # @api public
-      def prepared_fixtures
+      def prepare_fixtures
         Fixtures.new(@tmp_keeper.fixtures)
       end
     end # class InitialAdjuster

@@ -24,55 +24,56 @@ describe SPV::DSL::Adjuster do
 
   subject { described_class.new(options, fixtures) }
 
-  describe '#replace' do
-    let(:replaced_fixtures) { 'replaced fixtures' }
+  describe '#prepare_fixtures' do
+    context 'when the replace action is defined' do
+      let(:replaced_fixtures) { 'replaced fixtures' }
 
-    before do
-      fixtures.stub(:replace).and_return(replaced_fixtures)
+      before do
+        fixtures.stub(:replace).and_return(replaced_fixtures)
+
+        subject.replace
+      end
+
+      it 'replaces fixtures' do
+        expect(fixtures).to receive(:replace).with(raw_fixtures)
+
+        subject.prepare_fixtures
+      end
+
+      it 'cleans fixtures being kept in the fixtures handler' do
+        expect(tmp_keeper).to receive(:clean_fixtures)
+
+        subject.prepare_fixtures
+      end
+
+      it 'returns a new container with fixtures' do
+        expect(subject.prepare_fixtures).to eq(replaced_fixtures)
+      end
     end
 
-    it 'replaces fixtures' do
-      expect(fixtures).to receive(:replace).with(raw_fixtures)
+    describe 'when the union action is defined' do
+      let(:new_fixtures) { 'new fixtures' }
 
-      subject.replace
-    end
+      before do
+        fixtures.stub(:union).and_return(new_fixtures)
+        subject.union
+      end
 
-    it 'cleans fixtures being kept in the fixtures handler' do
-      expect(tmp_keeper).to receive(:clean_fixtures)
+      it 'joins fixtures' do
+        expect(fixtures).to receive(:union).with(raw_fixtures)
 
-      subject.replace
-    end
+        subject.prepare_fixtures
+      end
 
-    it 'returns a new container with fixtures' do
-      subject.replace
+      it 'cleans fixtures being kept in the fixtures handler' do
+        expect(tmp_keeper).to receive(:clean_fixtures)
 
-      expect(subject.prepared_fixtures).to eq(replaced_fixtures)
-    end
-  end
+        subject.prepare_fixtures
+      end
 
-  describe '#union' do
-    let(:new_fixtures) { 'new fixtures' }
-
-    before do
-      fixtures.stub(:union).and_return(new_fixtures)
-    end
-
-    it 'replaces fixtures' do
-      expect(fixtures).to receive(:union).with(raw_fixtures)
-
-      subject.union
-    end
-
-    it 'cleans fixtures being kept in the fixtures handler' do
-      expect(tmp_keeper).to receive(:clean_fixtures)
-
-      subject.union
-    end
-
-    it 'returns a new container with fixtures' do
-      subject.union
-
-      expect(subject.prepared_fixtures).to eq(new_fixtures)
+      it 'returns a new container with fixtures' do
+        expect(subject.prepare_fixtures).to eq(new_fixtures)
+      end
     end
   end
 

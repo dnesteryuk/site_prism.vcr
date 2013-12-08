@@ -12,7 +12,7 @@ module SPV
         adjuster.instance_eval &block
       end
 
-      @fixtures = adjuster.prepared_fixtures
+      @fixtures = adjuster.prepare_fixtures
 
       @fixtures_manager = Fixtures::Manager.new(@options)
     end
@@ -52,7 +52,7 @@ module SPV
         adjuster.instance_eval &block
       end
 
-      @fixtures_manager.inject(adjuster.prepared_fixtures)
+      @fixtures_manager.inject(adjuster.prepare_fixtures)
 
       @event_action.call
 

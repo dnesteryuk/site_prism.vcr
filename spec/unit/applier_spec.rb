@@ -8,7 +8,7 @@ describe SPV::Applier do
   let(:initial_adjuster) do
     instance_double(
       'SPV::DSL::InitialAdjuster',
-      prepared_fixtures: fixtures
+      prepare_fixtures: fixtures
     )
   end
 
@@ -55,7 +55,7 @@ describe SPV::Applier do
     end
 
     it 'receives the fixtures container' do
-      expect(initial_adjuster).to receive(:prepared_fixtures)
+      expect(initial_adjuster).to receive(:prepare_fixtures)
 
       subject
     end
@@ -82,8 +82,8 @@ describe SPV::Applier do
       let(:adjuster) do
         instance_double(
           'DSL::Adjuster',
-          fixtures:          true,
-          prepared_fixtures: prepared_fixtures
+          fixtures:         true,
+          prepare_fixtures: prepared_fixtures
         )
       end
 

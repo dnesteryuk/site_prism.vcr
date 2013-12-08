@@ -29,4 +29,21 @@ shared_examples 'when a custom fixture is applied' do
       expect(cat_owner).to have_content('Robert Baratheon')
     end
   end
+
+  context 'when "replace" action is defined before defining fixtures to be used for replacing' do
+    before do
+      actor.public_send(action_method) do
+        replace
+        path 'custom', ['daenerys_targaryen']
+      end
+    end
+
+    after do
+      SPV::Helpers.eject_all_cassettes
+    end
+
+    it 'uses custom fixture anyway' do
+      expect(cat_owner).to have_content('Daenerys Targaryen')
+    end
+  end
 end
