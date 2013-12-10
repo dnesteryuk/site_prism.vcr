@@ -1,20 +1,13 @@
 # TODO
 
-## Release 0.1.0
-
-1. Change integration tests to use real data.
-
 ## Release 0.1.1
 
-1. Pages and elements should inherit fixtures defined for their parents
-2. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
-3. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
-4. Think how to avoid monkey patching to add stuffs to SitePrism
-5. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
-6. SPV::Applier#apply_vcr should be refactored, it is too complex
-7. Think about renaming current integration tests on acceptance tests and create new integration tests which will test integration between classes without involving a browser. It will solve a lot of issues with shared tests to check the same things for pages and elements. In acceptance tests we will test very basic stuffs.
-8. We should freeze an instance of SPV::Fixtures to make sure it is not mutable, otherwise, there may be situation when default fixtures will be corrupted.
-9. We should disable double defining actions in the adjusting block:
+1. Change integration tests to use real data.
+2. Think how to avoid monkey patching to add stuffs to SitePrism
+3. SPV::Applier#apply_vcr should be refactored, it is too complex
+4. Think about renaming current integration tests on acceptance tests and create new integration tests which will test integration between classes without involving a browser. It will solve a lot of issues with shared tests to check the same things for pages and elements. In acceptance tests we will test very basic stuffs.
+5. We should freeze an instance of SPV::Fixtures to make sure it is not mutable, otherwise, there may be situation when default fixtures will be corrupted.
+6. We should disable double defining actions in the adjusting block:
 
   ```ruby
     self.some_link.click_and_apply_vcr do
@@ -25,6 +18,13 @@
     end
   ```
 It will lead to mess.
+
+## Release 0.2.0
+
+1. Pages and elements should inherit fixtures defined for their parents
+2. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
+3. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
+4. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
 
 ## Should be implemented?
 
