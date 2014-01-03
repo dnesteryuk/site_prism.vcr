@@ -19,6 +19,7 @@
   ```
 It will lead to mess.
 7. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
+8. Start using https://roadchange.com/
 
 ## Release 0.2.0
 
