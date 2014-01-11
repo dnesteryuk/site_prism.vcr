@@ -76,7 +76,6 @@ describe SPV::Applier do
     context 'when an event is shifted' do
       let(:cloned_options)    { 'cloned options' }
       let(:options)           { instance_double('SPV::Options', clone_options: cloned_options) }
-      let(:waiter)            { instance_double('SPV::Waiter', wait: true) }
       let(:prepared_fixtures) { 'prepared_fixtures by adjuster' }
 
       let(:adjuster) do
@@ -89,7 +88,7 @@ describe SPV::Applier do
 
       before do
         SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
-        SPV::Waiter.stub(:new).and_return(waiter)
+        SPV::Waiter.stub(:wait)
 
         applier.shift_event { node.click }
       end
@@ -117,16 +116,6 @@ describe SPV::Applier do
         applier.apply_vcr
       end
 
-      it 'initializes the waiter' do
-        expect(SPV::Waiter).to receive(:new).with(
-          node,
-          fixtures_manager,
-          cloned_options
-        ).and_return(waiter)
-
-        applier.apply_vcr
-      end
-
       it 'does the click action over a node' do
         expect(node).to receive(:click)
 
@@ -134,7 +123,11 @@ describe SPV::Applier do
       end
 
       it 'waits until all HTTP interactions are finished' do
-        expect(waiter).to receive(:wait)
+        expect(SPV::Waiter).to receive(:wait).with(
+          node,
+          fixtures_manager,
+          cloned_options
+        )
 
         applier.apply_vcr
       end

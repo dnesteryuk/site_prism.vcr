@@ -1,5 +1,11 @@
 module SPV
   class Waiter
+    def self.wait(node, fixtures_manager, options)
+      waiter = new(node, fixtures_manager, options)
+      waiter.wait
+      waiter
+    end
+
     def initialize(node, fixtures_manager, options)
       @node, @waiter_method = node, options.waiter
       @fixtures_manager = fixtures_manager

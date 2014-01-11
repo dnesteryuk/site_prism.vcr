@@ -35,11 +35,7 @@ module SPV
     #
     # @return [void]
     def apply_vcr(&block)
-      if @event_action.nil?
-        raise EventError.new(
-          'Event is not shifted, before applying Vcr you have to shift event with "shift_event" method'
-        )
-      end
+      verify_define_event!
 
       options = @options.clone_options
 
@@ -56,13 +52,18 @@ module SPV
 
       @event_action.call
 
-      @waiter = Waiter.new(
+      Waiter.wait(
         @node,
         @fixtures_manager,
         options
       )
-
-      @waiter.wait
     end
-  end
-end
+
+    private
+      def verify_define_event!
+        raise EventError.new(
+          'Event is not shifted, before applying Vcr you have to shift event with "shift_event" method'
+        ) if @event_action.nil?
+      end
+  end # class Applier
+end # module SPV
