@@ -4,10 +4,8 @@
 
 1. Change integration tests to use real data.
 2. Think how to avoid monkey patching to add stuffs to SitePrism
-3. SPV::Applier#apply_vcr should be refactored, it is too complex
-4. Think about renaming current integration tests on acceptance tests and create new integration tests which will test integration between classes without involving a browser. It will solve a lot of issues with shared tests to check the same things for pages and elements. In acceptance tests we will test very basic stuffs.
-5. We should freeze an instance of SPV::Fixtures to make sure it is not mutable, otherwise, there may be situation when default fixtures will be corrupted.
-6. We should disable double defining actions in the adjusting block:
+4. We should freeze an instance of SPV::Fixtures to make sure it is not mutable, otherwise, there may be situation when default fixtures will be corrupted.
+5. We should disable double defining actions in the adjusting block:
 
   ```ruby
     self.some_link.click_and_apply_vcr do
@@ -17,9 +15,9 @@
       replace
     end
   ```
-It will lead to mess.
-7. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
-8. Start using https://roadchange.com/
+It will lead to mess since the last fixture will replace all other fixtures. Union action can be used with exchange, but it should be disabled for using with replace.
+6. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
+7. Start using https://roadchange.com/
 
 ## Release 0.2.0
 
@@ -57,5 +55,5 @@ It will lead to mess.
 3. Should we add a test for testing to HTTP requests on page load?
 4. Should be Options class immutable?
 5. May be it makes sense to separately keep path from the name of a fixture? See SPV::Fixture class
-
+6. Think about renaming current integration tests on acceptance tests and create new integration tests which will test integration between classes without involving a browser. It will solve a lot of issues with shared tests to check the same things for pages and elements. In acceptance tests we will test very basic stuffs.
 
