@@ -33,6 +33,6 @@ module SPV
       def eject
         SPV::Helpers.eject_all_cassettes
       end
-    end
-  end
-end
+    end # class Manager
+  end # class Fixtures
+end # module SPV

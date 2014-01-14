@@ -2,10 +2,9 @@
 
 ## Release 0.1.1
 
-1. Change integration tests to use real data.
-2. Think how to avoid monkey patching to add stuffs to SitePrism
-4. We should freeze an instance of SPV::Fixtures to make sure it is not mutable, otherwise, there may be situation when default fixtures will be corrupted.
-5. We should disable double defining actions in the adjusting block:
+1. Think how to avoid monkey patching to add stuffs to SitePrism
+2. We should freeze an instance of SPV::Fixtures to make sure it is not mutable, otherwise, there may be situation when default fixtures will be corrupted.
+3. We should disable double defining actions in the adjusting block:
 
   ```ruby
     self.some_link.click_and_apply_vcr do
@@ -16,8 +15,8 @@
     end
   ```
 It will lead to mess since the last fixture will replace all other fixtures. Union action can be used with exchange, but it should be disabled for using with replace.
-6. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
-7. Start using https://roadchange.com/
+4. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
+5. Start using https://roadchange.com/
 
 ## Release 0.2.0
 
