@@ -12,22 +12,6 @@ class TestApp < Sinatra::Base
     File.read("#{root}/public/test.js")
   end
 
-  get '/max.json' do
-    content_type :json
-
-    HTTPI.get(
-      'https://api.github.com/users/max/orgs'
-    ).body
-  end
-
-  get '/felix.json' do
-    content_type :json
-
-    HTTPI.get(
-      'https://api.github.com/users/felix/orgs'
-    ).body
-  end
-
   get '/' do
     erb :index, locals: {click_on: nil}
   end
@@ -42,5 +26,39 @@ class TestApp < Sinatra::Base
 
   get '/immediate-http-interactions/home-path' do
     erb :index, locals: {click_on: 'link_with_home_path'}
+  end
+
+  get '/max.json' do
+    content_type :json
+
+    HTTPI.get(
+      "http://#{request.host}:#{request.port}/api/cat/max"
+    ).body
+  end
+
+  get '/felix.json' do
+    content_type :json
+
+    HTTPI.get(
+      "http://#{request.host}:#{request.port}/api/cat/felix"
+    ).body
+  end
+
+  get '/api/cat/max' do
+    content_type :json
+
+    {
+      cat_owner: 'Arya Stark',
+      cat_name:  'Max'
+    }.to_json
+  end
+
+  get '/api/cat/felix' do
+    content_type :json
+
+    {
+      cat_owner: 'Jon Snow',
+      cat_name:  'Felix'
+    }.to_json
   end
 end

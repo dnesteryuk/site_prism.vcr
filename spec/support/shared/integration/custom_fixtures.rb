@@ -18,7 +18,10 @@ shared_examples 'when a custom fixture is applied' do
           {
             fixture: 'blank',
             options: {
-              erb: {cat_owner: 'Robert Baratheon'}
+              erb: {
+                cat_owner: 'Robert Baratheon',
+                port:       Capybara.server_port
+              }
             }
           }
         ]

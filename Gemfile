@@ -13,7 +13,7 @@ end
 
 group :test do
   gem 'rspec-fire'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 2.39.0'
   gem 'coveralls', require: false
 end
 

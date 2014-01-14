@@ -8,7 +8,12 @@ describe SPV::Fixtures::Manager do
       instance_double(
         'SPV::Fixture',
         name: 'arya_stark',
-        options: {erb: {testvar: true}}
+        options: {
+          erb: {
+            testvar: true,
+            port:    123
+          }
+        }
       )
     end
 
@@ -39,7 +44,7 @@ describe SPV::Fixtures::Manager do
         fixture = VCR.eject_cassette
 
         expect(fixture.name).to eq('arya_stark')
-        expect(fixture.erb).to eq({testvar: true})
+        expect(fixture.erb).to eq(testvar: true, port: 123)
       end
 
       it 'VCR holds the second fixture' do

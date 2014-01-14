@@ -30,7 +30,17 @@ shared_examples 'when a default fixture is exchanged' do
     context 'when fixtures are defined with Vcr options' do
       before do
         actor_with_home_path.public_send(action_method) do
-          exchange '~/daenerys_targaryen', {fixture: '~/blank', options: {erb: {cat_owner: 'Robert Baratheon'} }}
+          exchange \
+            '~/daenerys_targaryen',
+            {
+              fixture: '~/blank',
+              options: {
+                erb: {
+                  cat_owner: 'Robert Baratheon',
+                  port:       Capybara.server_port
+                }
+              }
+            }
         end
       end
 
