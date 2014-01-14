@@ -18,4 +18,10 @@ end
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures'
+
+  c.default_cassette_options = {
+    erb: {
+      port: 111
+    }
+  }
 end

@@ -5,8 +5,8 @@ describe SPV::Helpers do
     subject { described_class.eject_all_cassettes }
 
     before do
-      VCR.insert_cassette 'arya_stark', erb: {port: 123}
-      VCR.insert_cassette 'jon_snow', erb: {port: 123}
+      VCR.insert_cassette 'arya_stark'
+      VCR.insert_cassette 'jon_snow'
     end
 
     it 'ejects all fixtures from VCR' do

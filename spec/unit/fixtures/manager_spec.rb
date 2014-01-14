@@ -53,7 +53,7 @@ describe SPV::Fixtures::Manager do
         fixture = VCR.eject_cassette
 
         expect(fixture.name).to eq('jon_snow')
-        expect(fixture.erb).to be_nil
+        expect(fixture.erb).to eq(port: 111) # default value globally defined for all fixtures
       end
     end
 
