@@ -37,23 +37,37 @@ describe SPV::Fixtures::Manager do
         VCR.eject_cassette
       end
 
-      it 'VCR holds the first fixture' do
-        manager.inject(fixtures)
+      context 'when VCR holds the first fixture' do
+        before do
+          manager.inject(fixtures)
 
-        VCR.eject_cassette
-        fixture = VCR.eject_cassette
+          VCR.eject_cassette
+          @fixture = VCR.eject_cassette
+        end
 
-        expect(fixture.name).to eq('arya_stark')
-        expect(fixture.erb).to eq(testvar: true, port: 123)
+        it 'has a right fixture name' do
+          expect(@fixture.name).to eq('arya_stark')
+        end
+
+        it 'has custom erb variables' do
+          expect(@fixture.erb).to eq(testvar: true, port: 123)
+        end
       end
 
-      it 'VCR holds the second fixture' do
-        manager.inject(fixtures)
+      context 'when VCR holds the second fixture' do
+        before do
+          manager.inject(fixtures)
 
-        fixture = VCR.eject_cassette
+          @fixture = VCR.eject_cassette
+        end
 
-        expect(fixture.name).to eq('jon_snow')
-        expect(fixture.erb).to eq(port: 111) # default value globally defined for all fixtures
+        it 'has a right fixture name' do
+          expect(@fixture.name).to eq('jon_snow')
+        end
+
+        it 'has no custom erb variables which was defined for the first fixture' do
+          expect(@fixture.erb).to_not eq(testvar: true, port: 123)
+        end
       end
     end
 
