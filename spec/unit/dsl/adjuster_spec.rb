@@ -24,53 +24,6 @@ describe SPV::DSL::Adjuster do
 
   subject { described_class.new(options, fixtures) }
 
-  describe '#prepare_fixtures' do
-    context 'when the replace action is defined' do
-      let(:replaced_fixtures) { 'replaced fixtures' }
-
-      before do
-        fixtures.stub(:replace).and_return(replaced_fixtures)
-
-        subject.replace
-      end
-
-      it 'replaces fixtures' do
-        expect(fixtures).to receive(:replace).with(raw_fixtures)
-
-        subject.prepare_fixtures
-      end
-
-      it 'returns a new container with fixtures' do
-        expect(subject.prepare_fixtures).to eq(replaced_fixtures)
-      end
-    end
-
-    context 'when the union action is defined' do
-      let(:new_fixtures) { 'new fixtures' }
-
-      before do
-        fixtures.stub(:union).and_return(new_fixtures)
-        subject.union
-      end
-
-      it 'joins fixtures' do
-        expect(fixtures).to receive(:union).with(raw_fixtures)
-
-        subject.prepare_fixtures
-      end
-
-      it 'returns a new container with fixtures' do
-        expect(subject.prepare_fixtures).to eq(new_fixtures)
-      end
-    end
-
-    it 'the replace action is used as a default' do
-      expect(fixtures).to receive(:replace).with(raw_fixtures)
-
-      subject.prepare_fixtures
-    end
-  end
-
   describe '#exchange' do
     def exchange
       subject.exchange(
@@ -147,6 +100,53 @@ describe SPV::DSL::Adjuster do
       expect(options).to receive(:merge_waiter_options!).with(my: 'options')
 
       subject.waiter_options(my: 'options')
+    end
+  end
+
+  describe '#prepare_fixtures' do
+    context 'when the replace action is defined' do
+      let(:replaced_fixtures) { 'replaced fixtures' }
+
+      before do
+        fixtures.stub(:replace).and_return(replaced_fixtures)
+
+        subject.replace
+      end
+
+      it 'replaces fixtures' do
+        expect(fixtures).to receive(:replace).with(raw_fixtures)
+
+        subject.prepare_fixtures
+      end
+
+      it 'returns a new container with fixtures' do
+        expect(subject.prepare_fixtures).to eq(replaced_fixtures)
+      end
+    end
+
+    context 'when the union action is defined' do
+      let(:new_fixtures) { 'new fixtures' }
+
+      before do
+        fixtures.stub(:union).and_return(new_fixtures)
+        subject.union
+      end
+
+      it 'joins fixtures' do
+        expect(fixtures).to receive(:union).with(raw_fixtures)
+
+        subject.prepare_fixtures
+      end
+
+      it 'returns a new container with fixtures' do
+        expect(subject.prepare_fixtures).to eq(new_fixtures)
+      end
+    end
+
+    it 'the replace action is used as a default' do
+      expect(fixtures).to receive(:replace).with(raw_fixtures)
+
+      subject.prepare_fixtures
     end
   end
 end
