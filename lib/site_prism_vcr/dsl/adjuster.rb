@@ -1,5 +1,7 @@
 module SPV
   module DSL
+    class DoubleActionError < StandardError; end
+
     # This class extends SPV::DSL::InitialAdjuster with new methods
     # which can be used in a block for manipulating fixtures before applying them.
     class Adjuster < InitialAdjuster
@@ -7,7 +9,7 @@ module SPV
         super options
 
         @options, @fixtures = options, fixtures
-        @action = :replace
+        @action = Action.new(:replace)
       end
 
       # Defines the replace action as an action which
@@ -26,7 +28,7 @@ module SPV
       #
       # @api public
       def replace
-        @action = :replace
+        @action.action = :replace
       end
 
       # Defines the union action as an action which
@@ -45,7 +47,7 @@ module SPV
       #
       # @api public
       def union
-        @action = :union
+        @action.action = :union
       end
 
       # Exchanges certain default fixtures with another fixtures.
@@ -97,8 +99,34 @@ module SPV
       #
       # @api public
       def prepare_fixtures
-        @fixtures.public_send(@action, @tmp_keeper.fixtures)
+        @fixtures.public_send(
+          @action.action,
+          @tmp_keeper.fixtures
+        )
       end
+
+      private
+        # Class for keeping an action which should be performed
+        # over defined fixtures in an adjusting block.
+        # This class allows to define an action only one time, otherwise,
+        # an error will be raised.
+        #
+        class Action
+          attr_reader :action
+
+          def initialize(default_action)
+            @count, @action = 0, default_action
+          end
+
+          def action=(val)
+            raise SPV::DSL::DoubleActionError.new(
+              'You cannot use "replace" and "union" actions together. It may lead to unexpected behavior.'
+            ) if @count == 1
+
+            @action = val
+            @count += 1
+          end
+        end
     end # class Adjuster
   end # module DSL
 end # module SPV

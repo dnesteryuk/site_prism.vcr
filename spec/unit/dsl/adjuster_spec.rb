@@ -149,4 +149,17 @@ describe SPV::DSL::Adjuster do
       subject.prepare_fixtures
     end
   end
+
+  # This case is common for the replace and union action
+  describe '#replace' do
+    context 'when an action is redefined' do
+      it 'raises an error' do
+        subject.union
+        expect{ subject.replace }.to raise_error(
+          SPV::DSL::DoubleActionError,
+          'You cannot use "replace" and "union" actions together. It may lead to unexpected behavior.'
+        )
+      end
+    end
+  end
 end
