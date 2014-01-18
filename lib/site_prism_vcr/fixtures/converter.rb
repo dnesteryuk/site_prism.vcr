@@ -12,6 +12,6 @@ module SPV
           end
         end
       end
-    end
-  end
-end
+    end # class Converter
+  end # class Fixtures
+end # module SPV

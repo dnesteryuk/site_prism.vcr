@@ -37,5 +37,5 @@ module SPV
     def size
       @container.values
     end
-  end
-end
+  end # class Fixtures
+end # module SPV

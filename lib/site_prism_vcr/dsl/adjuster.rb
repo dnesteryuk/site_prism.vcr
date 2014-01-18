@@ -91,6 +91,7 @@ module SPV
 
       # Performs the replace action when no explicit action is defined
       # in a block for manipulating fixtures before applying them.
+      # Otherwise, performs a defined action (union or replace).
       #
       # @return [SPV::Fixtures] A set of prepared fixtures.
       #
