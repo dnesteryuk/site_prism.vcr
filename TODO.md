@@ -24,6 +24,7 @@ It will lead to mess since the last fixture will replace all other fixtures. Uni
   ```
 
 when define a path to a fixture, for that we can use a standart class Pathname of Ruby.
+6. May be SPV::Fixtures::TmpKeeper is redundant and SPV::Fixtures can be used as a tmp keeper of fixtures?
 
 ## Release 0.2.0
 

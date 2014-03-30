@@ -105,21 +105,21 @@ module SPV
         )
       end
 
-        # @private
+      # @private
       class Action
         attr_reader :action
 
         def initialize(default_action)
-          @count, @action = 0, default_action
+          @defined_actions, @action = Set.new, default_action
         end
 
         def action=(val)
+          @action = val
+          @defined_actions << val
+
           raise SPV::DSL::DoubleActionError.new(
             'You cannot use "replace" and "union" actions together. It may lead to unexpected behavior.'
-          ) if @count == 1
-
-          @action = val
-          @count += 1
+          ) if @defined_actions.size == 2
         end
       end # class Action
     end # class Adjuster

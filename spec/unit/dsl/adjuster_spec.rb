@@ -161,5 +161,23 @@ describe SPV::DSL::Adjuster do
         )
       end
     end
+
+    context 'when the same action is used a few times' do
+      context 'union' do
+        it 'does not raises any error' do
+          subject.union
+
+          expect{ subject.union }.to_not raise_error
+        end
+      end
+
+      context 'replace' do
+        it 'does not raises any error' do
+          subject.replace
+
+          expect{ subject.replace }.to_not raise_error
+        end
+      end
+    end
   end
 end
