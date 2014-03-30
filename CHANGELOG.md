@@ -1,6 +1,7 @@
 # 0.1.1 (Future version)
 
   * fixed the issue with using replace and union actions in one block. In some cases it may have leaded to unexpected behavior.
+  * internal improvements
 
 # 0.1.0
 
