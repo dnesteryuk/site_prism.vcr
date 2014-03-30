@@ -6,8 +6,8 @@ require 'capybara/firebug'
 require 'support/test_app/test_app'
 require 'support/server'
 
-Dir["./spec/support/shared/integration/**/*.rb"].sort.each {|f| require f }
-Dir["./spec/support/site_prism/pages/**/*.rb"].sort.each {|f| require f }
+Dir['./spec/support/shared/integration/**/*.rb'].sort.each {|f| require f }
+Dir['./spec/support/site_prism/pages/**/*.rb'].sort.each {|f| require f }
 
 Capybara.app =            TestApp
 Capybara.default_driver = :selenium

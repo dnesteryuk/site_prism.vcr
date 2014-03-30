@@ -16,7 +16,7 @@ http_interactions:
   response:
     status:
       code: 200
-      message: 'OK '
+      message: 'OK'
     headers:
       Content-Type:
       - application/json;charset=utf-8

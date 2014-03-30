@@ -105,28 +105,23 @@ module SPV
         )
       end
 
-      private
-        # Class for keeping an action which should be performed
-        # over defined fixtures in an adjusting block.
-        # This class allows to define an action only one time, otherwise,
-        # an error will be raised.
-        #
-        class Action
-          attr_reader :action
+        # @private
+      class Action
+        attr_reader :action
 
-          def initialize(default_action)
-            @count, @action = 0, default_action
-          end
-
-          def action=(val)
-            raise SPV::DSL::DoubleActionError.new(
-              'You cannot use "replace" and "union" actions together. It may lead to unexpected behavior.'
-            ) if @count == 1
-
-            @action = val
-            @count += 1
-          end
+        def initialize(default_action)
+          @count, @action = 0, default_action
         end
+
+        def action=(val)
+          raise SPV::DSL::DoubleActionError.new(
+            'You cannot use "replace" and "union" actions together. It may lead to unexpected behavior.'
+          ) if @count == 1
+
+          @action = val
+          @count += 1
+        end
+      end # class Action
     end # class Adjuster
   end # module DSL
 end # module SPV

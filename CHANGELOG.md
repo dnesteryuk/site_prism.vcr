@@ -1,3 +1,7 @@
+# 0.1.1 (Future version)
+
+  * fixed the issue with using replace and union actions in one block. In some cases it may have leaded to unexpected behavior.
+
 # 0.1.0
 
   * changed dependencies. Now gem depends on Vcr 2.8.0 and SitePrism 2.5.
