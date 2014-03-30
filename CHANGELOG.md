@@ -1,6 +1,17 @@
 # 0.1.1 (Future version)
 
-  * fixed the issue with using replace and union actions in one block. In some cases it may have leaded to unexpected behavior.
+  * fixed the issue with using replace and union actions in one block.
+  
+  ```ruby
+    self.some_link.click_and_apply_vcr do
+      fixtures ['test', 'test2']
+      union
+      fixtures ['test3']
+      replace
+    end
+  ```
+
+  In some cases it may have leaded to unexpected behavior.
   * internal improvements
   * upgraded dependencies. Now gem depends on Vcr 2.9.0 and SitePrism 2.6.
 
