@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['nesterukd@gmail.com']
   spec.description   = 'This gem integrates VCR library into SitePrism'
   spec.summary       = 'VCR and SitePrism are awesome libraries. But, it is a bit difficult to work with them without some bridge between them. This gem combines these 2 libraries to provide a better way for stubbing external API request which your application is doing. This gem will be very helpful for developers which have an application working with an external API.'
-  spec.homepage      = 'https://github.com/nestd/site_prism.vcr'
+  spec.homepage      = 'http://github.com/dnesteryuk/site_prism.vcr'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'site_prism', '~> 2.5'
-  spec.add_dependency 'vcr',        '~> 2.8.0'
+  spec.add_dependency 'site_prism', '~> 2.6'
+  spec.add_dependency 'vcr',        '~> 2.9.0'
   spec.add_dependency 'webmock'
 end

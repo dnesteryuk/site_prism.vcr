@@ -17,6 +17,13 @@
 It will lead to mess since the last fixture will replace all other fixtures. Union action can be used with exchange, but it should be disabled for using with replace.
 3. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
 4. Start using https://roadchange.com/
+5. Think about using something like:
+
+  ```ruby
+    ~/../bundle_offerings
+  ```
+
+when define a path to a fixture, for that we can use a standart class Pathname of Ruby.
 
 ## Release 0.2.0
 
