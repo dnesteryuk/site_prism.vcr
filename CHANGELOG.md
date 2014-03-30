@@ -2,10 +2,11 @@
 
   * fixed the issue with using replace and union actions in one block. In some cases it may have leaded to unexpected behavior.
   * internal improvements
+  * upgraded dependencies. Now gem depends on Vcr 2.9.0 and SitePrism 2.6.
 
 # 0.1.0
 
-  * changed dependencies. Now gem depends on Vcr 2.8.0 and SitePrism 2.5.
+  * upgraded dependencies. Now gem depends on Vcr 2.8.0 and SitePrism 2.5.
   * BREAKING CHANGE: re-factored the way how Vcr cassettes could be applying for any event of a page.
     Before that change we had to use ugly way
 

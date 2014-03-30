@@ -10,5 +10,5 @@ gem 'sandi_meter'
 
 gem 'rspec', '~> 2.14.1'
 gem 'rspec-fire'
-gem 'selenium-webdriver', '~> 2.39.0'
+gem 'selenium-webdriver', '~> 2.41.0'
 gem 'coveralls', require: false
