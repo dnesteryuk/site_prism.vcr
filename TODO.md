@@ -4,8 +4,7 @@
 
 1. Think how to avoid monkey patching to add stuffs to SitePrism
 2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
-3. Start using https://roadchange.com/
-4. Think about using something like:
+3. Think about using something like:
 
   ```ruby
     ~/../bundle_offerings
