@@ -1,7 +1,7 @@
 module SPV
   class Fixtures
     module Modifiers
-      # It takes a fixture and adds a path to it
+      # It takes a fixture and adds a path to it.
       class Path
         def initialize(options)
           @options = options

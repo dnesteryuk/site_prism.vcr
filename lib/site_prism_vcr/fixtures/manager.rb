@@ -9,7 +9,7 @@ module SPV
 
       # Injects given fixtures to Vcr.
       #
-      # @param fixtures [Array<SPV::Fixture>] List of fixtures.
+      # @param fixtures [SPV::Fixtures] List of fixtures.
       #
       # @return [void]
       #

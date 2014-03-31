@@ -1,5 +1,5 @@
 module SPV
-  # Converts raw fixtures into list of
+  # Converts list with fixture names into list of
   # SPV::Fixture objects.
   class Fixtures
     class Converter

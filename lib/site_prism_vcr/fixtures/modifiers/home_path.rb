@@ -2,7 +2,7 @@ module SPV
   class Fixtures
     module Modifiers
       # It takes a fixture and replaces "~/" with
-      # a defined home path
+      # a defined home path.
       class HomePath
         def initialize(options)
           @options = options

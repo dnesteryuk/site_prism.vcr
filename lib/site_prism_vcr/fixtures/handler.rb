@@ -1,7 +1,9 @@
 module SPV
   class Fixtures
-    # Prepares incoming raw fixtures to be used for inserting
-    # into VCR
+    # Prepares incoming raw list of fixtures to be used for inserting
+    # into VCR.
+    #
+    # Applies a given list of modifiers to list of fixtures.
     class Handler
       def initialize(options, convertor = Converter)
         @options = options
@@ -26,6 +28,6 @@ module SPV
           handle_raw fixtures_raw, modifiers
         end
       end
-    end
-  end
-end
+    end # class Handler
+  end # class Fixtures
+end # module SPV

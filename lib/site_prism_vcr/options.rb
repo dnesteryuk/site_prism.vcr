@@ -1,5 +1,5 @@
 module SPV
-  # Keeps options which are used to identify path to cassettes
+  # Keeps options which are used to identify path to fixtures
   # and options for a waiter which holds execution until expectation
   # has been met.
   class Options
@@ -11,9 +11,9 @@ module SPV
       end
     end
 
-    # Defines path to cassettes.
+    # Defines path to fixtures.
     #
-    # @param val [String] Path to cassettes.
+    # @param val [String] Path to fixtures.
     #
     # @return [void]
     #
@@ -54,5 +54,5 @@ module SPV
     def merge_waiter_options!(options)
       self.waiter_options = self.waiter_options.merge(options)
     end
-  end
-end
+  end # class Options
+end # module SPV
