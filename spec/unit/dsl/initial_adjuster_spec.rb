@@ -53,8 +53,8 @@ describe SPV::DSL::InitialAdjuster do
       expect(fixtures_handler).to receive(:handle_raw).with(
         raw_fixtures,
         [
-          home_path_modifier
-          #relative_path_modifier
+          home_path_modifier,
+          relative_path_modifier
         ]
       )
 
@@ -87,10 +87,12 @@ describe SPV::DSL::InitialAdjuster do
     let(:options_with_path)  { instance_double('SPV::OptionsWithPath', 'path=' => true) }
 
     let(:path_modifier)      { double('path modifier') }
+    let(:home_path_modifier) { double('home path modifier') }
 
     before do
       SPV::OptionsWithPath.stub(:new).and_return(options_with_path)
       SPV::Fixtures::Modifiers::Path.stub(:new).and_return(path_modifier)
+      SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
     end
 
     it 'initializes a new object with options' do
@@ -113,11 +115,20 @@ describe SPV::DSL::InitialAdjuster do
       set_path
     end
 
+    it 'initializes the modifier to set home path' do
+      expect(
+        SPV::Fixtures::Modifiers::HomePath
+      ).to receive(:new).with(options_with_path)
+
+      set_path
+    end
+
     it 'handles raw fixtures' do
       expect(fixtures_handler).to receive(:handle_raw).with(
         raw_fixtures,
         [
-          path_modifier
+          path_modifier,
+          home_path_modifier
         ]
       )
 

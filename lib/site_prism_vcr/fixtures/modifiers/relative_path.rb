@@ -11,7 +11,7 @@ module SPV
       #
       class RelativePath < Base
         def modify(fixture)
-          path = Pathname.new(fixture.name)
+          path = Pathname.new(fixture.path)
 
           fixture.path = path.cleanpath.to_path
         end
