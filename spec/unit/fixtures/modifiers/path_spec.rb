@@ -10,7 +10,7 @@ describe SPV::Fixtures::Modifiers::Path do
 
     context 'when the path does not end with slash symbol' do
       it 'adds a given path to the fixture with additional slash symbol' do
-        expect(fixture).to receive(:add_path).with(path + '/')
+        expect(fixture).to receive(:path=).with(path + '/')
 
         subject
       end
@@ -20,7 +20,7 @@ describe SPV::Fixtures::Modifiers::Path do
       let(:path) { 'some path/' }
 
       it 'adds a given path to the fixture without additional slash symbol' do
-        expect(fixture).to receive(:add_path).with(path)
+        expect(fixture).to receive(:path=).with(path)
 
         subject
       end

@@ -1,12 +1,10 @@
+require_relative 'base'
+
 module SPV
   class Fixtures
     module Modifiers
       # It takes a fixture and adds a path to it.
-      class Path
-        def initialize(options)
-          @options = options
-        end
-
+      class Path < Base
         def modify(fixture)
           if fixture.has_link_to_home_path?
             raise HomePathError.new(
@@ -19,7 +17,7 @@ module SPV
             path = @options.path
             path = path + '/' unless path[-1, 1] == '/'
 
-            fixture.add_path(path)
+            fixture.path = @options.path
           end
         end
 

@@ -45,7 +45,7 @@ shared_examples 'when a custom fixture is applied' do
       SPV::Helpers.eject_all_cassettes
     end
 
-    it 'uses custom fixture anyway' do
+    it 'uses a custom fixture anyway' do
       expect(cat_owner).to have_content('Daenerys Targaryen')
     end
   end

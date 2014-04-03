@@ -46,4 +46,18 @@ shared_examples 'when a home path is define' do
 
     it_behaves_like 'expects the custom fixture on the page'
   end
+
+  context 'when a custom fixture which stored in the parent directory of the home path is applied' do
+    before do
+      actor_without_home_path.public_send(action_method) do
+        home_path 'custom'
+
+        fixtures ['~/../arya_stark']
+      end
+    end
+
+    it 'applies a stored fixture in the parent directory of the home path' do
+      expect(cat_owner).to have_content('Arya Stark')
+    end
+  end
 end
