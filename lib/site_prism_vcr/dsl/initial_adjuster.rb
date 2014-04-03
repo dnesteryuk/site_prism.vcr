@@ -50,17 +50,15 @@ module SPV
       #
       # @api public
       def path(path, fixture_names)
-        options_with_path  = OptionsWithPath.new(@options)
+        options_with_path = OptionsWithPath.new(@options)
         options_with_path.path = path
 
-        path_modifier      = Fixtures::Modifiers::Path.new(options_with_path)
-        home_path_modifier = Fixtures::Modifiers::HomePath.new(options_with_path)
+        path_modifier = Fixtures::Modifiers::Path.new(options_with_path)
 
         prepared_fixtures = @fixtures_handler.handle_raw(
           fixture_names,
           [
-            path_modifier,
-            home_path_modifier
+            path_modifier
           ]
         )
 

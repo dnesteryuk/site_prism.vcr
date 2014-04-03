@@ -17,7 +17,7 @@ module SPV
             path = @options.path
             path = path + '/' unless path[-1, 1] == '/'
 
-            fixture.path = @options.path
+            fixture.path = path
           end
         end
 
