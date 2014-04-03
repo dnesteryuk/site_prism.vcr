@@ -28,11 +28,13 @@ describe SPV::DSL::InitialAdjuster do
   end
 
   describe '#fixtures' do
-    let(:raw_fixtures)       { 'some fixtures' }
-    let(:home_path_modifier) { double('home path modifier') }
+    let(:raw_fixtures)           { 'some fixtures' }
+    let(:home_path_modifier)     { double('home path modifier') }
+    let(:relative_path_modifier) { double('relative path modifier') }
 
     before do
       SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
+      SPV::Fixtures::Modifiers::RelativePath.stub(:new).and_return(relative_path_modifier)
     end
 
     it 'initializes the home path modifier' do
@@ -41,10 +43,19 @@ describe SPV::DSL::InitialAdjuster do
       subject.fixtures(raw_fixtures)
     end
 
+    it 'initializes the relative path modifier' do
+      expect(SPV::Fixtures::Modifiers::RelativePath).to receive(:new).with(options)
+
+      subject.fixtures(raw_fixtures)
+    end
+
     it 'handles raw fixtures' do
       expect(fixtures_handler).to receive(:handle_raw).with(
         raw_fixtures,
-        [home_path_modifier]
+        [
+          home_path_modifier
+          #relative_path_modifier
+        ]
       )
 
       subject.fixtures(raw_fixtures)

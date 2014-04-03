@@ -19,7 +19,10 @@ module SPV
       def fixtures(list)
         prepared_fixtures = @fixtures_handler.handle_raw(
           list,
-          [Fixtures::Modifiers::HomePath.new(@options)]
+          [
+            Fixtures::Modifiers::HomePath.new(@options),
+            Fixtures::Modifiers::RelativePath.new(@options)
+          ]
         )
 
         @tmp_keeper.add_fixtures(prepared_fixtures)
