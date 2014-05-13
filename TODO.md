@@ -18,6 +18,7 @@ when define a path to a fixture, for that we can use a standard class Pathname o
 2. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
 3. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
 4. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
+5. Add code to not remove one specific cassete from VCR
 
 ## Should be implemented?
 
