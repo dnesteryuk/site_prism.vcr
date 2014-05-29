@@ -17,10 +17,10 @@
   * added possibility to use relative path with a home path.
 
   ```ruby
-    actor_without_home_path.public_send(action_method) do
+    self.some_link.click_and_apply_vcr do
       home_path 'custom'
 
-      fixtures ['~/../arya_stark'] # '~' indicates a home path which is defined above in this block
+      fixtures ['~/../test'] # '~' indicates a home path which is defined above in this block
     end
   ```
 
