@@ -1,6 +1,6 @@
 # TODO
 
-## Release 0.1.1
+## Release 0.1.2
 
 1. Think how to avoid monkey patching to add stuffs to SitePrism
 2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)

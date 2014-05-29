@@ -1,7 +1,7 @@
-# 0.1.1 (Future version)
+# 0.1.1
 
   * fixed the issue with using replace and union actions in one block.
-  
+
   ```ruby
     self.some_link.click_and_apply_vcr do
       fixtures ['test', 'test2']
@@ -13,7 +13,16 @@
 
   In some cases it may have leaded to unexpected behavior.
   * internal improvements
-  * upgraded dependencies. Now gem depends on Vcr 2.9.0 and SitePrism 2.6.
+  * upgraded dependencies. Now gem depends on Vcr 2.9.2 and SitePrism 2.6.
+  * added possibility to use relative path with a home path.
+
+  ```ruby
+    actor_without_home_path.public_send(action_method) do
+      home_path 'custom'
+
+      fixtures ['~/../arya_stark'] # '~' indicates a home path which is defined above in this block
+    end
+  ```
 
 # 0.1.0
 
