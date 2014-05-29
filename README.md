@@ -147,6 +147,20 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
+Sometimes you need to specify a cassette which lies in a parent directory of a home path, in this case you can use a relative path with a home path:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details' do
+      home_path 'cars/small'
+
+      fixture ['~/../ford']
+    end
+end
+```
+
 ### Applying VCR cassettes on click
 
 Cassettes can be applied on a click event:
