@@ -22,6 +22,10 @@ module SPV
       @path = Pathname.new(val)
     end
 
+    def prepend_path(val)
+      self.path = Pathname.new(val) + self.path
+    end
+
     def set_home_path(home_path)
       self.path = self.path.to_path.gsub(/\A(\~\/|\~)/, home_path)
     end

@@ -1,0 +1,38 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://127.0.0.1:<%= port %>/api/cat/max
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK'
+    headers:
+      Content-Type:
+      - application/json;charset=utf-8
+      Content-Length:
+      - '43'
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.0.0/2013-06-27)
+      Date:
+      - Mon, 13 Jan 2014 21:01:47 GMT
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"cat_owner":"Sansa Stark","cat_name":"Max"}'
+    http_version:
+  recorded_at: Mon, 13 Jan 2014 21:01:47 GMT
+recorded_with: VCR 2.8.0

@@ -40,6 +40,20 @@ describe SPV::Fixture do
     end
   end
 
+  describe '#prepend_path' do
+    context 'when a fixture name contains a subpath' do
+      subject { described_class.new('subpath/somename') }
+
+      it 'prepends a path to a current subpath' do
+        subject.prepend_path 'somepath'
+
+
+        expect(subject.path).to be_an_instance_of(Pathname)
+        expect(subject.path.to_path).to eq('somepath/subpath')
+      end
+    end
+  end
+
   describe '#set_home_path' do
     subject { described_class.new('~/fixture_name') }
 

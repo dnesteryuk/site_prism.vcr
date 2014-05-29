@@ -60,4 +60,18 @@ shared_examples 'when a home path is define' do
       expect(cat_owner).to have_content('Arya Stark')
     end
   end
+
+  context 'when a home path is used to point to a cessette in a sub directory', mytest: true do
+    before do
+      actor_without_home_path.public_send(action_method) do
+        home_path 'custom'
+
+        path '~/', ['subpath/sansa_stark']
+      end
+    end
+
+    it 'applies a stored fixture in the sub directory of the home path' do
+      expect(cat_owner).to have_content('Sansa Stark')
+    end
+  end
 end
