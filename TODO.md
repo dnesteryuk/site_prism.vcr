@@ -1,24 +1,18 @@
 # TODO
 
-## Release 0.1.2
+## Release 0.1.3
 
 1. Think how to avoid monkey patching to add stuffs to SitePrism
 2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
-3. Think about using something like:
-
-  ```ruby
-    ~/../bundle_offerings
-  ```
-
-when define a path to a fixture, for that we can use a standard class Pathname of Ruby.
+3. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
+4. Add possibility to define any shortcuts for paths similar to the home path.
 
 ## Release 0.2.0
 
 1. Pages and elements should inherit fixtures defined for their parents
-2. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
-3. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
-4. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
-5. Add code to not remove one specific cassete from VCR
+2. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
+3. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
+4. Add code to not remove one specific cassete from VCR
 
 ## Should be implemented?
 
@@ -48,8 +42,7 @@ when define a path to a fixture, for that we can use a standard class Pathname o
 2. Should we add own integration tests to test the path helper method?
 3. Should we add a test for testing to HTTP requests on page load?
 4. Should be Options class immutable?
-5. May be it makes sense to separately keep path from the name of a fixture? See SPV::Fixture class
-6. Think about renaming current integration tests on acceptance tests and create new integration tests which will test integration between classes without involving a browser. It will solve a lot of issues with shared tests to check the same things for pages and elements. In acceptance tests we will test very basic stuffs.
-7. May be SPV::Fixtures::TmpKeeper is redundant and SPV::Fixtures can be used as a tmp keeper of fixtures?
+5. Think about renaming current integration tests on acceptance tests and create new integration tests which will test integration between classes without involving a browser. It will solve a lot of issues with shared tests to check the same things for pages and elements. In acceptance tests we will test very basic stuffs.
+6. May be SPV::Fixtures::TmpKeeper is redundant and SPV::Fixtures can be used as a tmp keeper of fixtures?
 
 
