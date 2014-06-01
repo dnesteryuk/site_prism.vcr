@@ -1,3 +1,7 @@
+# 0.1.2
+
+  * fixed the issue with storing a fixture into a correct sub directory if it is provided along with a fixture name (It happened only for `path` helper method which used with a home path symbol).
+
 # 0.1.1
 
   * fixed the issue with using replace and union actions in one block.
