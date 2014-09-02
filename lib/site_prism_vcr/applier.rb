@@ -46,17 +46,17 @@ module SPV
         adjuster.instance_eval &block
       end
 
-      @fixtures_manager = Fixtures::Manager.new(
+      fixtures_manager = Fixtures::Manager.new(
         adjuster.prepare_fixtures, @options
       )
 
-      @fixtures_manager.inject
+      fixtures_manager.inject
 
       @event_action.call
 
       Waiter.wait(
         @node,
-        @fixtures_manager,
+        fixtures_manager,
         options
       )
     end
