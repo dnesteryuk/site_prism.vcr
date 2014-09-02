@@ -3,33 +3,33 @@ require 'spec_helper'
 describe SPV::Fixtures::Manager do
   let(:options) { instance_double('SPV::Options', fixtures: ['some fixture']) }
 
-  describe '#inject' do
-    let(:fixture1) do
-      instance_double(
-        'SPV::Fixture',
-        name: 'arya_stark',
-        options: {
-          erb: {
-            testvar: true,
-            port:    123
-          }
+  let(:fixture1) do
+    instance_double(
+      'SPV::Fixture',
+      name: 'arya_stark',
+      options: {
+        erb: {
+          testvar: true,
+          port:    123
         }
-      )
-    end
+      }
+    )
+  end
 
-    let(:fixture2) do
-      instance_double(
-        'SPV::Fixture',
-        name: 'jon_snow',
-        options: {}
-      )
-    end
+  let(:fixture2) do
+    instance_double(
+      'SPV::Fixture',
+      name: 'jon_snow',
+      options: {}
+    )
+  end
 
-    let(:fixtures) do
-      [fixture1, fixture2]
-    end
+  let(:fixtures) do
+    [fixture1, fixture2]
+  end
 
-    subject(:manager) { described_class.new(options) }
+  describe '#inject' do
+    subject(:manager) { described_class.new(fixtures, options) }
 
     context 'when there are fixtures' do
       after do
@@ -39,7 +39,7 @@ describe SPV::Fixtures::Manager do
 
       context 'when VCR holds the first fixture' do
         before do
-          manager.inject(fixtures)
+          manager.inject
 
           VCR.eject_cassette
           @fixture = VCR.eject_cassette
@@ -56,7 +56,7 @@ describe SPV::Fixtures::Manager do
 
       context 'when VCR holds the second fixture' do
         before do
-          manager.inject(fixtures)
+          manager.inject
 
           @fixture = VCR.eject_cassette
         end
@@ -72,8 +72,10 @@ describe SPV::Fixtures::Manager do
     end
 
     context 'when there are not any fixtures' do
+      let(:fixtures) { [] }
+
       it 'raises an error about no fixtures' do
-        expect { manager.inject([]) }.to raise_error(
+        expect { manager.inject }.to raise_error(
           ArgumentError,
           'No fixtures were specified to insert them into VCR'
         )
@@ -82,12 +84,29 @@ describe SPV::Fixtures::Manager do
   end
 
   describe '#eject' do
-    subject { described_class.new(options).eject }
+    subject(:manager) { described_class.new(fixtures, options) }
 
-    it 'ejects all fixtures from VCR' do
-      expect(SPV::Helpers).to receive(:eject_all_cassettes)
+    before do
+      manager.inject
+    end
 
-      subject
+    it 'ejects the inserted fixtures' do
+      manager.eject
+
+      expect(VCR.eject_cassette).to equal(nil)
+    end
+
+    context 'when there are fixtures inserted by another code' do
+      before do
+        VCR.insert_cassette('test_cassette')
+      end
+
+      it 'does not remove fixtures which are not inserted by this instance of the fixtures manager' do
+        manager.eject
+
+        expect(VCR.eject_cassette.name).to eq('test_cassette')
+        expect(VCR.eject_cassette).to equal(nil)
+      end
     end
   end
 end

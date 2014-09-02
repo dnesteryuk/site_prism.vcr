@@ -3,7 +3,6 @@ require 'spec_helper'
 describe SPV::Applier do
   let(:node)             { double('node of DOM') }
   let(:options)          { instance_double('SPV::Options') }
-  let(:fixtures_manager) { instance_double('SPV::Fixtures::Manager', inject: true) }
   let(:fixtures)         { double('fixtures') }
   let(:initial_adjuster) do
     instance_double(
@@ -15,8 +14,6 @@ describe SPV::Applier do
   before do
     SPV::Options.stub(:new).and_return(options)
     SPV::DSL::InitialAdjuster.stub(:new).and_return(initial_adjuster)
-
-    SPV::Fixtures::Manager.stub(:new).and_return(fixtures_manager)
   end
 
   before do
@@ -59,18 +56,12 @@ describe SPV::Applier do
 
       subject
     end
-
-    it 'initializes the fixtures manager' do
-      expect(SPV::Fixtures::Manager).to receive(:new).with(
-        options
-      ).and_return(fixtures_manager)
-
-      subject
-    end
   end
 
   describe '#apply_vcr' do
-    let(:node)        { double('node of DOM', click: true) }
+    let(:node)             { double('node of DOM', click: true) }
+    let(:fixtures_manager) { instance_double('SPV::Fixtures::Manager', inject: true) }
+
     subject(:applier) { described_class.new(node) { } }
 
     context 'when an event is shifted' do
@@ -87,6 +78,7 @@ describe SPV::Applier do
       end
 
       before do
+        SPV::Fixtures::Manager.stub(:new).and_return(fixtures_manager)
         SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
         SPV::Waiter.stub(:wait)
 
@@ -110,8 +102,17 @@ describe SPV::Applier do
         end
       end
 
+      it 'initializes the fixtures manager' do
+        expect(SPV::Fixtures::Manager).to receive(:new).with(
+          prepared_fixtures,
+          options
+        ).and_return(fixtures_manager)
+
+        applier.apply_vcr
+      end
+
       it 'applies fixtures' do
-        expect(fixtures_manager).to receive(:inject).with(prepared_fixtures)
+        expect(fixtures_manager).to receive(:inject)
 
         applier.apply_vcr
       end

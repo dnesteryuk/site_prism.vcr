@@ -3,8 +3,8 @@ module SPV
     # Takes cares about inserting and ejecting fixtures
     # from Vcr.
     class Manager
-      def initialize(options)
-        @options = options
+      def initialize(fixtures, options)
+        @fixtures, @options = fixtures, options
       end
 
       # Injects given fixtures to Vcr.
@@ -14,12 +14,12 @@ module SPV
       # @return [void]
       #
       # @raise [ArgumentError] If a list of fixtures is empty.
-      def inject(fixtures)
+      def inject
         raise ArgumentError.new(
           'No fixtures were specified to insert them into VCR'
-        ) if fixtures.size == 0
+        ) if @fixtures.size == 0
 
-        fixtures.each do |fixture|
+        @fixtures.each do |fixture|
           VCR.insert_cassette fixture.name, fixture.options
         end
       end
@@ -31,7 +31,10 @@ module SPV
       #
       # @return [void]
       def eject
-        SPV::Helpers.eject_all_cassettes
+        inserted_names = @fixtures.map(&:name)
+
+        # TODO: find better way, may be some pull request to the VCR?
+        VCR.send(:cassettes).delete_if{|cassette| inserted_names.include?(cassette.name) }
       end
     end # class Manager
   end # class Fixtures

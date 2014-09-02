@@ -13,8 +13,6 @@ module SPV
       end
 
       @fixtures = adjuster.prepare_fixtures
-
-      @fixtures_manager = Fixtures::Manager.new(@options)
     end
 
     def shift_event(&block)
@@ -48,7 +46,11 @@ module SPV
         adjuster.instance_eval &block
       end
 
-      @fixtures_manager.inject(adjuster.prepare_fixtures)
+      @fixtures_manager = Fixtures::Manager.new(
+        adjuster.prepare_fixtures, @options
+      )
+
+      @fixtures_manager.inject
 
       @event_action.call
 
