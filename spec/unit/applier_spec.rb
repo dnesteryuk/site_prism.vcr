@@ -78,7 +78,7 @@ describe SPV::Applier do
       end
 
       before do
-        SPV::Fixtures::Manager.stub(:new).and_return(fixtures_manager)
+        SPV::Fixtures::Manager.stub(:inject).and_return(fixtures_manager)
         SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
         SPV::Waiter.stub(:wait)
 
@@ -102,17 +102,11 @@ describe SPV::Applier do
         end
       end
 
-      it 'initializes the fixtures manager' do
-        expect(SPV::Fixtures::Manager).to receive(:new).with(
+      it 'applies fixtures' do
+        expect(SPV::Fixtures::Manager).to receive(:inject).with(
           prepared_fixtures,
           options
         ).and_return(fixtures_manager)
-
-        applier.apply_vcr
-      end
-
-      it 'applies fixtures' do
-        expect(fixtures_manager).to receive(:inject)
 
         applier.apply_vcr
       end

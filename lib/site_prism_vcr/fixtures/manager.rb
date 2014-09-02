@@ -3,13 +3,31 @@ module SPV
     # Takes cares about inserting and ejecting fixtures
     # from Vcr.
     class Manager
+      # Initializes a new instance of the fixtures manager class,
+      # injects given fixtures into VCR,
+      # returns an instance of the fixtures manager class
+      #
+      # @param fixtures [SPV::Fixtures] List of fixtures.
+      # @param options [SPV::Options] An object with all options.
+      #
+      # @return [SPV::Fixtures::Manager]
+      def self.inject(fixtures, options)
+        manager = new(fixtures, options)
+        manager.inject
+        manager
+      end
+
+      # Initializes a new instance
+      #
+      # @param fixtures [SPV::Fixtures] List of fixtures.
+      # @param options [SPV::Options] An object with all options.
+      #
+      # @return [void]
       def initialize(fixtures, options)
         @fixtures, @options = fixtures, options
       end
 
       # Injects given fixtures to Vcr.
-      #
-      # @param fixtures [SPV::Fixtures] List of fixtures.
       #
       # @return [void]
       #
@@ -24,10 +42,8 @@ module SPV
         end
       end
 
-      # Ejects all fixtures from Vcr.
-      # Now it doesn't care which fixtures were inserted by
-      # an instance of this class. After calling this method
-      # Vcr will have no inserted fixtures at all.
+      # Ejects only fixtures from Vcr which are injected
+      # by this instance of the fixtures manager class.
       #
       # @return [void]
       def eject

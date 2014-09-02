@@ -46,11 +46,9 @@ module SPV
         adjuster.instance_eval &block
       end
 
-      fixtures_manager = Fixtures::Manager.new(
+      fixtures_manager = Fixtures::Manager.inject(
         adjuster.prepare_fixtures, @options
       )
-
-      fixtures_manager.inject
 
       @event_action.call
 

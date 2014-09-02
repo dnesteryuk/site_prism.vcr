@@ -28,6 +28,34 @@ describe SPV::Fixtures::Manager do
     [fixture1, fixture2]
   end
 
+  describe '.inject' do
+    let(:manager) { double(SPV::Fixtures::Manager, inject: true) }
+
+    subject { described_class.inject(fixtures, options) }
+
+    before do
+      described_class.stub(:new).and_return(manager)
+    end
+
+    it 'initializes a new instance of the fixtures manager class' do
+      expect(described_class).to receive(:new).with(fixtures, options)
+
+      subject
+    end
+
+    it 'injects fixtures' do
+      expect(manager).to receive(:inject)
+
+      subject
+    end
+
+    it 'returns an instance of the manager' do
+      res = subject
+
+      expect(manager).to eq(res)
+    end
+  end
+
   describe '#inject' do
     subject(:manager) { described_class.new(fixtures, options) }
 
