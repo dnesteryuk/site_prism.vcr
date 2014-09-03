@@ -76,13 +76,13 @@ describe SPV::Fixture do
     it 'returns true when a name of fixture starts with "~/"' do
       expect(
         described_class.new('~/some').has_link_to_home_path?
-      ).to be_true
+      ).to be_truthy
     end
 
     it 'returns true when a name of fixture does not start with "~/"' do
       expect(
         described_class.new('some').has_link_to_home_path?
-      ).to be_false
+      ).to be_falsey
     end
   end
 

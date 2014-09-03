@@ -1,3 +1,7 @@
+# 0.1.3 (Not released yet)
+
+  * fixed code for ejecting fixtures from Vcr. Now SitePrism.Vcr ejects only fixtures we are injected by itself, any other fixtures which are injected outside of this library won't be touched.
+
 # 0.1.2
 
   * fixed the issue with storing a fixture into a correct sub directory if it is provided along with a fixture name (It happened only for `path` helper method which used with a home path symbol).

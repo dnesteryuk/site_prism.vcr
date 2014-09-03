@@ -6,7 +6,7 @@ describe SPV::Element do
   let(:applier) { instance_double('SPV::Applier', apply_vcr: true) }
 
   before do
-    SPV::Applier.stub(:new).and_return(applier)
+    allow(SPV::Applier).to receive(:new).and_return(applier)
   end
 
   describe '.new' do
@@ -25,8 +25,8 @@ describe SPV::Element do
     subject { described_class.new(nil, parent) }
 
     before do
-      subject.stub(:click)
-      subject.stub(:shift_event).and_yield.and_return(applier)
+      allow(subject).to receive(:click)
+      allow(subject).to receive(:shift_event).and_yield.and_return(applier)
     end
 
     it 'shifts a click event to the applier' do

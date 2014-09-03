@@ -4,9 +4,7 @@
 
 1. Think how to avoid monkey patching to add stuffs to SitePrism
 2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
-3. When we eject fixtures from Vcr we should eject only fixtures inserted into Vcr by one specific fixtures manager (See SPV#eject)
-4. Add possibility to define any shortcuts for paths similar to the home path.
-5. Switch to Rspec 3.0.0
+3. Add possibility to define any shortcuts for paths similar to the home path.
 
 ## Release 0.2.0
 

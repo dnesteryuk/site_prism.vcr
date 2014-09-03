@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SPV::Fixtures::Manager do
-  let(:options) { instance_double('SPV::Options', fixtures: ['some fixture']) }
+  let(:options) { instance_double('SPV::Options') }
 
   let(:fixture1) do
     instance_double(
@@ -29,7 +29,7 @@ describe SPV::Fixtures::Manager do
   end
 
   describe '.inject' do
-    let(:manager) { double(SPV::Fixtures::Manager, inject: true) }
+    let(:manager) { instance_double('SPV::Fixtures::Manager', inject: true) }
 
     subject { described_class.inject(fixtures, options) }
 

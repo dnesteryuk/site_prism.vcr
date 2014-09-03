@@ -9,8 +9,8 @@ describe SPV::DSL::InitialAdjuster do
   subject { described_class.new(options) }
 
   before do
-    SPV::Fixtures::TmpKeeper.stub(:new).and_return(tmp_keeper)
-    SPV::Fixtures::Handler.stub(:new).and_return(fixtures_handler)
+    allow(SPV::Fixtures::TmpKeeper).to receive(:new).and_return(tmp_keeper)
+    allow(SPV::Fixtures::Handler).to receive(:new).and_return(fixtures_handler)
   end
 
   describe '.new' do
@@ -33,8 +33,8 @@ describe SPV::DSL::InitialAdjuster do
     let(:relative_path_modifier) { double('relative path modifier') }
 
     before do
-      SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
-      SPV::Fixtures::Modifiers::RelativePath.stub(:new).and_return(relative_path_modifier)
+      allow(SPV::Fixtures::Modifiers::HomePath).to receive(:new).and_return(home_path_modifier)
+      allow(SPV::Fixtures::Modifiers::RelativePath).to receive(:new).and_return(relative_path_modifier)
     end
 
     it 'initializes the home path modifier' do
@@ -90,9 +90,9 @@ describe SPV::DSL::InitialAdjuster do
     let(:home_path_modifier) { double('home path modifier') }
 
     before do
-      SPV::OptionsWithPath.stub(:new).and_return(options_with_path)
-      SPV::Fixtures::Modifiers::Path.stub(:new).and_return(path_modifier)
-      SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
+      allow(SPV::OptionsWithPath).to receive(:new).and_return(options_with_path)
+      allow(SPV::Fixtures::Modifiers::Path).to receive(:new).and_return(path_modifier)
+      allow(SPV::Fixtures::Modifiers::HomePath).to receive(:new).and_return(home_path_modifier)
     end
 
     it 'initializes a new object with options' do
@@ -169,9 +169,9 @@ describe SPV::DSL::InitialAdjuster do
     let(:raw_fixtures) { 'some raw fixtures' }
 
     before do
-      SPV::Fixtures.stub(:new).and_return(fixtures)
+      allow(SPV::Fixtures).to receive(:new).and_return(fixtures)
 
-      tmp_keeper.stub(:fixtures).and_return(raw_fixtures)
+      allow(tmp_keeper).to receive(:fixtures).and_return(raw_fixtures)
     end
 
     it 'initializes the fixtures handler' do

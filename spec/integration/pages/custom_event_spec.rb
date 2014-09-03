@@ -13,7 +13,7 @@ feature 'Pages > Load > Custom event' do
   end
 
   it 'loads fixtures on opening a page by click on a link' do
-    expect(one_request_page.displayed?).to be_true
+    expect(one_request_page.displayed?).to be_truthy
 
     expect(one_request_page).to have_content('Ned Stark')
   end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SPV::Fixtures::Modifiers::Path do
   describe '#modify' do
     let(:path)    { 'some path' }
-    let(:options) { instance_double('SPV::Options', path: path) }
+    let(:options) { instance_double('SPV::OptionsWithPath', path: path) }
     let(:fixture) { instance_double('SPV::Fixture', :has_link_to_home_path? => false) }
 
     subject { described_class.new(options).modify(fixture) }

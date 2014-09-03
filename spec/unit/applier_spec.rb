@@ -12,12 +12,12 @@ describe SPV::Applier do
   end
 
   before do
-    SPV::Options.stub(:new).and_return(options)
-    SPV::DSL::InitialAdjuster.stub(:new).and_return(initial_adjuster)
+    allow(SPV::Options).to receive(:new).and_return(options)
+    allow(SPV::DSL::InitialAdjuster).to receive(:new).and_return(initial_adjuster)
   end
 
   before do
-    SPV::DSL::InitialAdjuster.stub(:new).and_return(initial_adjuster)
+    allow(SPV::DSL::InitialAdjuster).to receive(:new).and_return(initial_adjuster)
   end
 
   describe '.new' do
@@ -39,9 +39,9 @@ describe SPV::Applier do
 
     context 'when a block is given' do
       it 'calls a given block within the context of the adjuster' do
-        expect(initial_adjuster).to receive(:mymeth)
+        expect(initial_adjuster).to receive(:home_path)
 
-        described_class.new(node) { mymeth }
+        described_class.new(node) { home_path 'test' }
       end
     end
 
@@ -71,16 +71,16 @@ describe SPV::Applier do
 
       let(:adjuster) do
         instance_double(
-          'DSL::Adjuster',
+          'SPV::DSL::Adjuster',
           fixtures:         true,
           prepare_fixtures: prepared_fixtures
         )
       end
 
       before do
-        SPV::Fixtures::Manager.stub(:inject).and_return(fixtures_manager)
-        SPV::DSL::Adjuster.stub(:new).and_return(adjuster)
-        SPV::Waiter.stub(:wait)
+        allow(SPV::Fixtures::Manager).to receive(:inject).and_return(fixtures_manager)
+        allow(SPV::DSL::Adjuster).to receive(:new).and_return(adjuster)
+        allow(SPV::Waiter).to receive(:wait)
 
         applier.shift_event { node.click }
       end
@@ -98,7 +98,7 @@ describe SPV::Applier do
         it 'calls a given block within the context of the adjuster' do
           expect(adjuster).to receive(:fixtures)
 
-          applier.apply_vcr { fixtures }
+          applier.apply_vcr { fixtures [] }
         end
       end
 

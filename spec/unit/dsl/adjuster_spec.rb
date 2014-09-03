@@ -19,7 +19,7 @@ describe SPV::DSL::Adjuster do
   }
 
   before do
-    SPV::Fixtures::TmpKeeper.stub(:new).and_return(tmp_keeper)
+    allow(SPV::Fixtures::TmpKeeper).to receive(:new).and_return(tmp_keeper)
   end
 
   subject { described_class.new(options, fixtures) }
@@ -57,10 +57,10 @@ describe SPV::DSL::Adjuster do
     let(:handled_new_fixtures) { ['old fixture'] }
 
     before do
-      SPV::Fixtures::Handler.stub(:new).and_return(fixtures_handler)
-      SPV::Fixtures::Modifiers::HomePath.stub(:new).and_return(home_path_modifier)
+      allow(SPV::Fixtures::Handler).to receive(:new).and_return(fixtures_handler)
+      allow(SPV::Fixtures::Modifiers::HomePath).to receive(:new).and_return(home_path_modifier)
 
-      fixtures_handler.stub(:handle_set_raws).and_return([
+      allow(fixtures_handler).to receive(:handle_set_raws).and_return([
         handled_old_fixtures,
         handled_new_fixtures
       ])
@@ -108,7 +108,7 @@ describe SPV::DSL::Adjuster do
       let(:replaced_fixtures) { 'replaced fixtures' }
 
       before do
-        fixtures.stub(:replace).and_return(replaced_fixtures)
+        allow(fixtures).to receive(:replace).and_return(replaced_fixtures)
 
         subject.replace
       end
@@ -128,7 +128,7 @@ describe SPV::DSL::Adjuster do
       let(:new_fixtures) { 'new fixtures' }
 
       before do
-        fixtures.stub(:union).and_return(new_fixtures)
+        allow(fixtures).to receive(:union).and_return(new_fixtures)
         subject.union
       end
 

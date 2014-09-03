@@ -1,7 +1,6 @@
 require 'bundler/setup'
 
 require 'rspec'
-require 'rspec/fire'
 require 'coveralls'
 
 require 'site_prism.vcr'
@@ -13,7 +12,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.include(RSpec::Fire)
+  config.mock_with :rspec do |mocks|
+    mocks.verify_doubled_constant_names = true
+  end
 end
 
 VCR.configure do |c|
