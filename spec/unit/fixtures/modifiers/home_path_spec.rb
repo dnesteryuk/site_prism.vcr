@@ -25,7 +25,7 @@ describe SPV::Fixtures::Modifiers::HomePath do
 
       context 'when the home_path is not defined' do
         before do
-          options.stub(:home_path).and_return(nil)
+          allow(options).to receive(:home_path).and_return(nil)
         end
 
         it 'raises an argument error about wrong way of defining fixtures' do

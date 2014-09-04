@@ -8,7 +8,7 @@ describe SPV::Fixtures::Handler do
   subject { described_class.new(options) }
 
   before do
-    SPV::Fixtures::Converter.stub(:convert_raw).and_return(converted_fixtures)
+    allow(SPV::Fixtures::Converter).to receive(:convert_raw).and_return(converted_fixtures)
   end
 
   describe '#handle_raw' do
@@ -55,7 +55,7 @@ describe SPV::Fixtures::Handler do
     let(:modifiers)          { 'some modifiers' }
 
     before do
-      subject.stub(:handle_raw).and_return(handled_fixtures_1, handled_fixtures_2)
+      allow(subject).to receive(:handle_raw).and_return(handled_fixtures_1, handled_fixtures_2)
     end
 
     it 'handles the first set of raw fixtures' do

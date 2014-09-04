@@ -12,7 +12,7 @@ describe SPV::Fixtures::Converter do
     }
 
     before do
-      SPV::Fixture.stub(:new).and_return('first prepared', 'second prepared')
+      allow(SPV::Fixture).to receive(:new).and_return('first prepared', 'second prepared')
     end
 
     it 'initializes first object of Fixture class' do

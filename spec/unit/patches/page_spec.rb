@@ -16,7 +16,7 @@ describe SitePrism::Page do
 
   describe '.new' do
     before do
-      SPV::Applier.stub(:new).and_return(applier)
+      allow(SPV::Applier).to receive(:new).and_return(applier)
     end
 
     it 'initializes the fixtures applier' do
@@ -30,8 +30,8 @@ describe SitePrism::Page do
 
   describe '#load_and_apply_vcr' do
     before do
-      subject.stub(:load)
-      subject.stub(:shift_event).and_yield.and_return(applier)
+      allow(subject).to receive(:load)
+      allow(subject).to receive(:shift_event).and_yield.and_return(applier)
     end
 
     it 'shifts a load event to the applier' do

@@ -13,7 +13,7 @@ describe SPV::Fixtures::Modifiers::RelativePath do
     end
 
     it 'moves up on 2 levels in the hierarchy of directories' do
-      fixture.stub(:path).and_return('parent_dir/some_dir/next_dir/../../')
+      allow(fixture).to receive(:path).and_return('parent_dir/some_dir/next_dir/../../')
 
       expect(fixture).to receive(:path=).with('parent_dir')
 

@@ -26,7 +26,7 @@ describe SPV::Waiter do
       let(:waiter) { instance_double('SPV::Waiter', wait: true) }
 
       before do
-        described_class.stub(:new).and_return(waiter)
+        allow(described_class).to receive(:new).and_return(waiter)
       end
 
       it 'initializes a new instance of the waiter' do
@@ -57,7 +57,7 @@ describe SPV::Waiter do
         let(:node) { double('node of DOM', wait_for_content: true) }
 
         before do
-          options.stub(:waiter).and_return(proc { self.wait_for_content })
+          allow(options).to receive(:waiter).and_return(proc { self.wait_for_content })
         end
 
         it 'calls the waiter to wait until all HTTP interactions are finished' do
@@ -76,7 +76,7 @@ describe SPV::Waiter do
 
         context 'when the option disallowing fixtures ejection is passed' do
           before do
-            options.stub(:waiter_options).and_return(eject_cassettes: false)
+            allow(options).to receive(:waiter_options).and_return(eject_cassettes: false)
           end
 
           it 'does not eject fixtures' do

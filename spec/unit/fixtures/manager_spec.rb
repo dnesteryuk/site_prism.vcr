@@ -34,7 +34,7 @@ describe SPV::Fixtures::Manager do
     subject { described_class.inject(fixtures, options) }
 
     before do
-      described_class.stub(:new).and_return(manager)
+      allow(described_class).to receive(:new).and_return(manager)
     end
 
     it 'initializes a new instance of the fixtures manager class' do
