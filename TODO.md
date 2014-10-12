@@ -6,6 +6,7 @@
 2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
 3. Add possibility to define any shortcuts for paths similar to the home path.
 4. Change text: `You are trying to use a home path for ~/more_storages fixture. Home path cannot be used since it is not defined, please refer to the documentation to make sure you define the home path properly`. It sounds weird.
+5. Add info to doc about using Applier with sections.
 
 ## Release 0.2.0
 
