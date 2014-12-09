@@ -391,6 +391,36 @@ In this case, SitePrism will alter an url and it will look like:
 http://localhost/cats/tom
 ```
 
+### Applying VCR cassettes in sections
+
+There isn't any method which you can use to apply VCR cassettes with sections. Actually, it is needless, because usually we do actions over elements. But, if you need such functionality for sections, you already have such possibility:
+
+```ruby
+  class ListSection < SitePrism::Section
+    # elements here
+
+    def initialize(parent, element)
+      super
+
+      @applier = SPV::Applier.new(self)
+    end
+
+    def show_more
+      @applier.shift_event{
+        self.scroll_down
+      }.apply_vcr do
+        fixtures ["storages/more_storages"]
+
+        waiter { self.wait_until_loading_indicator_invisible }
+      end
+    end
+  end
+```
+
+In this example we apply VCR cassettes after scrolling down the content in a section. 
+
+It may be useful to stub the API request produced by an event which isn't directly related to any element rather it related to overall elements in a section.
+
 ### Using Vcr options for cassettes
 
 Vcr provides number of options which can be used for cassettes. For example, you may [pass ERB into cassettes](https://relishapp.com/vcr/vcr/v/2-5-0/docs/cassettes/dynamic-erb-cassettes). This gem doesn't bother you use any options for Vcr cassettes. If you want to do so, you have to use a hash instead of a cassette name:
