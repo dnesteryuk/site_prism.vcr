@@ -6,6 +6,7 @@
 2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html)
 3. Add possibility to define any shortcuts for paths similar to the home path.
 4. The default cassettes defined for the parent page cannot be inherited by the child page if the child page defines its own cassettes.
+5. Write tutorial how to record new interactions with SitePrism.Vcr.
 
 ## Release 0.2.0
 
