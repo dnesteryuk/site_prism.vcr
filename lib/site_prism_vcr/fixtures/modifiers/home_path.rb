@@ -12,9 +12,7 @@ module SPV
               fixture.set_home_path(@options.home_path)
             else
               raise ArgumentError.new(
-                "You are trying to use a home path for #{fixture.name} fixture. " \
-                "Home path cannot be used since it is not defined, please refer to the documentation " \
-                "to make sure you define the home path properly."
+                "Home path is not defined, hence the path to \"#{fixture.name}\" cannot be identified."
               )
             end
           end
