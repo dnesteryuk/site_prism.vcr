@@ -15,10 +15,40 @@ module SPV
       @fixtures = adjuster.prepare_fixtures
     end
 
+    # Stores a block with an action (click, scroll down, mouse over etc)
+    # VCR should be applied on.
+    #
+    # This block will be called over an object VCR linked to.
+    #
+    #  Example:
+    #    @my_element.shift_event do
+    #      self.click
+    #    end
+    #
+    # @param block [Proc]
+    #
+    # @return [SPV::Applier] The current applier object.
+    #
+    # @api public
     def shift_event(&block)
       @event_action = block
 
       self
+    end
+
+    # Alters default fixtures and options.
+    #
+    # @param adjusting_block [Proc] It allows to
+    #  change fixtures through DSL (@see SPV::DSL::InitialAdjuster
+    #  and @see SPV::DSL::Adjuster)
+    #
+    # @return [void]
+    #
+    # @api public
+    def alter_fixtures(&block)
+      @fixtures = adjust_fixtures(
+        @options, &block
+      )
     end
 
     # Applies fixtures to be used for stubbing HTTP interactions
@@ -32,22 +62,19 @@ module SPV
     #  and @see SPV::DSL::Adjuster)
     #
     # @return [void]
-    def apply_vcr(&block)
+    #
+    # @api public
+   def apply_vcr(&block)
       verify_define_event!
 
-      options = @options.clone_options
-
-      adjuster = DSL::Adjuster.new(
-        options,
-        @fixtures
-      )
+      fixtures, options = @fixtures, @options.clone_options
 
       if block_given?
-        adjuster.instance_eval &block
+        fixtures = adjust_fixtures(options, &block)
       end
 
       fixtures_manager = Fixtures::Manager.inject(
-        adjuster.prepare_fixtures, @options
+        fixtures, options
       )
 
       @event_action.call
@@ -62,8 +89,19 @@ module SPV
     private
       def verify_define_event!
         raise EventError.new(
-          'Event is not shifted, before applying Vcr you have to shift event with "shift_event" method'
+          'Event is not shifted, before applying VCR you have to shift event with "shift_event" method'
         ) if @event_action.nil?
+      end
+
+      def adjust_fixtures(options, &block)
+        adjuster = DSL::Adjuster.new(
+          options,
+          @fixtures
+        )
+
+        adjuster.instance_eval &block
+
+        adjuster.prepare_fixtures
       end
   end # class Applier
 end # module SPV
