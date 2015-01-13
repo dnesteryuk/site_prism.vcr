@@ -4,22 +4,31 @@ module SitePrism
   class Page
     extend Forwardable
 
+    @vcr_child_adjusters = []
+
     def_delegator :@applier, :shift_event
 
     class << self
+      attr_reader :vcr_adjuster, :vcr_child_adjusters
+
       def inherited(subclass)
         # This code is required to allow subpages to inherit
         # a defined adjuster block. Otherwise, that block should be
         # duplicated in a subpage as well.
-        subclass.instance_variable_set(:@vcr_adjuster, @vcr_adjuster)
+        subclass.instance_variable_set(:@vcr_adjuster,        @vcr_adjuster)
+        subclass.instance_variable_set(:@vcr_child_adjusters, @vcr_child_adjusters.dup)
       end
 
       def vcr_options_for_load(&block)
         @vcr_adjuster = block
       end
 
-      def vcr_adjuster
-        @vcr_adjuster
+      def adjust_parent_vcr_options(&block)
+        raise ArgumentError.new(
+          'There is not any Vcr options defined for the parent class'
+        ) unless self.vcr_adjuster
+
+        self.vcr_child_adjusters << block
       end
     end
 
@@ -30,6 +39,10 @@ module SitePrism
         self,
         &self.class.vcr_adjuster
       )
+
+      self.class.vcr_child_adjusters.each do |block|
+        @applier.alter_fixtures(&block)
+      end
     end
 
     def load_and_apply_vcr(*args, &block)

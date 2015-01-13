@@ -29,9 +29,7 @@ describe SPV::Fixtures::Modifiers::HomePath do
         end
 
         it 'raises an argument error about wrong way of defining fixtures' do
-          msg = 'You are trying to use a home path for test_with_home_path fixture. ' \
-            'Home path cannot be used since it is not defined, please refer to the documentation ' \
-            'to make sure you define the home path properly.'
+          msg = 'Home path is not defined, hence the path to "test_with_home_path" cannot be identified.'
 
           expect { subject }.to raise_error(
             ArgumentError, msg

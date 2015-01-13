@@ -1,6 +1,28 @@
-# 0.1.3 (Not released yet)
+# 0.2.0 (Not released yet)
 
   * fixed code for ejecting fixtures from Vcr. Now SitePrism.Vcr ejects only fixtures we are injected by itself, any other fixtures which are injected outside of this library won't be touched.
+  * added a new functionality to alter default fixtures defined in a parent class page. Now if additional fixtures should be added to a default fixtures list, it can be done with `adjust_parent_vcr_options`. Waiter can be replaced as well.
+
+  ```ruby
+    class BasePage < SitePrism::Page
+      vcr_options_for_load do
+        fixtures ['cars', 'products']
+
+        waiter &:wait_for_cars_list
+      end
+    end
+
+    class CarsPage < BasePage
+      adjust_parent_vcr_options do
+        fixtures ['features']
+
+        waiter &:wait_for_cars_and_features_list
+
+        union # if it is omitted, the fixtures list defined in this block will
+        # replace the fixtures list defined in the parent page class
+      end
+    end
+  ```
 
 # 0.1.2
 

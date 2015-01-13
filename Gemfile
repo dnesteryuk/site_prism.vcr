@@ -5,10 +5,9 @@ gemspec
 
 gem 'sinatra'
 gem 'httpi'
-gem 'capybara', '~> 2.4.1'
-gem 'capybara-firebug'
+gem 'capybara', '~> 2.4'
 gem 'sandi_meter'
 
-gem 'rspec', '~> 3.0'
-gem 'selenium-webdriver', '~> 2.41.0'
+gem 'rspec', '~> 3'
+gem 'selenium-webdriver', '~> 2'
 gem 'coveralls', require: false
