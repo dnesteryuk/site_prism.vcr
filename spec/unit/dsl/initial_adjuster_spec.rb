@@ -71,8 +71,11 @@ describe SPV::DSL::InitialAdjuster do
   describe '#home_path' do
     let(:raw_home_path) { 'some home path' }
 
-    it 'defines a default home path' do
-      expect(options).to receive(:home_path=).with(raw_home_path)
+    it 'defines a shortcut for a home path' do
+      expect(options).to receive(:add_shortcut_path).with(
+        '~',
+        raw_home_path
+      )
 
       subject.home_path(raw_home_path)
     end

@@ -29,7 +29,7 @@ module SPV
       end
 
       # Defines path to fixtures. Later this path
-      # can be used for defining fixtures. It is especially
+      # can be used for defining fixtures. Especially it is
       # useful when you use deep subdirectories structure for storing fixtures.
       #
       # @param path [String] Path to fixtures.
@@ -38,7 +38,7 @@ module SPV
       #
       # @api public
       def home_path(path)
-        @options.home_path = path
+        @options.add_shortcut_path('~', path)
       end
 
       # Applies a given path to list of fixtures and defines
