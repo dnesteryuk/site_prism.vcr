@@ -3,9 +3,9 @@ require_relative 'base'
 module SPV
   class Fixtures
     module Modifiers
-      # It takes a fixture and replaces "~/" with
-      # a defined home path.
-      class HomePath < Base
+      # It takes a fixture and replaces a shortcut path with
+      # a full path to it.
+      class ShortcutPath < Base
         def modify(fixture)
           if shortcut = fixture.shortcut_path
             if path = @options.shortcut_path(shortcut)

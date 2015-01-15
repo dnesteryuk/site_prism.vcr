@@ -20,7 +20,7 @@ module SPV
         prepared_fixtures = @fixtures_handler.handle_raw(
           list,
           [
-            Fixtures::Modifiers::HomePath.new(@options),
+            Fixtures::Modifiers::ShortcutPath.new(@options),
             Fixtures::Modifiers::RelativePath.new(@options)
           ]
         )
@@ -77,7 +77,7 @@ module SPV
         options_with_path.path = path
 
         path_modifier      = Fixtures::Modifiers::Path.new(options_with_path)
-        home_path_modifier = Fixtures::Modifiers::HomePath.new(options_with_path)
+        home_path_modifier = Fixtures::Modifiers::ShortcutPath.new(options_with_path)
 
         prepared_fixtures = @fixtures_handler.handle_raw(
           fixture_names,

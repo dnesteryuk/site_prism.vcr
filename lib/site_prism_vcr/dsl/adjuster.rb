@@ -61,7 +61,7 @@ module SPV
       #
       # @api public
       def exchange(old_fixtures, new_fixtures)
-        home_path_modifier = Fixtures::Modifiers::HomePath.new(@options)
+        home_path_modifier = Fixtures::Modifiers::ShortcutPath.new(@options)
 
         old_fixtures = [old_fixtures] unless old_fixtures.is_a?(Array)
         new_fixtures = [new_fixtures] unless new_fixtures.is_a?(Array)

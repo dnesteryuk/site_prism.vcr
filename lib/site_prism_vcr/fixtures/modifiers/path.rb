@@ -7,7 +7,7 @@ module SPV
       class Path < Base
         def modify(fixture)
           if shortcut = fixture.shortcut_path
-            raise HomePathError.new(
+            raise ShortcutPathError.new(
               "You cannot use a shortcut path while listing fixtures in the 'path' method. " <<
               "Please, use 'fixtures' method for '#{fixture.clean_name}' fixture or " <<
               "you can additionally use the 'path' method where you will specify a shortcut path as a path name." <<
@@ -21,7 +21,7 @@ module SPV
           end
         end
 
-        class HomePathError < ArgumentError; end
+        class ShortcutPathError < ArgumentError; end
       end
     end
   end

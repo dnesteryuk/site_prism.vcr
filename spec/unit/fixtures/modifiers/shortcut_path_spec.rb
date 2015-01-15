@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SPV::Fixtures::Modifiers::HomePath do
+describe SPV::Fixtures::Modifiers::ShortcutPath do
   describe '#modify' do
     let(:path)          { 'some home path' }
     let(:shortcut_path) { 'some shortcut' }
