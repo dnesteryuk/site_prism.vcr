@@ -81,6 +81,19 @@ describe SPV::DSL::InitialAdjuster do
     end
   end
 
+  describe '#shortcut_path' do
+    let(:raw_path) { 'some path' }
+
+    it 'defines a shortcut for the path' do
+      expect(options).to receive(:add_shortcut_path).with(
+        'test_shortcut',
+        raw_path
+      )
+
+      subject.shortcut_path('test_shortcut', raw_path)
+    end
+  end
+
   describe '#path' do
     def set_path
       subject.path 'path', raw_fixtures

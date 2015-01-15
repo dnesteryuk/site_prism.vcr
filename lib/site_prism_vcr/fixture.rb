@@ -26,12 +26,15 @@ module SPV
       self.path = Pathname.new(val) + self.path
     end
 
-    def set_home_path(home_path)
-      self.path = self.path.to_path.gsub(/\A(\~\/|\~)/, home_path)
+    def set_home_path(path_to)
+      self.path = self.path.to_path.gsub(
+        /\A(\:#{self.shortcut_path}\/|:#{self.shortcut_path}|\~\/|\~)/,
+        path_to
+      )
     end
 
-    def has_link_to_home_path?
-      self.name[0..1] == '~/'
+    def shortcut_path
+      res = (self.name.match(/:(\w+)\//) || self.name.match(/(~)\//)) and res[1]
     end
 
     # Returns a name without a link to a home path
