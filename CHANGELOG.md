@@ -1,6 +1,6 @@
 # 0.2.0 (Not released yet)
 
-  * fixed code for ejecting fixtures from Vcr. Now SitePrism.Vcr ejects only fixtures we are injected by itself, any other fixtures which are injected outside of this library won't be touched.
+  * fixed code for ejecting fixtures from Vcr. Now SitePrism.Vcr ejects only fixtures injected by itself, any other fixtures which are injected outside of this library won't be touched.
   * added a new functionality to alter default fixtures defined in a parent class page. Now if additional fixtures should be added to a default fixtures list, it can be done with `adjust_parent_vcr_options`. Waiter can be replaced as well.
 
   ```ruby
@@ -24,6 +24,23 @@
     end
   ```
 
+  * added a shortcut path feature to use it while pointing path to fixtures. Before this change only one shortcut (the shortcut for a home path `~/`) could be defined, now any path to fixtures can be defined with a shortcut.
+
+  ```ruby
+    self.some_link.click_and_apply_vcr do
+      home_path 'cars'
+
+      shortcut_path 'ferrari', 'cars/f1/ferrari'
+
+      fixtures [
+        '~/ford_fiesta',
+        ':ferrari/f13t',
+        ':ferrari/f14t',
+        ':ferrari/f15t'
+      ]
+    end
+  ```
+
 # 0.1.2
 
   * fixed the issue with storing a fixture into a correct sub directory if it is provided along with a fixture name (It happened only for `path` helper method which used with a home path symbol).
@@ -34,9 +51,9 @@
 
   ```ruby
     self.some_link.click_and_apply_vcr do
-      fixtures ['test', 'test2']
+      fixtures ['ford', 'ferrari']
       union
-      fixtures ['test3']
+      fixtures ['jeep']
       replace
     end
   ```
@@ -48,9 +65,9 @@
 
   ```ruby
     self.some_link.click_and_apply_vcr do
-      home_path 'custom'
+      home_path 'cars'
 
-      fixtures ['~/../test'] # '~' indicates a home path which is defined above in this block
+      fixtures ['~/../ford'] # '~' indicates a home path which is defined above in this block
     end
   ```
 
