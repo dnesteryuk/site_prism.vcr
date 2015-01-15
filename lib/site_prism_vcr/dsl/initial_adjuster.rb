@@ -28,9 +28,12 @@ module SPV
         @tmp_keeper.add_fixtures(prepared_fixtures)
       end
 
-      # Defines path to fixtures. Later this path
-      # can be used for defining fixtures. It is especially
-      # useful when you use deep subdirectories structure for storing fixtures.
+      # Defines a home path to fixtures. Later this path
+      # can be used for defining fixtures.
+      #
+      # Example:
+      #   home_path 'cassettes/cars/ford'
+      #   fixtures['~/car']
       #
       # @param path [String] Path to fixtures.
       #
@@ -38,7 +41,24 @@ module SPV
       #
       # @api public
       def home_path(path)
-        @options.home_path = path
+        @options.add_shortcut_path('~', path)
+      end
+
+      # Defines a shortcut path to fixtures. Later this path
+      # can be used for defining fixtures.
+      #
+      # Example:
+      #   shortcut_path 'ford', 'cassettes/cars/ford'
+      #   fixtures[':ford/car']
+      #
+      # @param name [String] Shortcut name to be used while defining a path to fixtures..
+      # @param path [String] Path to fixtures.
+      #
+      # @return [void]
+      #
+      # @api public
+      def shortcut_path(name, path)
+        @options.add_shortcut_path(name, path)
       end
 
       # Applies a given path to list of fixtures and defines

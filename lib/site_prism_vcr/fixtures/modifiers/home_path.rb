@@ -7,12 +7,14 @@ module SPV
       # a defined home path.
       class HomePath < Base
         def modify(fixture)
-          if fixture.has_link_to_home_path?
-            if @options.home_path
-              fixture.set_home_path(@options.home_path)
+          if shortcut = fixture.shortcut_path
+            if path = @options.shortcut_path(shortcut)
+              fixture.set_home_path(path)
             else
               raise ArgumentError.new(
-                "Home path is not defined, hence the path to \"#{fixture.name}\" cannot be identified."
+                "You are trying to use the '#{shortcut}' shortcut path for #{fixture.name} fixture. " \
+                "This shortcut path cannot be used since it is not defined, please refer to the documentation " \
+                "to make sure you properly define the shortcut path."
               )
             end
           end

@@ -93,6 +93,10 @@ feature 'Elements > Apply Vcr' do
     let(:actor_without_home_path) { shift_click_event_to(:link_with_one_request) }
   end
 
+  it_behaves_like 'when a shorcut path is define' do
+    let(:actor) { shift_click_event_to(:link_with_one_request) }
+  end
+
   it_behaves_like 'when a default fixture is exchanged' do
     let(:actor_with_home_path)    { shift_click_event_to(:link_with_home_path) }
     let(:actor_without_home_path) { shift_click_event_to(:link_with_2_requests) }
