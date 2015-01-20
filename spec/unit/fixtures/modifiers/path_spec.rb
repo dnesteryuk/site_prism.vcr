@@ -39,7 +39,7 @@ describe SPV::Fixtures::Modifiers::Path do
         expect{
           subject
         }.to raise_error(
-          SPV::Fixtures::Modifiers::Path::HomePathError,
+          SPV::Fixtures::Modifiers::Path::ShortcutPathError,
           "You cannot use a shortcut path while listing fixtures in the 'path' method. " <<
           "Please, use 'fixtures' method for 'Max' fixture or " <<
           "you can additionally use the 'path' method where you will specify a shortcut path as a path name." <<
