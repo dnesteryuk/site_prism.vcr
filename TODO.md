@@ -2,10 +2,7 @@
 
 ## Release 0.2.0
 
-1. Think how to avoid monkey patching to add stuffs to SitePrism.
-2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html).
-3. Write tutorial how to record new interactions with SitePrism.Vcr.
-4. Update the Readme file.
+1. Update the Readme file.
 
 ## Release 0.3.0
 

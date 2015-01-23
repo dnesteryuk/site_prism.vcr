@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class TestPageWithElement
-  extend SitePrism::ElementContainer
+  extend SPV::Mixins::Element
 
   class << self
     def element(*); end
@@ -15,7 +15,7 @@ class TestPageWithElement
   link_vcr_with_element :test_el2
 end
 
-describe SitePrism::ElementContainer do
+describe SPV::Mixins::Element do
   describe '.element_with_vcr' do
     subject do
       TestPageWithElement.instance_eval do
