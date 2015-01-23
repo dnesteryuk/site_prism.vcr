@@ -5,7 +5,7 @@ module SPV
     module Page
       def self.included(klass)
         klass.extend(ClassMethods)
-        klass.include(InstanceMethods)
+        klass.send(:include, InstanceMethods)
         klass.instance_variable_set(:@vcr_child_adjusters, [])
       end
 

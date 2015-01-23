@@ -1,3 +1,3 @@
 require_relative '../mixins/page'
 
-SitePrism::Page.include(SPV::Mixins::Page)
+SitePrism::Page.send(:include, SPV::Mixins::Page)
