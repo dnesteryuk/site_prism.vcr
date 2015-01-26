@@ -1,9 +1,5 @@
 # TODO
 
-## Release 0.2.0
-
-1. Update the Readme file.
-
 ## Release 0.3.0
 
 1. Add code not to remove one specific cassete from VCR
