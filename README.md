@@ -250,7 +250,7 @@ Home path can be defined while applying Vcr:
 end
 ```
 
-#### Exchange default fixtures
+#### Exchange default cassettes
 
 There may be a situation when you need to exchange some default cassette for one specific test. It is a very easy to do:
 
@@ -373,7 +373,7 @@ The block which is passed to `shift_event` method is executed in a context of an
 
 ### Linking and applying VCR cassettes with SitePrism pages
 
-External HTTP interactions may be done on page loading as well. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
+External HTTP interactions may be done on page loading as well. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use the `vcr_options_for_load` class method:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -385,7 +385,7 @@ end
 
 Everything described above about defining cassettes for SitePrism elements is true for defining cassettes for pages.
 
-Applying cassettes is almost the same as you saw for a click event:
+Applying cassettes is almost the same as it is shown for SitePrism elements:
 
 ```ruby
 page.load_and_apply_vcr do
@@ -395,7 +395,7 @@ page.load_and_apply_vcr do
 end
 ```
 
-All arguments passed to `load_and_apply_vcr` method will be passed to `load` method of SitePrism. It allows you to change an url of the being loaded page.
+All arguments passed to the `load_and_apply_vcr` method will be passed to the `load` method of SitePrism. It allows to change an url of the being loaded page:
 
 ```ruby
 page.load_and_apply_vcr(cat: 'tom') do
@@ -410,6 +410,35 @@ In this case, SitePrism will alter an url and it will look like:
 ```ruby
 http://localhost/cats/tom
 ```
+
+#### Alter default cassettes in sub-classes of pages
+
+There is a possibility to alter default cassettes defined for a parent page class. It can be done with the `adjust_parent_vcr_options` method:
+
+```ruby
+  class BasePage < SitePrism::Page
+    vcr_options_for_load do
+      fixtures ['cars', 'products']
+
+      waiter &:wait_for_cars_list
+    end
+  end
+
+  class CarsPage < BasePage
+    adjust_parent_vcr_options do
+      fixtures ['features']
+
+      waiter &:wait_for_cars_and_features_list
+
+      union # if it is omitted, the cassettes defined in this block will
+      # replace the cassettes defined in the parent page class
+    end
+  end
+```  
+
+In this case `cars`, `products`, `features` cassettes will be applied while loading the cars page. 
+
+Any helper methods can be used in a block passed to the `adjust_parent_vcr_options` method.
 
 ### Applying VCR cassettes in sections
 
