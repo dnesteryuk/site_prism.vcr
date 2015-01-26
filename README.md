@@ -411,7 +411,7 @@ In this case, SitePrism will alter an url and it will look like:
 http://localhost/cats/tom
 ```
 
-#### Alter default cassettes in sub-classes of pages
+#### Altering default cassettes in sub-classes of pages
 
 There is a possibility to alter default cassettes defined for a parent page class. It can be done with the `adjust_parent_vcr_options` method:
 
