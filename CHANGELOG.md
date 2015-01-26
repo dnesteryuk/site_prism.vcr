@@ -1,7 +1,7 @@
-# 0.2.0 (Not released yet)
+# 0.2.0
 
   * fixed code for ejecting cassettes from Vcr. Now SitePrism.Vcr ejects only cassettes injected by itself, any other cassettes which are injected outside of this library won't be touched.
-  * added a new functionality to alter default cassettes defined in a parent class page. Now if additional cassettes should be added to a default cassettes list, it can be done with `adjust_parent_vcr_options`. Waiter can be replaced as well.
+  * added a new functionality to alter default cassettes defined in a parent class page. Now if additional cassettes should be added to a default cassettes list, it can be done with the `adjust_parent_vcr_options` method (waiter can be replaced as well).
 
   ```ruby
     class BasePage < SitePrism::Page
@@ -24,7 +24,7 @@
     end
   ```
 
-  * added a shortcut path feature to use it while pointing path to cassettes. Before this change only one shortcut (the shortcut for the home path `~/`) could be defined, now any path to cassettes can be defined with a shortcut.
+  * added `shortcut_path` helper method to use it while pointing a path to cassettes. Before this change only one shortcut (the shortcut for the home path `~/`) could be defined, now any path to cassettes can be defined as a shortcut.
 
   ```ruby
     self.some_link.click_and_apply_vcr do
