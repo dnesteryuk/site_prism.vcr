@@ -3,6 +3,12 @@
 ## Release 0.3.0
 
 1. Add code not to remove one specific cassete from VCR
+  ```ruby
+    fixtures [
+      'user',
+      {erb: 'settings' options: {eject: false}},
+    ]    
+  ```
 2. Find better names for `vcr_options_for_load` and `adjust_parent_vcr_options` methods.
 3. Think about using DCI:
   ```ruby
