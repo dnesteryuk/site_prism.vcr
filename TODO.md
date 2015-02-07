@@ -27,6 +27,7 @@
     @dashboard_page.vcr_cassettes # returns a defined cassetted for this page
     @form_section.vcr_cassettes # returns a defined cassetted for this section
   ```
+5. This gem should not prevent users from using other stub libraries (faraday for example). We should decouple this gem form WebMock.
 
 ## Things to think over
 
