@@ -33,12 +33,12 @@ describe SPV::DSL::InitialAdjuster do
     let(:relative_path_modifier) { double('relative path modifier') }
 
     before do
-      allow(SPV::Fixtures::Modifiers::HomePath).to receive(:new).and_return(home_path_modifier)
+      allow(SPV::Fixtures::Modifiers::ShortcutPath).to receive(:new).and_return(home_path_modifier)
       allow(SPV::Fixtures::Modifiers::RelativePath).to receive(:new).and_return(relative_path_modifier)
     end
 
     it 'initializes the home path modifier' do
-      expect(SPV::Fixtures::Modifiers::HomePath).to receive(:new).with(options)
+      expect(SPV::Fixtures::Modifiers::ShortcutPath).to receive(:new).with(options)
 
       subject.fixtures(raw_fixtures)
     end
@@ -71,10 +71,26 @@ describe SPV::DSL::InitialAdjuster do
   describe '#home_path' do
     let(:raw_home_path) { 'some home path' }
 
-    it 'defines a default home path' do
-      expect(options).to receive(:home_path=).with(raw_home_path)
+    it 'defines a shortcut for a home path' do
+      expect(options).to receive(:add_shortcut_path).with(
+        '~',
+        raw_home_path
+      )
 
       subject.home_path(raw_home_path)
+    end
+  end
+
+  describe '#shortcut_path' do
+    let(:raw_path) { 'some path' }
+
+    it 'defines a shortcut for the path' do
+      expect(options).to receive(:add_shortcut_path).with(
+        'test_shortcut',
+        raw_path
+      )
+
+      subject.shortcut_path('test_shortcut', raw_path)
     end
   end
 
@@ -92,7 +108,7 @@ describe SPV::DSL::InitialAdjuster do
     before do
       allow(SPV::OptionsWithPath).to receive(:new).and_return(options_with_path)
       allow(SPV::Fixtures::Modifiers::Path).to receive(:new).and_return(path_modifier)
-      allow(SPV::Fixtures::Modifiers::HomePath).to receive(:new).and_return(home_path_modifier)
+      allow(SPV::Fixtures::Modifiers::ShortcutPath).to receive(:new).and_return(home_path_modifier)
     end
 
     it 'initializes a new object with options' do
@@ -117,7 +133,7 @@ describe SPV::DSL::InitialAdjuster do
 
     it 'initializes the modifier to set home path' do
       expect(
-        SPV::Fixtures::Modifiers::HomePath
+        SPV::Fixtures::Modifiers::ShortcutPath
       ).to receive(:new).with(options_with_path)
 
       set_path

@@ -58,7 +58,7 @@ describe SPV::DSL::Adjuster do
 
     before do
       allow(SPV::Fixtures::Handler).to receive(:new).and_return(fixtures_handler)
-      allow(SPV::Fixtures::Modifiers::HomePath).to receive(:new).and_return(home_path_modifier)
+      allow(SPV::Fixtures::Modifiers::ShortcutPath).to receive(:new).and_return(home_path_modifier)
 
       allow(fixtures_handler).to receive(:handle_set_raws).and_return([
         handled_old_fixtures,
@@ -67,7 +67,7 @@ describe SPV::DSL::Adjuster do
     end
 
     it 'initializes the home path modifier' do
-      expect(SPV::Fixtures::Modifiers::HomePath).to receive(:new).with(options)
+      expect(SPV::Fixtures::Modifiers::ShortcutPath).to receive(:new).with(options)
 
       exchange
     end

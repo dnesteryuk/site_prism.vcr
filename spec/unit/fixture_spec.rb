@@ -55,34 +55,64 @@ describe SPV::Fixture do
   end
 
   describe '#set_home_path' do
-    subject { described_class.new('~/fixture_name') }
+    context 'when a simple shortcut is used' do
+      it 'defines a new name with a replaced shortcut path' do
+        fixture = described_class.new(':shortcut/fixture_name')
 
-    it 'defines a new name with replaced home path symbol' do
-      expect(subject).to receive(:path=).with('my_home_path/')
+        expect(fixture).to receive(:path=).with('my_home_path/')
 
-      subject.set_home_path('my_home_path/')
+        fixture.set_home_path('my_home_path/')
+      end
+
+      it 'defines a new name with a replaced shortcut path and keeps a path to subdirectory' do
+        fixture = described_class.new(':shortcut/sub/fixture_name')
+
+        expect(fixture).to receive(:path=).with('my_home_path/sub')
+
+        fixture.set_home_path('my_home_path/')
+      end
     end
 
-    it 'defines a new name with replaced home path symbol and keeps a path to subdirectory' do
-      fixture = described_class.new('~/sub/fixture_name')
+    context 'when a home path is used' do
+      it 'defines a new name with a replaced home path symbol' do
+        fixture = described_class.new('~/fixture_name')
 
-      expect(fixture).to receive(:path=).with('my_home_path/sub')
+        expect(fixture).to receive(:path=).with('my_home_path/')
 
-      fixture.set_home_path('my_home_path/')
+        fixture.set_home_path('my_home_path/')
+      end
+
+      it 'defines a new name with replaced a home path symbol and keeps a path to subdirectory' do
+        fixture = described_class.new('~/sub/fixture_name')
+
+        expect(fixture).to receive(:path=).with('my_home_path/sub')
+
+        fixture.set_home_path('my_home_path/')
+      end
     end
   end
 
-  describe '#has_link_to_home_path?' do
-    it 'returns true when a name of fixture starts with "~/"' do
-      expect(
-        described_class.new('~/some').has_link_to_home_path?
-      ).to be_truthy
+  describe '#shortcut_path' do
+    context 'when a fixture has a shortcut' do
+      it 'returns "~" for "~/some"' do
+        expect(
+          described_class.new('~/some').shortcut_path
+        ).to eq('~')
+      end
+
+      it 'returns "path" for ":path/some"' do
+        expect(
+          described_class.new(':path/some').shortcut_path
+        ).to eq('path')
+      end
     end
 
-    it 'returns true when a name of fixture does not start with "~/"' do
-      expect(
-        described_class.new('some').has_link_to_home_path?
-      ).to be_falsey
+    context 'when a fixture has not a shortcut' do
+      it 'returns nil' do
+        expect(
+          described_class.new('some').shortcut_path
+        ).to be_nil
+      end
     end
   end
 

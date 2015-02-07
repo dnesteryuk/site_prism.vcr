@@ -15,18 +15,18 @@ describe SPV::Options do
     end
   end
 
-  describe '#home_path=' do
+  describe '#add_shortcut_path' do
     context 'when the last symbol is a slash' do
-      it 'returns the home path as it is' do
-        options.home_path = 'some/path/'
-        expect(options.home_path).to eq('some/path/')
+      it 'returns the path as it is' do
+        options.add_shortcut_path('~', 'some/path/')
+        expect(options.shortcut_path('~')).to eq('some/path/')
       end
     end
 
     context 'when the last symbol is not slash' do
       it 'returns the home path with a slash at the end of the path' do
-        options.home_path = 'some/path'
-        expect(options.home_path).to eq('some/path/')
+        options.add_shortcut_path('~', 'some/path')
+        expect(options.shortcut_path('~')).to eq('some/path/')
       end
     end
   end

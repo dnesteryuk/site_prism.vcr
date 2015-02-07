@@ -20,7 +20,7 @@ module SPV
         prepared_fixtures = @fixtures_handler.handle_raw(
           list,
           [
-            Fixtures::Modifiers::HomePath.new(@options),
+            Fixtures::Modifiers::ShortcutPath.new(@options),
             Fixtures::Modifiers::RelativePath.new(@options)
           ]
         )
@@ -28,9 +28,12 @@ module SPV
         @tmp_keeper.add_fixtures(prepared_fixtures)
       end
 
-      # Defines path to fixtures. Later this path
-      # can be used for defining fixtures. It is especially
-      # useful when you use deep subdirectories structure for storing fixtures.
+      # Defines a home path to fixtures. Later this path
+      # can be used for defining fixtures.
+      #
+      # Example:
+      #   home_path 'cassettes/cars/ford'
+      #   fixtures['~/car']
       #
       # @param path [String] Path to fixtures.
       #
@@ -38,7 +41,24 @@ module SPV
       #
       # @api public
       def home_path(path)
-        @options.home_path = path
+        @options.add_shortcut_path('~', path)
+      end
+
+      # Defines a shortcut path to fixtures. Later this path
+      # can be used for defining fixtures.
+      #
+      # Example:
+      #   shortcut_path 'ford', 'cassettes/cars/ford'
+      #   fixtures[':ford/car']
+      #
+      # @param name [String] Shortcut name to be used while defining a path to fixtures..
+      # @param path [String] Path to fixtures.
+      #
+      # @return [void]
+      #
+      # @api public
+      def shortcut_path(name, path)
+        @options.add_shortcut_path(name, path)
       end
 
       # Applies a given path to list of fixtures and defines
@@ -57,7 +77,7 @@ module SPV
         options_with_path.path = path
 
         path_modifier      = Fixtures::Modifiers::Path.new(options_with_path)
-        home_path_modifier = Fixtures::Modifiers::HomePath.new(options_with_path)
+        home_path_modifier = Fixtures::Modifiers::ShortcutPath.new(options_with_path)
 
         prepared_fixtures = @fixtures_handler.handle_raw(
           fixture_names,

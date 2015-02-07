@@ -4,7 +4,7 @@ describe SPV::Fixtures::Modifiers::Path do
   describe '#modify' do
     let(:path)    { 'some path' }
     let(:options) { instance_double('SPV::OptionsWithPath', path: path) }
-    let(:fixture) { instance_double('SPV::Fixture', :has_link_to_home_path? => false) }
+    let(:fixture) { instance_double('SPV::Fixture', shortcut_path: nil) }
 
     subject { described_class.new(options).modify(fixture) }
 
@@ -26,24 +26,24 @@ describe SPV::Fixtures::Modifiers::Path do
       end
     end
 
-    context 'when the fixture has a link to the home path' do
+    context 'when the fixture has a shortcut path' do
       let(:fixture) do
         instance_double(
           'SPV::Fixture',
-          :has_link_to_home_path? => true,
-          clean_name: 'Max'
+          shortcut_path: 'myshortcut',
+          clean_name:    'Max'
         )
       end
 
-      it 'raises an error about link to the home path' do
+      it 'raises an error about a shortcut path' do
         expect{
           subject
         }.to raise_error(
-          SPV::Fixtures::Modifiers::Path::HomePathError,
-          "You cannot use the home path while listing fixtures in the 'path' method. " <<
+          SPV::Fixtures::Modifiers::Path::ShortcutPathError,
+          "You cannot use a shortcut path while listing fixtures in the 'path' method. " <<
           "Please, use 'fixtures' method for 'Max' fixture or " <<
-          "you can additionally use the 'path' method where you will specify a home path as a path name." <<
-          "Example: path('~/', ['Max'])"
+          "you can additionally use the 'path' method where you will specify a shortcut path as a path name." <<
+          "Example: path(':myshortcut', ['Max'])"
         )
       end
     end

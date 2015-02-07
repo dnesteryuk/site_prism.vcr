@@ -61,7 +61,7 @@ shared_examples 'when a home path is define' do
     end
   end
 
-  context 'when a home path is used to point to a cessette in a sub directory', mytest: true do
+  context 'when a home path is used to point to a cassette in a sub directory' do
     before do
       actor_without_home_path.public_send(action_method) do
         home_path 'custom'

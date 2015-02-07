@@ -1,18 +1,32 @@
 # TODO
 
-## Release 0.2.0
-
-1. Think how to avoid monkey patching to add stuffs to SitePrism.
-2. Change code to use DI with build (http://solnic.eu/2013/12/17/the-world-needs-another-post-about-dependency-injection-in-ruby.html).
-3. Add possibility to define any shortcuts for paths similar to the home path.
-4. Write tutorial how to record new interactions with SitePrism.Vcr.
-
 ## Release 0.3.0
 
-1. Make this gem working on JRuby (since we eject all VCR cassettes, it may be not thread safe)
-2. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.
-3. Add code to not remove one specific cassete from VCR
-4. Find better names for `vcr_options_for_load` and `adjust_parent_vcr_options` methods.
+1. Add code not to remove one specific cassete from VCR
+  ```ruby
+    fixtures [
+      'user',
+      {erb: 'settings' options: {eject: false}},
+    ]    
+  ```
+2. Find better names for `vcr_options_for_load` and `adjust_parent_vcr_options` methods.
+3. Think about using DCI:
+  ```ruby
+    class SPV:Page < SitePrism:Page
+      def load_and_apply_vcr(*args, &block)
+        shift_event { load(*args) }.apply_vcr(&block)
+      end
+    
+      def shift_event(&block)
+        vcr_applier.shift_event(&block)
+      end
+    end
+  ```
+4. Add possibility to get a defined cassettes for a page or section:
+  ```ruby
+    @dashboard_page.vcr_cassettes # returns a defined cassetted for this page
+    @form_section.vcr_cassettes # returns a defined cassetted for this section
+  ```
 
 ## Things to think over
 
@@ -41,3 +55,5 @@
     ```
 
   will use previously defined fixtures
+  
+9. Think about creating set of fixtures which can be exchanged by a name of set. It will be very helpful when you have to exchange a set of fixtures.

@@ -3,25 +3,39 @@ module SPV
   # and options for a waiter which holds execution until expectation
   # has been met.
   class Options
-    attr_accessor :waiter, :waiter_options, :home_path
+    attr_accessor :waiter, :waiter_options, :shortcut_paths
 
     def initialize(options = {})
+      @shortcut_paths = {}
+
       options.each do |key, val|
         public_send("#{key}=", val)
       end
     end
 
-    # Defines path to fixtures.
+    # Defines shortcut path to fixtures.
     #
-    # @param val [String] Path to fixtures.
+    # @param shortcut [String]
+    # @param path [String] Path to fixtures.
     #
     # @return [void]
     #
     # @api private
-    def home_path=(val)
-      val << '/' unless val[-1, 1] == '/'
+    def add_shortcut_path(shortcut, path)
+      path << '/' unless path[-1, 1] == '/'
 
-      @home_path = val
+      self.shortcut_paths[shortcut] = path
+    end
+
+    # Returns a full path associated with a shortcut.
+    #
+    # @param shortcut [String]
+    #
+    # @return [String]
+    #
+    # @api private
+    def shortcut_path(shortcut)
+      self.shortcut_paths[shortcut]
     end
 
     # Returns a copy of itself.

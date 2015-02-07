@@ -21,7 +21,7 @@ describe SPV::Fixtures::Handler do
     let(:converted_fixtures) { [converted_fixture] }
     let(:modifier)           do
       instance_double(
-        'SPV::Fixtures::Modifiers::HomePath',
+        'SPV::Fixtures::Modifiers::ShortcutPath',
         modify: true
       )
     end

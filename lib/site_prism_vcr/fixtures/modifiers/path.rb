@@ -6,12 +6,12 @@ module SPV
       # It takes a fixture and adds a path to it.
       class Path < Base
         def modify(fixture)
-          if fixture.has_link_to_home_path?
-            raise HomePathError.new(
-              "You cannot use the home path while listing fixtures in the 'path' method. " <<
+          if shortcut = fixture.shortcut_path
+            raise ShortcutPathError.new(
+              "You cannot use a shortcut path while listing fixtures in the 'path' method. " <<
               "Please, use 'fixtures' method for '#{fixture.clean_name}' fixture or " <<
-              "you can additionally use the 'path' method where you will specify a home path as a path name." <<
-              "Example: path('~/', ['#{fixture.clean_name}'])"
+              "you can additionally use the 'path' method where you will specify a shortcut path as a path name." <<
+              "Example: path(':#{shortcut}', ['#{fixture.clean_name}'])"
             )
           else
             path = @options.path
@@ -21,7 +21,7 @@ module SPV
           end
         end
 
-        class HomePathError < ArgumentError; end
+        class ShortcutPathError < ArgumentError; end
       end
     end
   end

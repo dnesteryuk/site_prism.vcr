@@ -15,7 +15,7 @@ Such integration allows you to write acceptance tests more easily since you rece
   * Links VCR cassettes with SitePrism pages.
   * Applies VCR cassettes on any event (click, change, blur etc).
   * Applies VCR cassettes on page loading.
-  * Defines a waiter which will be used for waiting until an expected element is on a page or until an expected element has disappeared from a page (It is very helpful when a few external API requests are being executed after raising an event).
+  * Defines a waiter to wait on a result of an action.
   * Allows to redefine default VCR cassettes (cassettes which were specified while describing a SitePrism element or a SitePrism page).
   * Allows to redefine a default waiter (a waiter which was specified while describing a SitePrism element or a SitePrism page).
 
@@ -51,7 +51,7 @@ end
 
 `fixtures` helper method is used for defining VCR cassettes. All cassettes are taken from a path which you have defined in `cassette_library_dir` configuration option of VCR. Please, refer to [documentation](https://relishapp.com/vcr/vcr/v/2-5-0/docs/configuration/cassette-library-dir) of VCR to get more info about configuration options.
 
-You can specify cassettes for already defined elements, for example, your page inherits another one:
+You can specify cassettes for already defined elements, if your page inherits another one:
 
 ```ruby
 class TransportPage < SitePrism::Page
@@ -67,7 +67,7 @@ end
 
 #### Path helper method
 
-In case you have a lot of cassettes which are stored in some subdirectory, there is more better way for defining cassettes:
+In case you have a lot of cassettes which are stored in some subdirectory, you can use `path` helper method to specify a list of such cassettes:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -115,7 +115,7 @@ class ProductsPage < SitePrism::Page
 end
 ```
 
-If some cassette name begins with `~/`, it means that a defined home path will be applied to find such cassette. The previous example is identical to this one:
+Here `~` points to `cars/small` directory, all cassettes will be taken from this directory. The previous example is identical to this one:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -160,6 +160,26 @@ class ProductsPage < SitePrism::Page
     end
 end
 ```
+
+#### Shortcut path helper method
+
+The home path helper method helps you to avoid duplication while specifing cassettes. There is a `shortcut_path` method which does the same, but it can be used to define shorcuts for any path:
+
+```ruby
+class ProductsPage < SitePrism::Page
+  element_with_vcr \
+    :car_details_link,
+    '#car_details' do
+      shortcut_path 'cars', 'cars/small'
+
+      fixture [':cars/ford']
+    end
+end
+```
+
+Here `:cars` points to the `cars/small` directory.
+
+Everything described for the `home_path` helper method works for the `shortcut_path` method as well.
 
 ### Applying VCR cassettes on click
 
@@ -230,7 +250,7 @@ Home path can be defined while applying Vcr:
 end
 ```
 
-#### Exchange default fixtures
+#### Exchange default cassettes
 
 There may be a situation when you need to exchange some default cassette for one specific test. It is a very easy to do:
 
@@ -353,7 +373,7 @@ The block which is passed to `shift_event` method is executed in a context of an
 
 ### Linking and applying VCR cassettes with SitePrism pages
 
-External HTTP interactions may be done on page loading as well. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use `vcr_options_for_load` class method:
+External HTTP interactions may be done on page loading as well. This gem supports capability to apply Vcr cassettes on page loading. To define default cassettes you have to use the `vcr_options_for_load` class method:
 
 ```ruby
 class ProductsPage < SitePrism::Page
@@ -365,7 +385,7 @@ end
 
 Everything described above about defining cassettes for SitePrism elements is true for defining cassettes for pages.
 
-Applying cassettes is almost the same as you saw for a click event:
+Applying cassettes is almost the same as it is shown for SitePrism elements:
 
 ```ruby
 page.load_and_apply_vcr do
@@ -375,7 +395,7 @@ page.load_and_apply_vcr do
 end
 ```
 
-All arguments passed to `load_and_apply_vcr` method will be passed to `load` method of SitePrism. It allows you to change an url of the being loaded page.
+All arguments passed to the `load_and_apply_vcr` method will be passed to the `load` method of SitePrism. It allows to change an url of the being loaded page:
 
 ```ruby
 page.load_and_apply_vcr(cat: 'tom') do
@@ -390,6 +410,35 @@ In this case, SitePrism will alter an url and it will look like:
 ```ruby
 http://localhost/cats/tom
 ```
+
+#### Altering default cassettes in sub-classes of pages
+
+There is a possibility to alter default cassettes defined for a parent page class. It can be done with the `adjust_parent_vcr_options` method:
+
+```ruby
+  class BasePage < SitePrism::Page
+    vcr_options_for_load do
+      fixtures ['cars', 'products']
+
+      waiter &:wait_for_cars_list
+    end
+  end
+
+  class CarsPage < BasePage
+    adjust_parent_vcr_options do
+      fixtures ['features']
+
+      waiter &:wait_for_cars_and_features_list
+
+      union # if it is omitted, the cassettes defined in this block will
+      # replace the cassettes defined in the parent page class
+    end
+  end
+```  
+
+In this case `cars`, `products`, `features` cassettes will be applied while loading the cars page. 
+
+Any helper methods can be used in a block passed to the `adjust_parent_vcr_options` method.
 
 ### Applying VCR cassettes in sections
 
@@ -456,7 +505,6 @@ The simple example of using this gem you can find [here](https://github.com/dnes
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nestd/site_prism.vcr/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
