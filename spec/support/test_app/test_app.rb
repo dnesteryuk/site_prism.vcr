@@ -1,4 +1,4 @@
-require 'httpi'
+require 'httpclient'
 require 'sinatra/base'
 
 class TestApp < Sinatra::Base
@@ -31,7 +31,7 @@ class TestApp < Sinatra::Base
   get '/max.json' do
     content_type :json
 
-    HTTPI.get(
+    http_request(
       "http://#{request.host}:#{request.port}/api/cat/max"
     ).body
   end
@@ -39,7 +39,7 @@ class TestApp < Sinatra::Base
   get '/felix.json' do
     content_type :json
 
-    HTTPI.get(
+    http_request(
       "http://#{request.host}:#{request.port}/api/cat/felix"
     ).body
   end
@@ -60,5 +60,12 @@ class TestApp < Sinatra::Base
       cat_owner: 'Jon Snow',
       cat_name:  'Felix'
     }.to_json
+  end
+
+  def http_request(url)
+    client = HTTPClient.new
+    client.get(
+      url
+    )
   end
 end
