@@ -8,7 +8,7 @@ gem 'httpclient'
 gem 'capybara', '~> 2.4'
 gem 'sandi_meter'
 
-gem 'webmock', path: '../webmock'
+#gem 'webmock', path: '../webmock'
 
 gem 'rspec', '~> 3'
 gem 'selenium-webdriver', '~> 2'
