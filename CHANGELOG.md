@@ -1,3 +1,7 @@
+# 0.3.0 (No released)
+
+  * BREAKING CHANGE: Webmock was removed from the dependencies. Any library supported by VCR can be used for stubbing HTTP interactions.
+
 # 0.2.0
 
   * fixed code for ejecting cassettes from Vcr. Now SitePrism.Vcr ejects only cassettes injected by itself, any other cassettes which are injected outside of this library won't be touched.
