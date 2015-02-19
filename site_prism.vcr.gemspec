@@ -20,5 +20,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'site_prism', '~> 2.6'
   spec.add_dependency 'vcr',        '~> 2.9.0'
-  spec.add_dependency 'webmock'
 end

@@ -1,5 +1,7 @@
 require 'bundler/setup'
 
+require 'webmock'
+
 require 'rspec'
 require 'coveralls'
 
