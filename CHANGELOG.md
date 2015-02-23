@@ -1,5 +1,6 @@
 # 0.3.0 (No released)
 
+  * fixed an issue with recording new cassettes.
   * BREAKING CHANGE: Webmock was removed from the dependencies. Any library supported by VCR can be used for stubbing HTTP interactions.
 
 # 0.2.0

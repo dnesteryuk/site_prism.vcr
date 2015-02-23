@@ -45,6 +45,10 @@ feature 'Pages > Load' do
   end
 
   context 'waiters' do
+    it_behaves_like 'when cassettes are ejected by the waiter' do
+      let(:actor) { PageLoad::OneRequestPage.new }
+    end
+
     it_behaves_like 'when a default waiter does not eject fixtures' do
       let(:actor) { PageLoad::WaiterWithoutFixturesEjectionPage.new }
     end

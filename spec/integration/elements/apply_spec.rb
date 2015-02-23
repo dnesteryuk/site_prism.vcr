@@ -75,6 +75,10 @@ feature 'Elements > Apply Vcr' do
   end
 
   context 'waiters' do
+    it_behaves_like 'when cassettes are ejected by the waiter' do
+      let(:actor) { shift_click_event_to(:link_with_one_request) }
+    end
+
     it_behaves_like 'when a default waiter does not eject fixtures' do
       let(:actor) { shift_click_event_to(:link_without_ejecting_fixtures) }
     end

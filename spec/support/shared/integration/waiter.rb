@@ -85,3 +85,25 @@ shared_examples 'when options are redefined for waiters' do
       ['robb_stark', 'ned_stark']
   end
 end
+
+shared_examples 'when cassettes are ejected by the waiter' do
+  let(:path_to_fixture) {
+    VCR.configuration.cassette_library_dir + '/newly_recorded.yml'
+  }
+
+  before do
+    actor.public_send(action_method) do
+      fixtures ['newly_recorded']
+
+      replace
+    end
+  end
+
+  after do
+    File.unlink(path_to_fixture) if File.exists?(path_to_fixture)
+  end
+
+  it 'stores a new cassette' do
+    expect(File.exists?(path_to_fixture)).to be_truthy
+  end
+end

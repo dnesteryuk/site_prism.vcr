@@ -50,7 +50,13 @@ module SPV
         inserted_names = @fixtures.map(&:name)
 
         # TODO: find better way, may be some pull request to the VCR?
-        VCR.send(:cassettes).delete_if{|cassette| inserted_names.include?(cassette.name) }
+        VCR.send(:cassettes).delete_if do |cassette|
+          if remove = inserted_names.include?(cassette.name)
+            cassette.eject
+          end
+
+          remove
+        end
       end
     end # class Manager
   end # class Fixtures
