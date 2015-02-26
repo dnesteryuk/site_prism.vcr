@@ -50,9 +50,4 @@ feature 'Pages > Load' do
       let(:test_app_page) { actor }
     end
   end
-
-  it_behaves_like 'when a home path is define' do
-    let(:actor_with_home_path)    { PageLoad::HomePathPage.new }
-    let(:actor_without_home_path) { PageLoad::OneRequestPage.new }
-  end
 end
