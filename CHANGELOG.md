@@ -2,13 +2,6 @@
 
   * fixed an issue with recording new cassettes.
   * BREAKING CHANGE: Webmock was removed from the dependencies. Any library supported by VCR can be used for stubbing HTTP interactions.
-  * added functionality to receive list of default cassettes from an instance of the page:
-
-  ```ruby
-    @dashboard_page.vcr_cassettes # ['cars', 'f1/ferrari']
-  ```
-
-  All shorcut paths are replaced with corresponding paths.
 
 # 0.2.0
 
