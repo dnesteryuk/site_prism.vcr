@@ -55,9 +55,4 @@ feature 'Pages > Load' do
     let(:actor_with_home_path)    { PageLoad::HomePathPage.new }
     let(:actor_without_home_path) { PageLoad::OneRequestPage.new }
   end
-
-  it_behaves_like 'when a default fixture is exchanged' do
-    let(:actor_without_home_path) { PageLoad::TwoRequestsPage.new }
-    let(:actor_with_home_path)    { PageLoad::HomePathPage.new }
-  end
 end
