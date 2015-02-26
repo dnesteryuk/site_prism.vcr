@@ -5,14 +5,6 @@ feature 'Pages > Load' do
   let(:test_app_page) { PageLoad::OneRequestPage.new }
   let(:action_method) { :load_and_apply_vcr }
 
-  context 'when one default fixture is defined' do
-    it 'opens the page and applies a default fixture' do
-      test_app_page.load_and_apply_vcr
-
-      expect(cat_owner).to have_content('Ned Stark')
-    end
-  end
-
   it 'applies additional query to url' do
     test_app_page.load_and_apply_vcr(cat: 'ford')
 
@@ -38,10 +30,6 @@ feature 'Pages > Load' do
         expect(cat_owner).to have_content('Robb Stark')
       end
     end
-  end
-
-  it_behaves_like 'when a custom fixture is applied' do
-    let(:actor) { test_app_page }
   end
 
   context 'waiters' do

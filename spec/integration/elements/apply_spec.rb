@@ -20,16 +20,6 @@ feature 'Elements > Apply Vcr' do
     test_app_page.load
   end
 
-  context 'clicks and handles one HTTP request' do
-    before do
-      shift_click_event_to(:link_with_one_request).apply_vcr
-    end
-
-    it 'applies a default fixture' do
-      expect(test_app_page.cat_owner).to have_content('Ned Stark')
-    end
-  end
-
   context 'when VCR is associated with already defined elements' do
     before do
       shift_click_event_to(:link_without_vcr).apply_vcr
@@ -59,18 +49,6 @@ feature 'Elements > Apply Vcr' do
     it 'applies 2 fixtures' do
       expect(cat_owner).to have_content('Ned Stark')
       expect(cat_owner).to have_content('Robb Stark')
-    end
-  end
-
-  it_behaves_like 'when a custom fixture is applied' do
-    let(:actor) { shift_click_event_to(:link_with_one_request) }
-
-    context 'when clicks again without specifying a custom fixture' do
-      it 'uses a default fixture again' do
-        actor.apply_vcr
-
-        expect(cat_owner).to have_content('Ned Stark')
-      end
     end
   end
 
