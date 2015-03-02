@@ -11,8 +11,4 @@ class BasePage < SitePrism::Page
   def wait_for_ned_stark_and_robb_stark
     console_block.ned_stark && console_block.robb_stark
   end
-
-  def wait_for_arya_stark_and_robb_stark
-    console_block.arya_stark && console_block.robb_stark
-  end
 end

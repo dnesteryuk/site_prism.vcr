@@ -1,23 +1,51 @@
-shared_examples 'when a default fixture is exchanged' do
-  context 'without a home path' do
-    before do
-      actor_without_home_path.public_send(action_method) do
-        waiter &:wait_for_arya_stark_and_robb_stark
+require 'spec_integration_helper'
 
+feature 'Common use cases > Exchange fixture' do
+  let(:cat_owner)     { test_app_page.cat_owner }
+  let(:test_app_page) { HomePage.new }
+
+  let(:applier_with_event) do
+    applier.shift_event {
+      test_app_page.link_with_one_request.click
+    }
+  end
+
+  before do
+    test_app_page.load
+  end
+
+  context 'without a home path' do
+    let(:applier) do
+      SPV::Applier.new(test_app_page) do
+        fixtures ['ned_stark']
+        waiter   &:wait_for_cat_owner
+      end
+    end
+
+    before do
+      applier_with_event.apply_vcr do
         exchange 'ned_stark', 'arya_stark'
       end
     end
 
     it 'uses the exchanged fixture' do
       expect(cat_owner).to have_content('Arya Stark')
-      expect(cat_owner).to have_content('Robb Stark')
     end
   end
 
   context 'with a defined home path' do
+    let(:applier) do
+      SPV::Applier.new(test_app_page) do
+        home_path 'custom'
+
+        fixtures ['~/daenerys_targaryen']
+        waiter   &:wait_for_cat_owner
+      end
+    end
+
     context 'when fixtures are defined without Vcr options' do
       before do
-        actor_with_home_path.public_send(action_method) do
+        applier_with_event.apply_vcr do
           exchange '~/daenerys_targaryen', '~/bran_stark'
         end
       end
@@ -29,7 +57,7 @@ shared_examples 'when a default fixture is exchanged' do
 
     context 'when fixtures are defined with Vcr options' do
       before do
-        actor_with_home_path.public_send(action_method) do
+        applier_with_event.apply_vcr do
           exchange \
             '~/daenerys_targaryen',
             {
