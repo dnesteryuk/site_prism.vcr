@@ -87,7 +87,7 @@ feature 'Common use cases > Waiter' do
     let(:applier) do
       SPV::Applier.new(test_app_page) do
         fixtures ['ned_stark', 'robb_stark']
-        
+
         waiter({eject_cassettes: false}, &:wait_for_ned_stark_and_robb_stark)
       end
     end
