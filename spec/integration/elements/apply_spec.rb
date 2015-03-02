@@ -69,8 +69,4 @@ feature 'Elements > Apply Vcr' do
       let(:actor) { shift_click_event_to(:link_with_2_requests) }
     end
   end
-
-  it_behaves_like 'when a shorcut path is define' do
-    let(:actor) { shift_click_event_to(:link_with_one_request) }
-  end
 end
