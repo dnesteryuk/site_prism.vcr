@@ -1,7 +1,7 @@
 require 'spec_integration_helper'
 
 feature 'Elements > Apply Vcr' do
-  # It may be any other event, we use click event
+  # It may be any other event, we use the click event
   # because it is the simplest one
   def shift_click_event(link)
     link.shift_event { link.click }
@@ -40,7 +40,6 @@ feature 'Elements > Apply Vcr' do
     end
   end
 
-  # TODO: should we write the same test for the page load?
   context 'when an user clicks on the link which causes 2 HTTP requests' do
     before do
       shift_click_event_to(:link_with_2_requests).apply_vcr
@@ -49,24 +48,6 @@ feature 'Elements > Apply Vcr' do
     it 'applies 2 fixtures' do
       expect(cat_owner).to have_content('Ned Stark')
       expect(cat_owner).to have_content('Robb Stark')
-    end
-  end
-
-  context 'waiters' do
-    it_behaves_like 'when cassettes are ejected by the waiter' do
-      let(:actor) { shift_click_event_to(:link_with_one_request) }
-    end
-
-    it_behaves_like 'when a default waiter does not eject fixtures' do
-      let(:actor) { shift_click_event_to(:link_without_ejecting_fixtures) }
-    end
-
-    it_behaves_like 'when options are redefined for waiters' do
-      let(:actor) { shift_click_event_to(:link_with_2_requests) }
-    end
-
-    it_behaves_like 'custom waiters' do
-      let(:actor) { shift_click_event_to(:link_with_2_requests) }
     end
   end
 end
