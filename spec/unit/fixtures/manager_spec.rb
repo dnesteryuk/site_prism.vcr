@@ -109,6 +109,24 @@ describe SPV::Fixtures::Manager do
         )
       end
     end
+
+    context 'when an extra option is passed' do
+      let(:fixture) do
+        instance_double(
+          'SPV::Fixture',
+          name: 'jon_snow',
+          options: {
+            eject: false
+          }
+        )
+      end
+
+      let(:fixtures) { [fixture] }
+
+      it 'does not break Vcr' do
+        expect { manager.inject }.not_to raise_error
+      end
+    end
   end
 
   describe '#eject' do
@@ -133,6 +151,27 @@ describe SPV::Fixtures::Manager do
         manager.eject
 
         expect(VCR.eject_cassette.name).to eq('test_cassette')
+        expect(VCR.eject_cassette).to equal(nil)
+      end
+    end
+
+    context 'when there are fixtures which are protected from ejecting' do
+      let(:fixture2) do
+        instance_double(
+          'SPV::Fixture',
+          name: 'jon_snow',
+          options: {
+            eject: false
+          }
+        )
+      end
+
+      let(:fixtures) { [fixture1, fixture2] }
+
+      it 'does not remove the protected fixture' do
+        manager.eject
+
+        expect(VCR.eject_cassette.name).to eq('jon_snow')
         expect(VCR.eject_cassette).to equal(nil)
       end
     end

@@ -113,6 +113,25 @@ feature 'Common use cases > Waiter' do
       ['robb_stark', 'ned_stark']
   end
 
+  context 'when one specific cassette should not be ejected' do
+    before do
+      applier_with_event.apply_vcr do
+        fixtures [
+          'ned_stark',
+          {fixture: 'robb_stark', options: {eject: false}}
+        ]
+      end
+    end
+
+    after do
+      SPV::Helpers.eject_all_cassettes
+    end
+
+    it 'VCR contains one cassette' do
+      expect(VCR.eject_cassette.name).to eq('robb_stark')
+    end
+  end
+
   context 'when cassettes are ejected by the waiter' do
     let(:path_to_fixture) {
       VCR.configuration.cassette_library_dir + '/newly_recorded.yml'

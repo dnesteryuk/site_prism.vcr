@@ -3,6 +3,8 @@ module SPV
     # Takes cares about inserting and ejecting fixtures
     # from Vcr.
     class Manager
+      CUSTOM_OPTIONS = [:eject]
+
       # Initializes a new instance of the fixtures manager class,
       # injects given fixtures into VCR,
       # returns an instance of the fixtures manager class
@@ -38,7 +40,7 @@ module SPV
         ) if @fixtures.size == 0
 
         @fixtures.each do |fixture|
-          VCR.insert_cassette fixture.name, fixture.options
+          VCR.insert_cassette fixture.name, fixture.options.select { |k, v| !CUSTOM_OPTIONS.include?(k) }
         end
       end
 
@@ -47,15 +49,17 @@ module SPV
       #
       # @return [void]
       def eject
-        inserted_names = @fixtures.map(&:name)
-
         # TODO: find better way, may be some pull request to the VCR?
         VCR.send(:cassettes).delete_if do |cassette|
-          if remove = inserted_names.include?(cassette.name)
+          fixture = @fixtures.find{ |fixture| fixture.name == cassette.name }
+
+          if fixture && fixture.options.fetch(:eject, true)
             cassette.eject
+
+            return true
           end
 
-          remove
+          return false
         end
       end
     end # class Manager
