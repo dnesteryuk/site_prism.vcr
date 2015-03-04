@@ -1,3 +1,16 @@
+# 0.4.0 (Not released yet)
+
+  * Added a new feature to not eject a specific cassette after applying VCR:
+
+  ```ruby
+    page.car_details_link.click_and_apply_vcr do
+      fixtures [
+        'ford',
+        {fixture: 'ferrari', options: {eject: false}} # it won't be ejected from VCR queue
+      ]
+    end
+  ```
+
 # 0.3.0
 
   * fixed an issue with recording new cassettes.

@@ -349,6 +349,17 @@ In case you need to change only options defined for a default waiter, but you do
 end
 ```
 
+If you don't want to eject some cassettes, you can use `eject` option for them:
+
+```ruby
+  page.car_details_link.click_and_apply_vcr do
+    fixtures [
+      'ford', # this cassette will be ejected from VCR queue
+      {fixture: 'ferrari', options: {eject: false}} # it won't be ejected from VCR queue
+    ]
+  end
+```
+
 ### Applying VCR cassettes on any event
 
 There may be a situation when you need to apply cassettes for some custom event rather than for a click event. It may be a change event for a select box or a drag-and-drop event for a list or a blur event for an input element. SitePrism.Vcr gem provides a way to archive such goal:
@@ -434,9 +445,9 @@ There is a possibility to alter default cassettes defined for a parent page clas
       # replace the cassettes defined in the parent page class
     end
   end
-```  
+```
 
-In this case `cars`, `products`, `features` cassettes will be applied while loading the cars page. 
+In this case `cars`, `products`, `features` cassettes will be applied while loading the cars page.
 
 Any helper methods can be used in a block passed to the `adjust_parent_vcr_options` method.
 
@@ -466,7 +477,7 @@ There isn't any method which you can use to apply VCR cassettes with sections. A
   end
 ```
 
-In this example we apply VCR cassettes after scrolling down the content in a section. 
+In this example we apply VCR cassettes after scrolling down the content in a section.
 
 It may be useful to stub the API request produced by an event which isn't directly related to any element rather it related to overall elements in a section.
 
