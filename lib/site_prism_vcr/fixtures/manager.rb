@@ -55,11 +55,10 @@ module SPV
 
           if fixture && fixture.options.fetch(:eject, true)
             cassette.eject
-
-            return true
+            true
+          else
+            false
           end
-
-          return false
         end
       end
     end # class Manager

@@ -123,6 +123,10 @@ describe SPV::Fixtures::Manager do
 
       let(:fixtures) { [fixture] }
 
+      after do
+        VCR.eject_cassette
+      end
+
       it 'does not break Vcr' do
         expect { manager.inject }.not_to raise_error
       end
