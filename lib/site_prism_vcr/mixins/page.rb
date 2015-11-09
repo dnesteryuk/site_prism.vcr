@@ -1,10 +1,14 @@
 require 'forwardable'
 
+require_relative './element'
+
 module SPV
   module Mixins
     module Page
       def self.included(klass)
+        klass.extend(Element)
         klass.extend(ClassMethods)
+
         klass.send(:include, InstanceMethods)
         klass.instance_variable_set(:@vcr_child_adjusters, [])
       end

@@ -11,6 +11,18 @@
     end
   ```
 
+  * BREAKING CHANGE: SitePrism.Vcr doesn't patch SitePrism anymore. Now, you have to explicitly include the mixin to your page and section classes.
+
+  ```ruby
+    class LoginPage < SitePrism::Page
+      include SPV::Mixins::Page
+    end
+
+    class LoginForm < SitePrism::Section
+      include SPV::Mixins::Element
+    end
+  ```
+
 # 0.3.0
 
   * fixed an issue with recording new cassettes.

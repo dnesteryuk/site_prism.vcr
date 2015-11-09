@@ -1,6 +1,8 @@
 require_relative '../sections/console_block'
 
 class BasePage < SitePrism::Page
+  include SPV::Mixins::Page
+
   element :cat_owner, '#result'
   section :console_block, ConsoleBlockSection, '#console'
 
