@@ -18,6 +18,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'site_prism', '~> 2.6'
-  spec.add_dependency 'vcr',        '~> 2.9.0'
+  spec.add_dependency 'site_prism', '~> 2.8'
+  spec.add_dependency 'vcr',        '~> 2.9'
 end

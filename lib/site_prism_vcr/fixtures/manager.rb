@@ -49,16 +49,25 @@ module SPV
       #
       # @return [void]
       def eject
-        # TODO: find better way, may be some pull request to the VCR?
-        VCR.send(:cassettes).delete_if do |cassette|
+        cassettes_to_insert = []
+
+        #binding.pry
+
+        while cassette = VCR.eject_cassette
           fixture = @fixtures.find{ |fixture| fixture.name == cassette.name }
 
-          if fixture && fixture.options.fetch(:eject, true)
-            cassette.eject
-            true
-          else
-            false
+          if !fixture || !fixture.options.fetch(:eject, true)
+            cassettes_to_insert << cassette
           end
+        end
+
+        cassettes_to_insert.reverse.each do |cassette|
+          VCR.insert_cassette cassette.name, {
+            record:             cassette.record_mode,
+            match_requests_on:  cassette.match_requests_on,
+            erb:                cassette.erb,
+            re_record_interval: cassette.re_record_interval
+          }
         end
       end
     end # class Manager

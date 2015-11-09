@@ -10,6 +10,7 @@ gem 'sandi_meter'
 
 gem 'webmock'
 
-gem 'rspec', '~> 3'
+gem 'rspec', '~> 3.0'
 gem 'selenium-webdriver', '~> 2'
 gem 'coveralls', require: false
+gem 'pry-byebug'
