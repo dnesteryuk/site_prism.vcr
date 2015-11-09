@@ -5,7 +5,7 @@ gemspec
 
 gem 'sinatra'
 gem 'httpclient'
-gem 'capybara', '~> 2.4'
+gem 'capybara', '~> 2.5'
 gem 'sandi_meter'
 
 gem 'webmock'
